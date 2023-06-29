@@ -43,13 +43,13 @@
                 if (selectedArea === "") {
                   return 6 // Revert to the default node size when "All Therapy Areas" is selected
                 } else {
-                  return d.therapy_areas === selectedArea ? 10 : 6
+                  return d.therapy_areas.includes(selectedArea) ? 10 : 6
                 }
               })
               .style("opacity", (d) =>
-                selectedArea === "" || d.therapy_areas === selectedArea
+                selectedArea === "" || d.therapy_areas.includes(selectedArea)
                   ? 1
-                  : 0.2
+                  : 0.5
               )
           }
 
