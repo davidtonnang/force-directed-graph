@@ -8,6 +8,12 @@ fetch("../datasets/co_data.json")
 
     const filterDropdown = d3.select("#filterDropdown")
 
+    const privateCheckbox = d3.select("#privateCheckbox")
+    const publicCheckbox = d3.select("#publicCheckbox")
+
+    privateCheckbox.on("change", handleFilterSelection)
+    publicCheckbox.on("change", handleFilterSelection)
+
     filterDropdown
       .selectAll("option")
       .data(therapyAreas)
@@ -20,6 +26,8 @@ fetch("../datasets/co_data.json")
 
     function handleFilterSelection() {
       const selectedArea = this.value // Get the selected therapy area
+      const privateChecked = privateCheckbox.property("checked") // Check if "Private" checkbox is checked
+      const publicChecked = publicCheckbox.property("checked") // Check if "Public" checkbox is checked
 
       // Update the node sizes based on the filter selection
       nodes
@@ -30,11 +38,22 @@ fetch("../datasets/co_data.json")
             return d.therapy_areas.includes(selectedArea) ? 10 : 6
           }
         })
-        .style("opacity", (d) =>
-          selectedArea === "" || d.therapy_areas.includes(selectedArea)
-            ? 1
-            : 0.5
-        )
+        .style("opacity", (d) => {
+          const therapyMatch =
+            selectedArea === "" || d.therapy_areas.includes(selectedArea)
+          const privateMatch =
+            !privateChecked || (d.financing && d.financing === "Private")
+          const publicMatch =
+            !publicChecked || (d.financing && d.financing === "Listed")
+
+          if (therapyMatch && privateMatch) {
+            return 1 // Nodes with matching therapy area and "Private" financing
+          } else if (therapyMatch && publicMatch) {
+            return 1 // Nodes with matching therapy area and "Public" financing
+          } else {
+            return 0.5 // Nodes that do not match the filter criteria
+          }
+        })
     }
     // Add the slider filter
     const employeeRange = document.getElementById("employeeRange")
@@ -121,8 +140,9 @@ fetch("../datasets/co_data.json")
         label
           .html(
             (labelData) =>
-              `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>`
+              `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
           )
+
           .style("visibility", "visible")
           .attr("x", event.pageX)
           .attr("y", event.pageY - 10) // Adjust the y position to position the label above the cursor

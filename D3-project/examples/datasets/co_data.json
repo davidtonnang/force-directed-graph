@@ -12,7 +12,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "Neurology",
       "area": "Alzheimers",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Torfgård, Kristina",
       "company_website": "https://www.alzinova.com//",
       "company_linkedIn": "https://www.linkedin.com//company//alzinova-ab//"
@@ -29,7 +29,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "CVRM, Oncology, R&I, Neuro",
       "area": "Imaging",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Hulthe, Johannes",
       "company_website": "https://antarosmedical.com//",
       "company_linkedin": "https://www.linkedin.com//company//antaros-medical//"
@@ -45,7 +45,7 @@
       "value_chain": "Research",
       "therapy_areas": "Cardiovascular disease",
       "area": "Cardiovascular",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Sörensen, Sten",
       "company_website": "https://cerenoscientific.com//",
       "company_linkedin": "https://www.linkedin.com//company//cereno-scientific-ab//"
@@ -61,7 +61,7 @@
       "value_chain": "Research",
       "therapy_areas": "Transplantation, Regenerative Medicine",
       "area": "Diabetes",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Nittmar, Henrik",
       "company_website": "https://www.corline.se//home"
     },
@@ -76,7 +76,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "Respiratory (with Vicore) & Cardiovascular Disease (with Cereno Scientific)",
       "area": "Gastrointestinal",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Fryklund, Jan",
       "company_website": "https://www.emeritibio.se//",
       "company_linkedin": "LinkedIn Missing"
@@ -92,7 +92,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "Oncology",
       "area": "Oncology",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Manting, Erik Hans",
       "company_website": "https://mendus.com//",
       "company_linkedin": "https://www.linkedin.com//company//mendus//"
@@ -108,7 +108,7 @@
       "value_chain": "Market",
       "therapy_areas": "Dermatology & Wound",
       "area": "Wound care",
-      "finacing": "Private (99% owned by Patricia Industries – part of Investor AB)",
+      "financing": "Private (99% owned by Patricia Industries – part of Investor AB)",
       "ceo": "Rihter, Zlatko",
       "company_website": "https://www.molnlycke.com//",
       "company_linkedin": "https://www.linkedin.com//company//molnlyckehealthcare//"
@@ -124,7 +124,7 @@
       "value_chain": "Market",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Wahlström, Rickard",
       "company_website": "https://qandqlabs.se//",
       "company_linkedin": "https://www.linkedin.com//company//q&q-labs-ab//"
@@ -140,7 +140,7 @@
       "value_chain": "Market",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Turner, Christina Charlotte Lindved",
       "company_website": "https://www.waters.com//nextgen//se//en.html",
       "company_linkedin": "https://www.linkedin.com//company//waters//"
@@ -157,7 +157,7 @@
       "value_chain": "Market",
       "therapy_areas": "Respiratory",
       "area": "Respiratory",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Udani, Mikesh",
       "company_website": "https://albushealth.com//",
       "company_linkedin": "https://www.linkedin.com//company//albushealth//"
@@ -174,7 +174,7 @@
       "value_chain": "Market",
       "therapy_areas": "Dermatology & Wound, Infection",
       "area": "Antimicrobial",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Rajasekaran, Anand",
       "company_website": "https://www.amferia.com//",
       "company_linkedin": "https://www.linkedin.com//company//amferia//"
@@ -191,7 +191,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Safety",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Knight, Richard",
       "company_website": "https://www.apconix.com//",
       "company_linkedin": "https://www.linkedin.com//company//apconix//"
@@ -207,7 +207,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "CVRM",
       "area": "Aging",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Hall, James",
       "company_website": "Missing",
       "company_linkedin": "LinkedIn Missing"
@@ -223,7 +223,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A/ Oncology",
       "area": "Oncology",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Sundh, Patrik",
       "company_website": "https://www.clinescientific.com//",
       "company_linkedin": "https://www.linkedin.com//company//cline-technologies//"
@@ -238,7 +238,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "N/A",
       "area": "Digital",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "El Rhali, Ahmed",
       "company_website": "https://datametrix.ch//",
       "company_linkedin": "https://www.linkedin.com//company//datametrix-ag//"
@@ -254,7 +254,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "Oncology",
       "area": "Oncology",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Sjöblom-Hallén, Anna",
       "company_website": "https://www.ectinresearch.com//",
       "company_linkedin": "https://www.linkedin.com//company//ectin-research//"
@@ -270,7 +270,7 @@
       "value_chain": "Research",
       "therapy_areas": "CVRM, with focus on NASH",
       "area": "Cardiovascular",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Benthem, Bert",
       "company_website": "https://inorbittx.com//",
       "company_linkedin": "LinkedIn Missing"
@@ -286,7 +286,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Holm, Karl-Johan",
       "company_website": "https://insingulo.com//",
       "company_linkedin": "https://www.linkedin.com//company//insingulo-ab//"
@@ -302,7 +302,7 @@
       "value_chain": "Market",
       "therapy_areas": "Orthopaedic",
       "area": "Digital",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Zellmer, John",
       "company_website": "https://intelligentimplants.ie//",
       "company_linkedin": "https://www.linkedin.com//company//intelligent-implants//"
@@ -318,7 +318,7 @@
       "value_chain": "Market",
       "therapy_areas": "N/A",
       "area": "Antifouling",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Chaabane, Philip",
       "company_website": "https://i-tech.se//",
       "company_linkedin": "https://www.linkedin.com//company//i-tech-ab//"
@@ -334,7 +334,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Fogelstrand, Per",
       "company_website": "https://kromnigon.com//",
       "company_linkedin": "https://www.linkedin.com//company//kromnigon-ab//"
@@ -350,7 +350,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Nanotechnology",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Jönsson, Håkan",
       "company_website": "N/A https://www.kth.se//pro//nanobio//division-of-nanobiotechnology-1.185383",
       "company_linkedin": "https://www.linkedin.com//school//kth//"
@@ -366,7 +366,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Jacklin, Christopher",
       "company_website": "https://www.lucerobio.com//",
       "company_linkedin": "https://www.linkedin.com//company//lucero//"
@@ -382,7 +382,7 @@
       "value_chain": "Market",
       "therapy_areas": "Pre-diabetes, Immuno-oncology",
       "area": "Metabolism",
-      "finacing": "Financed by BioGaia that is listed",
+      "financing": "Financed by BioGaia that is listed",
       "ceo": "Malcus, Sara",
       "company_website": "https://www.metabogen.se//",
       "company_linkedin": "https://www.linkedin.com//company//metabogen-ab//"
@@ -398,7 +398,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "N/A",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Löfgren, Nils",
       "company_website": "https://www.nanolyze.se//",
       "company_linkedin": "https://www.linkedin.com//company//nanolyze//"
@@ -414,7 +414,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Imaging",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Malmberg, Per",
       "company_website": "N/A https://www.chalmers.se//en//infrastructure//cii//about-us//",
       "company_linkedin": "https://www.linkedin.com//company//chemical-imaging-infrastructure//"
@@ -430,7 +430,7 @@
       "value_chain": "Research",
       "therapy_areas": "N/A",
       "area": "Pharmaceuticals",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Matsson, Pär",
       "company_website": "https://oligonova.org//",
       "company_linkedin": "https://www.linkedin.com//company//oligonova-hub//"
@@ -446,7 +446,7 @@
       "value_chain": "Market",
       "therapy_areas": "N/A",
       "area": "Dosing",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Olovsson, Martin",
       "company_website": "https://www.ondosis.com//",
       "company_linkedin": "https://www.linkedin.com//company//ondosis//"
@@ -462,7 +462,7 @@
       "value_chain": "Research",
       "therapy_areas": "Ophthalmology",
       "area": "Analytics",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Lindström, Åsa",
       "company_website": "https://www.profundusimaging.com//",
       "company_linkedin": "https://www.linkedin.com//company//profundus-ab-sweden//"
@@ -478,7 +478,7 @@
       "value_chain": "Discovery",
       "therapy_areas": "Dental & Orthopaedic",
       "area": "Implants",
-      "finacing": "Listed",
+      "financing": "Listed",
       "ceo": "Larsson, Magnus",
       "company_website": "https://promimic.com//",
       "company_linkedin": "https://Hwww.linkedin.com//company//promimic//"
@@ -494,7 +494,7 @@
       "value_chain": "Market",
       "therapy_areas": "N/A",
       "area": "Intellectual Property",
-      "finacing": "Private",
+      "financing": "Private",
       "ceo": "Faijerson Säljö, Jonas",
       "company_website": "https://www.synergon.se//se",
       "company_linkedin": "https://www.linkedin.com//company//synergon_2//"
