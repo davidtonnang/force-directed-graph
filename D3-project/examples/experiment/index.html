@@ -10,6 +10,21 @@
       </select>
     </div>
 
+    <div class="slider-container">
+      <label class="filter-label">Filter by employees:</label>
+      <input
+        class="slider-bar"
+        type="range"
+        id="employeeRange"
+        min="0"
+        max="462"
+        step="1"
+        value="0"
+      />
+      <label for="employeeRange">Employee Range</label>
+      <span id="employeeValue" class="slider-value">0</span>
+    </div>
+
     <svg id="graph"></svg>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -50,6 +65,30 @@
                 selectedArea === "" || d.therapy_areas.includes(selectedArea)
                   ? 1
                   : 0.5
+              )
+          }
+          // Add the slider filter
+          const employeeRange = document.getElementById("employeeRange")
+          const employeeValue = document.getElementById("employeeValue")
+          employeeValue.textContent = employeeRange.value // Display initial value
+
+          employeeRange.addEventListener("input", handleEmployeeRangeSelection)
+
+          function handleEmployeeRangeSelection() {
+            const minEmployees = parseInt(employeeRange.value) // Minimum number of employees
+            employeeValue.textContent = minEmployees // Update displayed value
+
+            // Update the node sizes and opacity based on the employee range
+            nodes
+              .attr("r", (d) => {
+                if (d.amount_of_employees >= minEmployees) {
+                  return 8
+                } else {
+                  return 6
+                }
+              })
+              .style("opacity", (d) =>
+                d.amount_of_employees >= minEmployees ? 1 : 0.2
               )
           }
 

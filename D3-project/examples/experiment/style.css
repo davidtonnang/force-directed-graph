@@ -22,3 +22,24 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+.slider-value {
+  position:relative;
+  left: -7rem;
+  top: 0rem;
+  color: white;
+}
+
+.slider-container {
+  position:relative;
+  top: 1rem;
+}
+
+.filter-label {
+  color: white;
+}
+
+.slider-bar {
+  position:relative;
+  top: 0.2rem;
+}
