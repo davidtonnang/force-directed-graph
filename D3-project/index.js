@@ -1,3 +1,0 @@
-// Hej David
-
-// Hej Oskar 
