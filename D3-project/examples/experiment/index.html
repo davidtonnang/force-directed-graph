@@ -60,12 +60,16 @@
             .style("fill", "white")
             .style("visibility", "hidden")
 
-          // Add mouseover and mouseout event listeners
+          // Update the label text on mouseover
           nodes
             .on("mouseover", function (event, d) {
               d3.select(this).attr("r", 8) // Increase node size on mouseover
               labels
                 .filter((labelData) => labelData.id === d.id)
+                .text(
+                  (labelData) =>
+                    `${labelData.id} Employees: ${labelData.amount_of_employees}, Therapy Area: ${labelData.therapy_area}`
+                )
                 .style("visibility", "visible") // Show label on mouseover
             })
             .on("mouseout", function (event, d) {
