@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div>
+      <select id="filterDropdown">
+        <option value="">All Therapy Areas</option>
+      </select>
+    </div>
+
     <svg id="graph"></svg>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -12,6 +18,41 @@
       fetch("../datasets/co_data.json")
         .then((res) => res.json())
         .then((data) => {
+          const therapyAreas = [
+            ...new Set(data.nodes.map((node) => node.therapy_areas)),
+          ]
+
+          const filterDropdown = d3.select("#filterDropdown")
+
+          filterDropdown
+            .selectAll("option")
+            .data(therapyAreas)
+            .enter()
+            .append("option")
+            .attr("value", (d) => d)
+            .text((d) => d)
+
+          filterDropdown.on("change", handleFilterSelection)
+
+          function handleFilterSelection() {
+            const selectedArea = this.value // Get the selected therapy area
+
+            // Update the node sizes based on the filter selection
+            nodes
+              .attr("r", (d) => {
+                if (selectedArea === "") {
+                  return 6 // Revert to the default node size when "All Therapy Areas" is selected
+                } else {
+                  return d.therapy_areas === selectedArea ? 10 : 6
+                }
+              })
+              .style("opacity", (d) =>
+                selectedArea === "" || d.therapy_areas === selectedArea
+                  ? 1
+                  : 0.2
+              )
+          }
+
           // Create the SVG container
           const svg = d3.select("#graph")
 
@@ -67,7 +108,7 @@
               const node = d3.select(this)
               const label = labels.filter((labelData) => labelData.id === d.id)
 
-              node.attr("r", 8) // Increase node size on mouseover
+              // node.attr("r", 12) // Increase node size on mouseover
 
               label
                 .html(
@@ -89,7 +130,7 @@
               const node = d3.select(this)
               const label = labels.filter((labelData) => labelData.id === d.id)
 
-              node.attr("r", 6) // Revert node size on mouseout
+              // node.attr("r", 6) // Revert node size on mouseout
               label.style("visibility", "hidden") // Hide label on mouseout
             })
 
