@@ -44,13 +44,13 @@ fetch("../datasets/co_data.json")
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
     function handleEmployeeRangeSelection() {
-      const minEmployees = parseInt(employeeRange.value) // Minimum number of employees
+      const minEmployees = Math.pow(2, employeeRange.value) // Minimum number of employees
       employeeValue.textContent = minEmployees // Update displayed value
 
       // Update the node sizes and opacity based on the employee range
       nodes
         .attr("r", (d) => {
-          if (minEmployees === 0) {
+          if (minEmployees === 1) {
             return 6 // Revert to the default node size when the minimum employees is 0
           } else {
             return d.amount_of_employees >= minEmployees ? 10 : 6
