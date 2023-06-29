@@ -61,20 +61,36 @@
             .style("visibility", "hidden")
 
           // Update the label text on mouseover
+          // Update the label text on mouseover
           nodes
             .on("mouseover", function (event, d) {
-              d3.select(this).attr("r", 8) // Increase node size on mouseover
-              labels
-                .filter((labelData) => labelData.id === d.id)
-                .text(
+              const node = d3.select(this)
+              const label = labels.filter((labelData) => labelData.id === d.id)
+
+              node.attr("r", 8) // Increase node size on mouseover
+
+              label
+                .html(
                   (labelData) =>
-                    `${labelData.id} Employees: ${labelData.amount_of_employees}, Therapy Area: ${labelData.therapy_area}`
+                    `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_area}</tspan>`
                 )
-                .style("visibility", "visible") // Show label on mouseover
+                .style("visibility", "visible")
+                .attr("x", event.pageX)
+                .attr("y", event.pageY - 10) // Adjust the y position to position the label above the cursor
+
+              // Adjust the x and dy attributes of each tspan for proper alignment and line breaks
+              label
+                .selectAll("tspan")
+                .attr("x", event.pageX + 15)
+                .attr("dy", "1.2em")
             })
+
             .on("mouseout", function (event, d) {
-              d3.select(this).attr("r", 6) // Revert node size on mouseout
-              labels.style("visibility", "hidden") // Hide all labels on mouseout
+              const node = d3.select(this)
+              const label = labels.filter((labelData) => labelData.id === d.id)
+
+              node.attr("r", 6) // Revert node size on mouseout
+              label.style("visibility", "hidden") // Hide label on mouseout
             })
 
           // Update the node and link positions on each tick of the simulation
