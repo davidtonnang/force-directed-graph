@@ -81,14 +81,16 @@
             // Update the node sizes and opacity based on the employee range
             nodes
               .attr("r", (d) => {
-                if (d.amount_of_employees >= minEmployees) {
-                  return 8
+                if (minEmployees === 0) {
+                  return 6 // Revert to the default node size when the minimum employees is 0
                 } else {
-                  return 6
+                  return d.amount_of_employees >= minEmployees ? 10 : 6
                 }
               })
               .style("opacity", (d) =>
-                d.amount_of_employees >= minEmployees ? 1 : 0.2
+                minEmployees === 0 || d.amount_of_employees >= minEmployees
+                  ? 1
+                  : 0.5
               )
           }
 
