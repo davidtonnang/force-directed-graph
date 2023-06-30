@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div>
+      <select id="filterDropdown">
+        <option value="">All Therapy Areas</option>
+      </select>
+    </div>
+
+    <div class="slider-container">
+      <label class="filter-label">Filter by employees:</label>
+      <input
+        class="slider-bar"
+        type="range"
+        id="employeeRange"
+        min="0"
+        max="9"
+        step="1"
+        value="0"
+      />
+      <label for="employeeRange"></label>
+      <span id="employeeValue" class="slider-value">0</span>
+    </div>
+
+    <div class="checkbox-container" id="private-container">
+      <input type="checkbox" id="privateCheckbox" />
+      <label for="privateCheckbox" id="privateLabel">Private</label>
+    </div>
+    <div class="checkbox-container" id="public-container">
+      <input type="checkbox" id="publicCheckbox" />
+      <label for="publicCheckbox" id="publicLabel">Public</label>
+    </div>
+
+    <svg id="graph"></svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

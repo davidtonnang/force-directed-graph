@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #101020;
+}
+
+.node {
+  fill: #66b3ff;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+#graph {
+  width: 100vw;
+  height: 100vh;
+}
+
+.slider-value {
+  position: relative;
+  left: 0rem;
+  top: 0rem;
+  color: white;
+}
+
+.slider-container {
+  position: relative;
+  top: 1rem;
+}
+
+.filter-label {
+  color: white;
+}
+
+.slider-bar {
+  position: relative;
+  top: 0.2rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-right: 100rem;
+}
+
+.checkbox-container label {
+  color: white;
+}
+
+#publicCheckbox {
+  position: absolute;
+  left: 300px;
+  top: 39px;
+}
+
+#publicLabel {
+  position: absolute;
+  left: 325px;
+  top: 40px;
+}
+
+#privateCheckbox {
+  position: absolute;
+  left: 380px;
+  top: 39px;
+}
+
+#privateLabel {
+  position: absolute;
+  left: 405px;
+  top: 40px;
+}
