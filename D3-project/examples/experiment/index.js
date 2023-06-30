@@ -22,12 +22,35 @@ fetch("../datasets/co_data.json")
       .attr("value", (d) => d)
       .text((d) => d)
 
-    filterDropdown.on("change", handleFilterSelection)
+    filterDropdown.on("change", handleFilterDropdown)
+
+    function handleFilterDropdown() {
+      const selectedArea = this.value
+
+      nodes
+        .attr("r", (d) => {
+          if (selectedArea === "") {
+            return 6 // Revert to the default node size when "All Therapy Areas" is selected
+          } else {
+            return d.therapy_areas.includes(selectedArea) ? 10 : 6
+          }
+        })
+        .style("opacity", (d) => {
+          
+        const therapyMatch = selectedArea === "" || d.therapy_areas.includes(selectedArea);
+
+        if (therapyMatch) {
+              return 1 // Nodes with matching therapy area get highlighted
+            } else {
+              return 0.1 // Nodes that do not match the therapy area get put to the background
+            }
+    })
+  }
 
     function handleFilterSelection() {
       const selectedArea = this.value // Get the selected therapy area
-      const privateChecked = privateCheckbox.property("checked") // Check if "Private" checkbox is checked
-      const publicChecked = publicCheckbox.property("checked") // Check if "Public" checkbox is checked
+      const privateChecked = privateCheckbox.property("checked") // Check if private checkbox is checked
+      const publicChecked = publicCheckbox.property("checked") // Check if public checkbox is checked
 
       // Update the node sizes based on the filter selection
       nodes
@@ -38,23 +61,28 @@ fetch("../datasets/co_data.json")
             return d.therapy_areas.includes(selectedArea) ? 10 : 6
           }
         })
-        .style("opacity", (d) => {
-          const therapyMatch =
-            selectedArea === "" || d.therapy_areas.includes(selectedArea)
-          const privateMatch =
-            !privateChecked || (d.financing && d.financing === "Private")
-          const publicMatch =
-            !publicChecked || (d.financing && d.financing === "Listed")
 
-          if (therapyMatch && privateMatch) {
-            return 1 // Nodes with matching therapy area and "Private" financing
-          } else if (therapyMatch && publicMatch) {
-            return 1 // Nodes with matching therapy area and "Public" financing
-          } else {
-            return 0.5 // Nodes that do not match the filter criteria
-          }
-        })
+            // Checks for private and public financing to highlight nodes matching the private or public checkboxes
+            .each(function(d) {
+              const node = d3.select(this);
+              const therapyMatch = selectedArea === "" || d.therapy_areas.includes(selectedArea);
+              const privateMatch = !privateChecked || d.financing === "Private";
+              const publicMatch = !publicChecked || d.financing === "Listed";
+              console.log("Running") 
+
+              // Vi behöver separera dropDown menyn och public / private för det förstör dropDown menyn just nu
+            
+              if (privateMatch && publicMatch) {
+                node.style("opacity", 1); // Nodes with matching therapy area, "Private" financing, and "Public" financing
+              } 
+              
+              else {
+                node.style("opacity", 0.1); // Nodes that do not match the filter criteria
+              }
+            });
     }
+
+   
     // Add the slider filter
     const employeeRange = document.getElementById("employeeRange")
     const employeeValue = document.getElementById("employeeValue")
