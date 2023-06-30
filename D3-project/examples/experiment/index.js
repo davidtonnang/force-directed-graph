@@ -32,7 +32,7 @@ fetch("../datasets/co_data.json")
           if (selectedArea === "") {
             return 6 // Revert to the default node size when "All Therapy Areas" is selected
           } else {
-            return d.therapy_areas.includes(selectedArea) ? 10 : 6
+            return d.therapy_areas.includes(selectedArea) ? 9 : 6
           }
         })
         .style("opacity", (d) => {
@@ -42,7 +42,7 @@ fetch("../datasets/co_data.json")
         if (therapyMatch) {
               return 1 // Nodes with matching therapy area get highlighted
             } else {
-              return 0.1 // Nodes that do not match the therapy area get put to the background
+              return 0.4 // Nodes that do not match the therapy area get put to the background
             }
     })
   }
@@ -53,14 +53,15 @@ fetch("../datasets/co_data.json")
       const publicChecked = publicCheckbox.property("checked") // Check if public checkbox is checked
 
       // Update the node sizes based on the filter selection
-      nodes
-        .attr("r", (d) => {
-          if (selectedArea === "") {
-            return 6 // Revert to the default node size when "All Therapy Areas" is selected
-          } else {
-            return d.therapy_areas.includes(selectedArea) ? 10 : 6
-          }
-        })
+      nodes.attr("r", (d) => {
+        if (privateChecked && d.financing === "Private") { // Check if private checkbox is checked and node is private
+          return 9;
+        } else if (publicChecked && d.financing === "Listed") { // Check if public checkbox is checked and node is public
+          return 9;
+        } else {
+          return 6; // Revert to the default node size when no checkbox is selected or node doesn't match
+        }
+      })
 
             // Checks for private and public financing to highlight nodes matching the private or public checkboxes
             .each(function(d) {
@@ -100,7 +101,7 @@ fetch("../datasets/co_data.json")
           if (minEmployees === 1) {
             return 6 // Revert to the default node size when the minimum employees is 0
           } else {
-            return d.amount_of_employees >= minEmployees ? 10 : 6
+            return d.amount_of_employees >= minEmployees ? 6 : 6
           }
         })
         .style("opacity", (d) =>
@@ -158,8 +159,7 @@ fetch("../datasets/co_data.json")
       .append("circle")
       .attr("class", "node")
       .attr("r", 6)
-
-    // Add labels to the nodes
+      .style("cursor", "pointer")
 
       // Create the labels for all nodes
       const labels = svg
@@ -174,17 +174,14 @@ fetch("../datasets/co_data.json")
       
 
     // Update the label text on mouseover
-    // Update the label text on mouseover
-
 nodes.on("mouseover", function (event, d) {
-  const node = d3.select(this);
 
   // Calculate the scaled coordinates relative to the current zoom level and the node's position
   const transform = d3.zoomTransform(svg.node());
   const scaledX = (d.x * transform.k) + transform.x;
   const scaledY = (d.y * transform.k) + transform.y;
 
-  // Create a new label
+  // Creates a new label
   const label = svg.append('text')
     .data([d])
     .attr('class', 'label')
@@ -205,13 +202,25 @@ nodes.on("mouseover", function (event, d) {
 .on("mouseout", function (event, d) {
   svg.selectAll(".label").remove();
 
-// node.attr("r", 6) // Revert node size on mouseout
 label.style("visibility", "hidden") // Hide label on mouseout
 
 })
 
+// Adds a smooth zoom function on click for the nodes
+.on("click", function (event, d) {
+  event.stopPropagation();
+  const dx = d.x,
+        dy = d.y,
+        scale = 4; 
+  const translate = [svg.node().width.baseVal.value / 2 - scale * dx, svg.node().height.baseVal.value / 2 - scale * dy];
 
-      // Update the node and link positions on each tick of the simulation
+  svg.transition()
+    .duration(3000) // Transition duration here, 3000 is 3 seconds
+    .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+})
+
+
+      // Updates the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
       links
         .attr("x1", (d) => d.source.x)
