@@ -110,6 +110,18 @@ fetch("../datasets/co_data.json")
 
     // Create the SVG container
     const svg = d3.select("#graph")
+    
+    
+  // Create a group for the graph elements
+  
+  const container = svg.append("g");
+  
+  // Enable zooming and panning behavior
+  const zoom = d3.zoom().on("zoom", (event) => {
+    container.attr("transform", event.transform);
+  });
+  svg.call(zoom);
+  
 
     // Create the force simulation
     const simulation = d3
@@ -128,7 +140,7 @@ fetch("../datasets/co_data.json")
       )
 
     // Create the links
-    const links = svg
+    const links = container
       .selectAll(".link")
       .data(data.links)
       .enter()
@@ -136,8 +148,10 @@ fetch("../datasets/co_data.json")
       .attr("class", "link")
       .style("stroke", "rgba(255, 255, 255, 1)") // Set the color of the links
 
-    // Create the nodes
-    const nodes = svg
+    
+    
+      // Create the nodes
+    const nodes = container
       .selectAll(".node")
       .data(data.nodes)
       .enter()
@@ -146,7 +160,7 @@ fetch("../datasets/co_data.json")
       .attr("r", 6)
 
     // Add labels to the nodes
-    const labels = svg
+    const labels = container
       .selectAll(".label")
       .data(data.nodes)
       .enter()
@@ -156,7 +170,6 @@ fetch("../datasets/co_data.json")
       .style("fill", "white")
       .style("visibility", "hidden")
 
-    // Update the label text on mouseover
     // Update the label text on mouseover
     nodes
       .on("mouseover", function (event, d) {
@@ -190,7 +203,7 @@ fetch("../datasets/co_data.json")
         label.style("visibility", "hidden") // Hide label on mouseout
       })
 
-    // Update the node and link positions on each tick of the simulation
+      // Update the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
       links
         .attr("x1", (d) => d.source.x)
