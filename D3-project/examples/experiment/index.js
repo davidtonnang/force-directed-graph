@@ -77,7 +77,7 @@ fetch("../datasets/co_data.json")
               } 
               
               else {
-                node.style("opacity", 0.1); // Nodes that do not match the filter criteria
+                node.style("opacity", 0.4); // Nodes that do not match the filter criteria
               }
             });
     }
@@ -160,48 +160,56 @@ fetch("../datasets/co_data.json")
       .attr("r", 6)
 
     // Add labels to the nodes
-    const labels = container
-      .selectAll(".label")
-      .data(data.nodes)
-      .enter()
-      .append("text")
-      .attr("class", "label")
-      .text((d) => d.id)
-      .style("fill", "white")
-      .style("visibility", "hidden")
+
+      // Create the labels for all nodes
+      const labels = svg
+        .selectAll(".label")
+        .data(data.nodes)
+        .enter()
+        .append("text")
+        .attr("class", "label")
+        .text((d) => d.id)
+        .style("fill", "white")
+        .style("visibility", "hidden");
+      
 
     // Update the label text on mouseover
-    nodes
-      .on("mouseover", function (event, d) {
-        const node = d3.select(this)
-        const label = labels.filter((labelData) => labelData.id === d.id)
+    // Update the label text on mouseover
 
-        // node.attr("r", 12) // Increase node size on mouseover
+nodes.on("mouseover", function (event, d) {
+  const node = d3.select(this);
 
-        label
-          .html(
-            (labelData) =>
-              `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
-          )
+  // Calculate the scaled coordinates relative to the current zoom level and the node's position
+  const transform = d3.zoomTransform(svg.node());
+  const scaledX = (d.x * transform.k) + transform.x;
+  const scaledY = (d.y * transform.k) + transform.y;
 
-          .style("visibility", "visible")
-          .attr("x", event.pageX)
-          .attr("y", event.pageY - 10) // Adjust the y position to position the label above the cursor
+  // Create a new label
+  const label = svg.append('text')
+    .data([d])
+    .attr('class', 'label')
+    .html(
+      (labelData) =>
+        `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
+    )
+    .style("visibility", "visible")
+    .style("fill", "white")
+    .attr("x", scaledX)
+    .attr("y", scaledY - 10); // Adjust the y position to position the label above the node
 
-        // Adjust the x and dy attributes of each tspan for proper alignment and line breaks
-        label
-          .selectAll("tspan")
-          .attr("x", event.pageX + 15)
-          .attr("dy", "1.2em")
-      })
+  label
+    .selectAll("tspan")
+    .attr("x", scaledX + 15)
+    .attr("dy", "1.2em");
+})
+.on("mouseout", function (event, d) {
+  svg.selectAll(".label").remove();
 
-      .on("mouseout", function (event, d) {
-        const node = d3.select(this)
-        const label = labels.filter((labelData) => labelData.id === d.id)
+// node.attr("r", 6) // Revert node size on mouseout
+label.style("visibility", "hidden") // Hide label on mouseout
 
-        // node.attr("r", 6) // Revert node size on mouseout
-        label.style("visibility", "hidden") // Hide label on mouseout
-      })
+})
+
 
       // Update the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
