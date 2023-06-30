@@ -211,7 +211,7 @@ label.style("visibility", "hidden") // Hide label on mouseout
   event.stopPropagation();
   const dx = d.x,
         dy = d.y,
-        scale = 4; 
+        scale = 1.7; // affects the zoom level
   const translate = [svg.node().width.baseVal.value / 2 - scale * dx, svg.node().height.baseVal.value / 2 - scale * dy];
 
   svg.transition()

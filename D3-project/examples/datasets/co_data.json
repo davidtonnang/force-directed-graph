@@ -498,6 +498,23 @@
       "ceo": "Faijerson Säljö, Jonas",
       "company_website": "https://www.synergon.se//se",
       "company_linkedin": "https://www.linkedin.com//company//synergon_2//"
+    }, 
+    {
+      "gruppering": "Drugs",
+      "ecosystem": "BioVentureHub",
+      "id": "BioVentureHub",
+      "turnover_sek": 6600000,
+      "amount_of_employees": 11,
+      "keywords": "BioVentureHub",
+      "type_of_company": "Drugs",
+      "operational_focus": "R&D",
+      "value_chain": "Discovery",
+      "therapy_areas": "Ecosystem",
+      "area": "Ecosystem",
+      "financing": "Private",
+      "ceo": "Björsne, Magnus",
+      "company_website": "https://www.bioventurehub.com/",
+      "company_linkedIn": "https://www.linkedin.com/company/bioventurehub/"
     }
   ],
   "links": [
