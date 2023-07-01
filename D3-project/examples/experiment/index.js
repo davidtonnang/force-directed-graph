@@ -44,15 +44,15 @@ function applyFilters() {
       // Adjust radius based on filters
       let radius = d.size;
       if (filterState.therapyArea !== "" && d.therapy_areas.includes(filterState.therapyArea)) {
-        radius *= 1.1;
+        radius *= 1.0;
       }
       if ((!filterState.financing.private && !filterState.financing.public) 
           || (filterState.financing.private && d.financing === "Private") 
           || (filterState.financing.public && d.financing === "Listed")) {
-        radius *= 1.1;
+        radius *= 1.0;
       }
       if (d.amount_of_employees >= filterState.minEmployees) {
-        radius *= 1.1;
+        radius *= 1.0;
       }
       return radius;
     })
@@ -60,15 +60,15 @@ function applyFilters() {
       // Adjust opacity based on filters
       let opacity = 1;
       if (filterState.therapyArea !== "" && !d.therapy_areas.includes(filterState.therapyArea)) {
-        opacity = 0.4;
+        opacity = 0.2;
       }
       if ((filterState.financing.private || filterState.financing.public) 
           && !(filterState.financing.private && d.financing === "Private") 
           && !(filterState.financing.public && d.financing === "Listed")) {
-        opacity = 0.4;
+        opacity = 0.2;
       }
       if (!(d.amount_of_employees >= filterState.minEmployees)) {
-        opacity = 0.4;
+        opacity = 0.2;
       }
       return opacity;
     });
@@ -214,18 +214,20 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
         const scaledY = d.y * transform.k + transform.y
 
         // Creates a new label
-        const label = svg
-          .append("text")
-          .data([d])
-          .attr("class", "label")
-          .html(
-            (labelData) =>
-              `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
-          )
-          .style("visibility", "visible")
-          .style("fill", "white")
-          .attr("x", scaledX)
-          .attr("y", scaledY - 10) // Adjust the y position to position the label above the node
+    const label = svg
+    .append("text")
+    .data([d])
+    .attr("class", "label")
+    .html((labelData) =>
+      `<tspan>${labelData.id}</tspan>
+      <tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan>
+      <tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>` +
+      (labelData.financing ? `<tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>` : '')
+    )
+    .style("visibility", "visible")
+    .style("fill", "white")
+    .attr("x", scaledX)
+    .attr("y", scaledY - 10) // Adjust the y position to position the label above the node
 
         label
           .selectAll("tspan")
