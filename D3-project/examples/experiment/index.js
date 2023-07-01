@@ -10,6 +10,8 @@ fetch("../datasets/co_data_test.json")
 
     const privateCheckbox = d3.select("#privateCheckbox")
     const publicCheckbox = d3.select("#publicCheckbox")
+    const employeeRange = document.getElementById("employeeRange")
+
 
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
@@ -24,93 +26,98 @@ fetch("../datasets/co_data_test.json")
 
     filterDropdown.on("change", handleFilterDropdown)
 
-    function handleFilterDropdown() {
-      const selectedArea = this.value
+    // Initialize filterState
+let filterState = {
+  therapyArea: "",
+  financing: {
+    private: false,
+    listed: false,
+  },
+  minEmployees: 0,
+};
 
-      nodes
-        .attr("r", (d) => {
-          if (selectedArea === "") {
-            return d.size // Revert to the default node size when "All Therapy Areas" is selected
-          } else {
-            return d.therapy_areas.includes(selectedArea)
-              ? d.size * 1.5
-              : d.size
-          }
-        })
-        .style("opacity", (d) => {
-          const therapyMatch =
-            selectedArea === "" || d.therapy_areas.includes(selectedArea)
+// Function to apply filters
+function applyFilters() {
+  // Use the filterState to filter nodes
+  nodes
+    .attr("r", (d) => {
+      // Adjust radius based on filters
+      let radius = d.size;
+      if (filterState.therapyArea !== "" && d.therapy_areas.includes(filterState.therapyArea)) {
+        radius *= 1.1;
+      }
+      if ((!filterState.financing.private && !filterState.financing.public) 
+          || (filterState.financing.private && d.financing === "Private") 
+          || (filterState.financing.public && d.financing === "Listed")) {
+        radius *= 1.1;
+      }
+      if (d.amount_of_employees >= filterState.minEmployees) {
+        radius *= 1.1;
+      }
+      return radius;
+    })
+    .style("opacity", (d) => {
+      // Adjust opacity based on filters
+      let opacity = 1;
+      if (filterState.therapyArea !== "" && !d.therapy_areas.includes(filterState.therapyArea)) {
+        opacity = 0.4;
+      }
+      if ((filterState.financing.private || filterState.financing.public) 
+          && !(filterState.financing.private && d.financing === "Private") 
+          && !(filterState.financing.public && d.financing === "Listed")) {
+        opacity = 0.4;
+      }
+      if (!(d.amount_of_employees >= filterState.minEmployees)) {
+        opacity = 0.4;
+      }
+      return opacity;
+    });
+}
 
-          if (therapyMatch) {
-            return 1 // Nodes with matching therapy area get highlighted
-          } else {
-            return 0.4 // Nodes that do not match the therapy area get put to the background
-          }
-        })
+
+// Handle therapy area filter
+function handleFilterDropdown() {
+  filterState.therapyArea = this.value;
+  applyFilters();
+}
+
+// Handle financing filter
+function handleFilterSelection() {
+  filterState.financing.private = privateCheckbox.property("checked");
+  filterState.financing.public = publicCheckbox.property("checked");
+  applyFilters();
+
+  privateCheckbox.on("change", function() {
+    if (this.checked) {
+      publicCheckbox.property("checked", false);
     }
-
-    function handleFilterSelection() {
-      const selectedArea = this.value // Get the selected therapy area
-      const privateChecked = privateCheckbox.property("checked") // Check if private checkbox is checked
-      const publicChecked = publicCheckbox.property("checked") // Check if public checkbox is checked
-
-      // Update the node sizes based on the filter selection
-      nodes
-        .attr("r", (d) => {
-          if (privateChecked && d.financing === "Private") {
-            // Check if private checkbox is checked and node is private
-            return d.size * 1.5
-          } else if (publicChecked && d.financing === "Listed") {
-            // Check if public checkbox is checked and node is public
-            return d.size * 1.5
-          } else {
-            return d.size // Revert to the default node size when no checkbox is selected or node doesn't match
-          }
-        })
-
-        // Checks for private and public financing to highlight nodes matching the private or public checkboxes
-        .each(function (d) {
-          const node = d3.select(this)
-          const therapyMatch =
-            selectedArea === "" || d.therapy_areas.includes(selectedArea)
-          const privateMatch = !privateChecked || d.financing === "Private"
-          const publicMatch = !publicChecked || d.financing === "Listed"
-          console.log("Running")
-
-          // Vi behöver separera dropDown menyn och public / private för det förstör dropDown menyn just nu
-
-          if (privateMatch && publicMatch) {
-            node.style("opacity", 1) // Nodes with matching therapy area, "Private" financing, and "Public" financing
-          } else {
-            node.style("opacity", 0.4) // Nodes that do not match the filter criteria
-          }
-        })
+    handleFilterSelection.call(this);
+  })
+  
+  publicCheckbox.on("change", function() {
+    if (this.checked) {
+      privateCheckbox.property("checked", false);
     }
+    handleFilterSelection.call(this);
+  })
+}
 
-    // Add the slider filter
-    const employeeRange = document.getElementById("employeeRange")
-    const employeeValue = document.getElementById("employeeValue")
-    employeeValue.textContent = employeeRange.value // Display initial value
+// Handle employee range filter
+function handleEmployeeRangeSelection() {
+  filterState.minEmployees = Math.pow(2, employeeRange.value);
+  // update displayed value
+  d3.select("#employeeValue").text(filterState.minEmployees);
+  applyFilters();
+}
 
-    employeeRange.addEventListener("input", handleEmployeeRangeSelection)
+// Attach event handlers to filters
+filterDropdown.on("change", handleFilterDropdown);
+privateCheckbox.on("change", handleFilterSelection);
+publicCheckbox.on("change", handleFilterSelection);
+employeeRange.addEventListener("input", handleEmployeeRangeSelection);
 
-    function handleEmployeeRangeSelection() {
-      const minEmployees = Math.pow(2, employeeRange.value) // Minimum number of employees
-      employeeValue.textContent = minEmployees // Update displayed value
 
-      // Update the node sizes and opacity based on the employee range
-      nodes
-        .attr("r", (d) => {
-          if (minEmployees === 1) {
-            return d.size // Revert to the default node size when the minimum employees is 0
-          } else {
-            return d.amount_of_employees >= minEmployees ? d.size : d.size
-          }
-        })
-        .style("opacity", (d) =>
-          minEmployees === 0 || d.amount_of_employees >= minEmployees ? 1 : 0.5
-        )
-    }
+    
 
     // Create a function that links two nodes
     const DEFAULT_DISTANCE = 50
