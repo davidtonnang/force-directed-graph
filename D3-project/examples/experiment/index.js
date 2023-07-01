@@ -1,5 +1,5 @@
 // Fetch the JSON data
-fetch("../datasets/co_data.json")
+fetch("../datasets/co_data_test.json")
   .then((res) => res.json())
   .then((data) => {
     const therapyAreas = [
@@ -36,16 +36,16 @@ fetch("../datasets/co_data.json")
           }
         })
         .style("opacity", (d) => {
-          
-        const therapyMatch = selectedArea === "" || d.therapy_areas.includes(selectedArea);
+          const therapyMatch =
+            selectedArea === "" || d.therapy_areas.includes(selectedArea)
 
-        if (therapyMatch) {
-              return 1 // Nodes with matching therapy area get highlighted
-            } else {
-              return 0.4 // Nodes that do not match the therapy area get put to the background
-            }
-    })
-  }
+          if (therapyMatch) {
+            return 1 // Nodes with matching therapy area get highlighted
+          } else {
+            return 0.4 // Nodes that do not match the therapy area get put to the background
+          }
+        })
+    }
 
     function handleFilterSelection() {
       const selectedArea = this.value // Get the selected therapy area
@@ -53,37 +53,38 @@ fetch("../datasets/co_data.json")
       const publicChecked = publicCheckbox.property("checked") // Check if public checkbox is checked
 
       // Update the node sizes based on the filter selection
-      nodes.attr("r", (d) => {
-        if (privateChecked && d.financing === "Private") { // Check if private checkbox is checked and node is private
-          return 9;
-        } else if (publicChecked && d.financing === "Listed") { // Check if public checkbox is checked and node is public
-          return 9;
-        } else {
-          return 6; // Revert to the default node size when no checkbox is selected or node doesn't match
-        }
-      })
+      nodes
+        .attr("r", (d) => {
+          if (privateChecked && d.financing === "Private") {
+            // Check if private checkbox is checked and node is private
+            return 9
+          } else if (publicChecked && d.financing === "Listed") {
+            // Check if public checkbox is checked and node is public
+            return 9
+          } else {
+            return 6 // Revert to the default node size when no checkbox is selected or node doesn't match
+          }
+        })
 
-            // Checks for private and public financing to highlight nodes matching the private or public checkboxes
-            .each(function(d) {
-              const node = d3.select(this);
-              const therapyMatch = selectedArea === "" || d.therapy_areas.includes(selectedArea);
-              const privateMatch = !privateChecked || d.financing === "Private";
-              const publicMatch = !publicChecked || d.financing === "Listed";
-              console.log("Running") 
+        // Checks for private and public financing to highlight nodes matching the private or public checkboxes
+        .each(function (d) {
+          const node = d3.select(this)
+          const therapyMatch =
+            selectedArea === "" || d.therapy_areas.includes(selectedArea)
+          const privateMatch = !privateChecked || d.financing === "Private"
+          const publicMatch = !publicChecked || d.financing === "Listed"
+          console.log("Running")
 
-              // Vi behöver separera dropDown menyn och public / private för det förstör dropDown menyn just nu
-            
-              if (privateMatch && publicMatch) {
-                node.style("opacity", 1); // Nodes with matching therapy area, "Private" financing, and "Public" financing
-              } 
-              
-              else {
-                node.style("opacity", 0.4); // Nodes that do not match the filter criteria
-              }
-            });
+          // Vi behöver separera dropDown menyn och public / private för det förstör dropDown menyn just nu
+
+          if (privateMatch && publicMatch) {
+            node.style("opacity", 1) // Nodes with matching therapy area, "Private" financing, and "Public" financing
+          } else {
+            node.style("opacity", 0.4) // Nodes that do not match the filter criteria
+          }
+        })
     }
 
-   
     // Add the slider filter
     const employeeRange = document.getElementById("employeeRange")
     const employeeValue = document.getElementById("employeeValue")
@@ -109,20 +110,45 @@ fetch("../datasets/co_data.json")
         )
     }
 
+    // Create a function that links two nodes
+    const DEFAULT_DISTANCE = 50
+    const connectNodes = (source, target) => {
+      data.links.push({
+        source,
+        target,
+        distance: DEFAULT_DISTANCE,
+      })
+    }
+
+    // Connect all the nodes to their Ecosystem node
+    for (let i = 0; i < data.nodes.length; i++) {
+      connectNodes(data.nodes[i].id, data.nodes[i].ecosystem)
+    }
+
+    // Set size depending on type of node
+    for (let i = 0; i < data.nodes.length; i++) {
+      if (data.nodes[i].size_in_visualisation == "big") {
+        data.nodes[i].size = 30
+      } else {
+        data.nodes[i].size = 6
+      }
+    }
+
+    // Manually connect the big nodes
+    connectNodes("GoCo", "BioVentureHub")
+
     // Create the SVG container
     const svg = d3.select("#graph")
-    
-    
-  // Create a group for the graph elements
-  
-  const container = svg.append("g");
-  
-  // Enable zooming and panning behavior
-  const zoom = d3.zoom().on("zoom", (event) => {
-    container.attr("transform", event.transform);
-  });
-  svg.call(zoom);
-  
+
+    // Create a group for the graph elements
+
+    const container = svg.append("g")
+
+    // Enable zooming and panning behavior
+    const zoom = d3.zoom().on("zoom", (event) => {
+      container.attr("transform", event.transform)
+    })
+    svg.call(zoom)
 
     // Create the force simulation
     const simulation = d3
@@ -149,78 +175,81 @@ fetch("../datasets/co_data.json")
       .attr("class", "link")
       .style("stroke", "rgba(255, 255, 255, 1)") // Set the color of the links
 
-    
-    
-      // Create the nodes
+    // Create the nodes
     const nodes = container
       .selectAll(".node")
       .data(data.nodes)
       .enter()
       .append("circle")
       .attr("class", "node")
-      .attr("r", 6)
       .style("cursor", "pointer")
+      .attr("r", (node) => node.size)
 
-      // Create the labels for all nodes
-      const labels = svg
-        .selectAll(".label")
-        .data(data.nodes)
-        .enter()
-        .append("text")
-        .attr("class", "label")
-        .text((d) => d.id)
-        .style("fill", "white")
-        .style("visibility", "hidden");
-      
+    // Create the labels for all nodes
+    const labels = svg
+      .selectAll(".label")
+      .data(data.nodes)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .text((d) => d.id)
+      .style("fill", "white")
+      .style("visibility", "hidden")
 
     // Update the label text on mouseover
-nodes.on("mouseover", function (event, d) {
+    nodes
+      .on("mouseover", function (event, d) {
+        // Calculate the scaled coordinates relative to the current zoom level and the node's position
+        const transform = d3.zoomTransform(svg.node())
+        const scaledX = d.x * transform.k + transform.x
+        const scaledY = d.y * transform.k + transform.y
 
-  // Calculate the scaled coordinates relative to the current zoom level and the node's position
-  const transform = d3.zoomTransform(svg.node());
-  const scaledX = (d.x * transform.k) + transform.x;
-  const scaledY = (d.y * transform.k) + transform.y;
+        // Creates a new label
+        const label = svg
+          .append("text")
+          .data([d])
+          .attr("class", "label")
+          .html(
+            (labelData) =>
+              `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
+          )
+          .style("visibility", "visible")
+          .style("fill", "white")
+          .attr("x", scaledX)
+          .attr("y", scaledY - 10) // Adjust the y position to position the label above the node
 
-  // Creates a new label
-  const label = svg.append('text')
-    .data([d])
-    .attr('class', 'label')
-    .html(
-      (labelData) =>
-        `<tspan>${labelData.id}</tspan><tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan><tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan><tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
-    )
-    .style("visibility", "visible")
-    .style("fill", "white")
-    .attr("x", scaledX)
-    .attr("y", scaledY - 10); // Adjust the y position to position the label above the node
+        label
+          .selectAll("tspan")
+          .attr("x", scaledX + 15)
+          .attr("dy", "1.2em")
+      })
+      .on("mouseout", function (event, d) {
+        svg.selectAll(".label").remove()
 
-  label
-    .selectAll("tspan")
-    .attr("x", scaledX + 15)
-    .attr("dy", "1.2em");
-})
-.on("mouseout", function (event, d) {
-  svg.selectAll(".label").remove();
+        label.style("visibility", "hidden") // Hide label on mouseout
+      })
 
-label.style("visibility", "hidden") // Hide label on mouseout
+      // Adds a smooth zoom function on click for the nodes
+      .on("click", function (event, d) {
+        event.stopPropagation()
+        const dx = d.x,
+          dy = d.y,
+          scale = 1.7 // affects the zoom level
+        const translate = [
+          svg.node().width.baseVal.value / 2 - scale * dx,
+          svg.node().height.baseVal.value / 2 - scale * dy,
+        ]
 
-})
+        svg
+          .transition()
+          .duration(3000) // Transition duration here, 3000 is 3 seconds
+          .call(
+            zoom.transform,
+            d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
+          )
+      })
 
-// Adds a smooth zoom function on click for the nodes
-.on("click", function (event, d) {
-  event.stopPropagation();
-  const dx = d.x,
-        dy = d.y,
-        scale = 1.7; // affects the zoom level
-  const translate = [svg.node().width.baseVal.value / 2 - scale * dx, svg.node().height.baseVal.value / 2 - scale * dy];
-
-  svg.transition()
-    .duration(3000) // Transition duration here, 3000 is 3 seconds
-    .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
-})
-
-
-      // Updates the node and link positions on each tick of the simulation
+    // Updates the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
       links
         .attr("x1", (d) => d.source.x)
