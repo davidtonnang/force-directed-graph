@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Livvic&display=swap');
+
 body {
   margin: 0;
   padding: 0;
@@ -89,9 +91,13 @@ body {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   opacity: 1;
   transition: opacity 0.4s ease-in-out;
+  text-align: center;
+  border-radius: 10px;
+  font-family: Helvetica, Arial, sans-serif;
 }
 .info-box h4 {
   margin: 0;
+  margin-bottom: 5px;
 }
 .info-box p {
   margin: 0;
