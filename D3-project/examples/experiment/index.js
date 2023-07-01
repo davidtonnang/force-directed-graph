@@ -250,10 +250,11 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
       .append("foreignObject")
       .attr("x", scaledX + 15) // adjust position
       .attr("y", scaledY - 50) // adjust position
-      .attr("width", 200) // set width
-      .attr("height", 200) // set height
+      .attr("width", 300) // set width
+      .attr("height", 400) // set height
       .html(
         `<div class="info-box info-box-hidden">
+        <img src="${d.company_logo}" alt="Image for ${d.id}" />
            <h4>${d.id}</h4>
            <p>${d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ''}</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ''}</p>

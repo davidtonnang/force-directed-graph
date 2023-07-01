@@ -112,3 +112,9 @@ body {
   opacity: 0;
 }
 
+.info-box img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
