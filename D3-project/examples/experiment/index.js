@@ -243,11 +243,14 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
           .attr("x", scaledX + 15)
           .attr("dy", "1.2em")
       })
+
+
       nodes
   .on("mouseover", function (event, d) {
     const transform = d3.zoomTransform(svg.node())
     const scaledX = d.x * transform.k + transform.x
     const scaledY = d.y * transform.k + transform.y
+
 
     // Create a group to hold the foreignObject and label
     const labelGroup = svg.append("g").attr("class", "labelGroup")
@@ -261,7 +264,7 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
       .attr("height", 400) // set height
       .html(
         `<div class="info-box info-box-hidden">
-        <img src="${d.company_logo}" alt="Image for ${d.id}" />
+        ${d.company_logo ? `<img src="${d.company_logo}" />` : ''}
            <h4>${d.id}</h4>
            <p>${d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ''}</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ''}</p>
@@ -274,9 +277,12 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
       }, 10);
       
   })
+
   .on("mouseout", function (event, d) {
     svg.selectAll(".labelGroup").remove() // remove group on mouseout
   })
+
+  
 
 
       // Adds a smooth zoom function on click for the nodes
