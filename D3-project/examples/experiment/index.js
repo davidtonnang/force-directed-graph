@@ -30,9 +30,11 @@ fetch("../datasets/co_data_test.json")
       nodes
         .attr("r", (d) => {
           if (selectedArea === "") {
-            return 6 // Revert to the default node size when "All Therapy Areas" is selected
+            return d.size // Revert to the default node size when "All Therapy Areas" is selected
           } else {
-            return d.therapy_areas.includes(selectedArea) ? 9 : 6
+            return d.therapy_areas.includes(selectedArea)
+              ? d.size * 1.5
+              : d.size
           }
         })
         .style("opacity", (d) => {
@@ -57,12 +59,12 @@ fetch("../datasets/co_data_test.json")
         .attr("r", (d) => {
           if (privateChecked && d.financing === "Private") {
             // Check if private checkbox is checked and node is private
-            return 9
+            return d.size * 1.5
           } else if (publicChecked && d.financing === "Listed") {
             // Check if public checkbox is checked and node is public
-            return 9
+            return d.size * 1.5
           } else {
-            return 6 // Revert to the default node size when no checkbox is selected or node doesn't match
+            return d.size // Revert to the default node size when no checkbox is selected or node doesn't match
           }
         })
 
@@ -100,9 +102,9 @@ fetch("../datasets/co_data_test.json")
       nodes
         .attr("r", (d) => {
           if (minEmployees === 1) {
-            return 6 // Revert to the default node size when the minimum employees is 0
+            return d.size // Revert to the default node size when the minimum employees is 0
           } else {
-            return d.amount_of_employees >= minEmployees ? 6 : 6
+            return d.amount_of_employees >= minEmployees ? d.size : d.size
           }
         })
         .style("opacity", (d) =>
