@@ -219,9 +219,9 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
     .data([d])
     .attr("class", "label")
     .html((labelData) =>
-      `<tspan>${labelData.id}</tspan>
-      <tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan>
-      <tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>` +
+      `<tspan>${labelData.id}</tspan>` +
+      (labelData.amount_of_employees ? `<tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan>` : '') +
+      `<tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>` +
       (labelData.financing ? `<tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>` : '')
     )
     .style("visibility", "visible")
