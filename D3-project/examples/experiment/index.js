@@ -253,13 +253,18 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
       .attr("width", 200) // set width
       .attr("height", 200) // set height
       .html(
-        `<div class="info-box">
+        `<div class="info-box info-box-hidden">
            <h4>${d.id}</h4>
            <p>${d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ''}</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ''}</p>
            <p>${d.financing ? `Financing: ${d.financing}` : ''}</p>
          </div>`
       )
+
+      setTimeout(() => {
+        document.querySelector('.info-box').classList.remove('info-box-hidden');
+      }, 10);
+      
   })
   .on("mouseout", function (event, d) {
     svg.selectAll(".labelGroup").remove() // remove group on mouseout
