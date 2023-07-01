@@ -113,13 +113,18 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Create a function that links two nodes
-    const DEFAULT_DISTANCE = 50
-    const connectNodes = (source, target) => {
+    const DEFAULT_DISTANCE = 30
+    const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
         target,
-        distance: DEFAULT_DISTANCE,
+        distance,
       })
+    }
+
+    // Connect all the nodes to their Ecosystem node
+    for (let i = 0; i < data.links.length; i++) {
+      data.links[i].distance = DEFAULT_DISTANCE
     }
 
     // Connect all the nodes to their Ecosystem node
@@ -137,8 +142,7 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub")
-
+    connectNodes("GoCo", "BioVentureHub", 200)
     // Create the SVG container
     const svg = d3.select("#graph")
 
@@ -157,7 +161,10 @@ fetch("../datasets/co_data_test.json")
       .forceSimulation(data.nodes)
       .force(
         "link",
-        d3.forceLink(data.links).id((d) => d.id)
+        d3
+          .forceLink(data.links)
+          .id((d) => d.id)
+          .distance((link) => link.distance)
       )
       .force("charge", d3.forceManyBody().strength(-100))
       .force(
