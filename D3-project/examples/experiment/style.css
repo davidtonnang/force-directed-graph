@@ -58,22 +58,26 @@ body {
   position: absolute;
   left: 300px;
   top: 39px;
+  cursor: pointer;
 }
 
 #publicLabel {
   position: absolute;
   left: 325px;
   top: 40px;
+  cursor: pointer;
 }
 
 #privateCheckbox {
   position: absolute;
   left: 380px;
   top: 39px;
+  cursor: pointer;
 }
 
 #privateLabel {
   position: absolute;
   left: 405px;
   top: 40px;
+  cursor: pointer;
 }
