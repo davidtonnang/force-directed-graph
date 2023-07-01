@@ -213,6 +213,8 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
         const scaledX = d.x * transform.k + transform.x
         const scaledY = d.y * transform.k + transform.y
 
+        
+
         // Creates a new label
     const label = svg
     .append("text")
@@ -234,11 +236,35 @@ employeeRange.addEventListener("input", handleEmployeeRangeSelection);
           .attr("x", scaledX + 15)
           .attr("dy", "1.2em")
       })
-      .on("mouseout", function (event, d) {
-        svg.selectAll(".label").remove()
+      nodes
+  .on("mouseover", function (event, d) {
+    const transform = d3.zoomTransform(svg.node())
+    const scaledX = d.x * transform.k + transform.x
+    const scaledY = d.y * transform.k + transform.y
 
-        label.style("visibility", "hidden") // Hide label on mouseout
-      })
+    // Create a group to hold the foreignObject and label
+    const labelGroup = svg.append("g").attr("class", "labelGroup")
+
+    // Append a foreignObject to the group
+    const foreignObject = labelGroup
+      .append("foreignObject")
+      .attr("x", scaledX + 15) // adjust position
+      .attr("y", scaledY - 50) // adjust position
+      .attr("width", 200) // set width
+      .attr("height", 200) // set height
+      .html(
+        `<div class="info-box">
+           <h4>${d.id}</h4>
+           <p>${d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ''}</p>
+           <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ''}</p>
+           <p>${d.financing ? `Financing: ${d.financing}` : ''}</p>
+         </div>`
+      )
+  })
+  .on("mouseout", function (event, d) {
+    svg.selectAll(".labelGroup").remove() // remove group on mouseout
+  })
+
 
       // Adds a smooth zoom function on click for the nodes
       .on("click", function (event, d) {
