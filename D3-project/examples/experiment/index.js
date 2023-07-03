@@ -316,7 +316,13 @@ fetch("../datasets/co_data_test.json")
              d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
-           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p></div>`
+           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
+           ${
+             d.company_website
+               ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
+               : ""
+           }
+           </div>`
           )
 
         // Creates an animation that loads in the info-box
