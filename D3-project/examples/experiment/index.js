@@ -5,6 +5,37 @@ fetch("../datasets/co_data_test.json")
     const therapyAreas = [
       ...new Set(data.nodes.map((node) => node.therapy_areas)),
     ]
+    var regExp = /[a-zA-Z]/g
+    // Create a list with all unique therapy areas
+    let therapy_list = []
+    for (let i = 0; i < therapyAreas.length; i++) {
+      let current_words = therapyAreas[i]
+        .split(" & ")
+        .join(",")
+        .split("N/A")
+        .join(",")
+        .split("/ ")
+        .join(",")
+        .split(",")
+      for (let j = 0; j < current_words.length; j++) {
+        if (current_words[j].includes("with")) {
+          let index = current_words[j].indexOf("with")
+          filtered_string = current_words[j].slice(0, index)
+          current_words[j] = filtered_string
+        }
+        if (current_words[j].includes("(")) {
+          let index = current_words[j].indexOf("(")
+          filtered_string = current_words[j].slice(0, index)
+          current_words[j] = filtered_string
+        }
+        if (
+          !therapy_list.includes(current_words[j]) &&
+          regExp.test(current_words[j])
+        ) {
+          therapy_list.push(current_words[j])
+        }
+      }
+    }
 
     // Defines a function that is globally accessible for the label buttons
     window.handleButtonClick = function () {
@@ -22,7 +53,7 @@ fetch("../datasets/co_data_test.json")
 
     filterDropdown
       .selectAll("option")
-      .data(therapyAreas)
+      .data(therapy_list)
       .enter()
       .append("option")
       .attr("value", (d) => d)
@@ -139,7 +170,6 @@ fetch("../datasets/co_data_test.json")
       })
     }
 
-    // Connect all the nodes to their Ecosystem node
     for (let i = 0; i < data.links.length; i++) {
       data.links[i].distance = DEFAULT_DISTANCE
     }
@@ -221,8 +251,45 @@ fetch("../datasets/co_data_test.json")
       .text((d) => d.id)
       .style("fill", "white")
       .style("visibility", "hidden")
-
+      
+<<<<<<< HEAD
     // Shows labels on mouseover
+=======
+    // Update the label text on mouseover
+    nodes.on("mouseover", function (event, d) {
+      // Calculate the scaled coordinates relative to the current zoom level and the node's position
+      const transform = d3.zoomTransform(svg.node())
+      const scaledX = d.x * transform.k + transform.x
+      const scaledY = d.y * transform.k + transform.y
+
+      // Creates a new label
+      const label = svg
+        .append("text")
+        .data([d])
+        .attr("class", "label")
+        .html(
+          (labelData) =>
+            `<tspan>${labelData.id}</tspan>` +
+            (labelData.amount_of_employees
+              ? `<tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan>`
+              : "") +
+            `<tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>` +
+            (labelData.financing
+              ? `<tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
+              : "")
+        )
+        .style("visibility", "visible")
+        .style("fill", "white")
+        .attr("x", scaledX)
+        .attr("y", scaledY - 10) // Adjust the y position to position the label above the node
+
+      label
+        .selectAll("tspan")
+        .attr("x", scaledX + 15)
+        .attr("dy", "1.2em")
+    })
+
+>>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
     nodes
       .on("mouseover", function (event, d) {
         const transform = d3.zoomTransform(svg.node())
@@ -230,12 +297,18 @@ fetch("../datasets/co_data_test.json")
         const scaledY = d.y * transform.k + transform.y
 
         // Create a group to hold the foreignObject and label
+<<<<<<< HEAD
         const labelGroup = svg
           .append("g")
           .attr("class", "labelGroup")
           .style("visibility", "hidden")
 
         // Select the existing foreignObject in the group
+=======
+        const labelGroup = svg.append("g").attr("class", "labelGroup")
+
+        // Append a foreignObject to the group
+>>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
         const foreignObject = labelGroup
           .append("foreignObject")
           .attr("x", scaledX + 15) // adjust position
@@ -251,7 +324,10 @@ fetch("../datasets/co_data_test.json")
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
            <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
+<<<<<<< HEAD
            <button onclick="handleButtonClick()">Click Me</button>
+=======
+>>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
          </div>`
           )
 
@@ -260,8 +336,11 @@ fetch("../datasets/co_data_test.json")
             .querySelector(".info-box")
             .classList.remove("info-box-hidden")
         }, 10)
+<<<<<<< HEAD
 
         labelGroup.style("visibility", "visible") // make the labelGroup visible
+=======
+>>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
       })
 
       .on("mouseout", function (event, d) {
