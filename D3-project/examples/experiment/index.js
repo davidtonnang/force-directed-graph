@@ -292,6 +292,8 @@ fetch("../datasets/co_data_test.json")
         const scaledX = d.x * transform.k + transform.x
         const scaledY = d.y * transform.k + transform.y
 
+        svg.selectAll(".clickedLabelGroup").remove()
+
         // Create a group to hold the foreignObject and label
 
         const labelGroup = svg
