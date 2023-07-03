@@ -251,11 +251,8 @@ fetch("../datasets/co_data_test.json")
       .text((d) => d.id)
       .style("fill", "white")
       .style("visibility", "hidden")
-      
-<<<<<<< HEAD
+
     // Shows labels on mouseover
-=======
-    // Update the label text on mouseover
     nodes.on("mouseover", function (event, d) {
       // Calculate the scaled coordinates relative to the current zoom level and the node's position
       const transform = d3.zoomTransform(svg.node())
@@ -289,7 +286,6 @@ fetch("../datasets/co_data_test.json")
         .attr("dy", "1.2em")
     })
 
->>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
     nodes
       .on("mouseover", function (event, d) {
         const transform = d3.zoomTransform(svg.node())
@@ -297,18 +293,13 @@ fetch("../datasets/co_data_test.json")
         const scaledY = d.y * transform.k + transform.y
 
         // Create a group to hold the foreignObject and label
-<<<<<<< HEAD
+
         const labelGroup = svg
           .append("g")
           .attr("class", "labelGroup")
           .style("visibility", "hidden")
 
-        // Select the existing foreignObject in the group
-=======
-        const labelGroup = svg.append("g").attr("class", "labelGroup")
-
         // Append a foreignObject to the group
->>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
         const foreignObject = labelGroup
           .append("foreignObject")
           .attr("x", scaledX + 15) // adjust position
@@ -324,11 +315,7 @@ fetch("../datasets/co_data_test.json")
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
            <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
-<<<<<<< HEAD
-           <button onclick="handleButtonClick()">Click Me</button>
-=======
->>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
-         </div>`
+          <button onclick="handleButtonClick()">Click Me</button></div>`
           )
 
         setTimeout(() => {
@@ -336,11 +323,8 @@ fetch("../datasets/co_data_test.json")
             .querySelector(".info-box")
             .classList.remove("info-box-hidden")
         }, 10)
-<<<<<<< HEAD
 
         labelGroup.style("visibility", "visible") // make the labelGroup visible
-=======
->>>>>>> eefe327885407526dd0bc0534cdacfea253e87ed
       })
 
       .on("mouseout", function (event, d) {
