@@ -316,8 +316,7 @@ fetch("../datasets/co_data_test.json")
              d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
-           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
-          <button onclick="handleButtonClick()">Click Me</button></div>`
+           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p></div>`
           )
 
         setTimeout(() => {
@@ -359,8 +358,6 @@ fetch("../datasets/co_data_test.json")
       const scaledX = d.x * transform.k + transform.x
       const scaledY = d.y * transform.k + transform.y
 
-      console.log("click")
-
       // Removes any already existing labels
       svg.selectAll(".clickedLabelGroup").remove()
 
@@ -385,7 +382,7 @@ fetch("../datasets/co_data_test.json")
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
            <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
-           <button onclick="handleButtonClick()">Click Me</button>
+           <button onclick="handleButtonClick()"></button>
          </div>`
         )
     })
