@@ -319,6 +319,7 @@ fetch("../datasets/co_data_test.json")
            <p>${d.financing ? `Financing: ${d.financing}` : ""}</p></div>`
           )
 
+        // Creates an animation that loads in the info-box
         setTimeout(() => {
           document
             .querySelector(".info-box")
@@ -382,7 +383,11 @@ fetch("../datasets/co_data_test.json")
            }</p>
            <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
            <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
-           <button onclick="handleButtonClick()"></button>
+           <button class="clickedLabelGroupButton" onclick="handleButtonClick()"></button>${
+             d.company_website
+               ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
+               : ""
+           }
          </div>`
         )
     })
