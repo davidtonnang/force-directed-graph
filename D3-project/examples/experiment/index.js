@@ -18,6 +18,7 @@ fetch("../datasets/co_data_test.json")
         .join(",")
         .split(",")
       for (let j = 0; j < current_words.length; j++) {
+        current_words[j] = current_words[j].trim()
         if (current_words[j].includes("with")) {
           let index = current_words[j].indexOf("with")
           filtered_string = current_words[j].slice(0, index)
