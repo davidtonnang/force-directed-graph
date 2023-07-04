@@ -76,6 +76,10 @@ fetch("../datasets/co_data_test.json")
       // Use the filterState to filter nodes
       nodes
         .attr("r", (d) => {
+          // If the node is one of the special nodes, we do not filter
+          if (["GoCo", "BioVentureHub", "Astra"].includes(d.id)) {
+            return d.size
+          }
           // Adjust radius based on filters
           let radius = d.size
           if (
@@ -97,6 +101,10 @@ fetch("../datasets/co_data_test.json")
           return radius
         })
         .style("opacity", (d) => {
+          // If the node is one of the special nodes, do not filter
+          if (["GoCo", "BioVentureHub", "Astra"].includes(d.id)) {
+            return 1
+          }
           // Adjust opacity based on filters
           let opacity = 1
           if (
