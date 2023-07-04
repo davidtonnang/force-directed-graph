@@ -382,25 +382,25 @@ fetch("../datasets/co_data_test.json")
         svg.selectAll(".labelGroup").remove() // remove group on mouseout
       })
 
-      // Adds a smooth zoom function on click for the nodes
-      .on("click", function (event, d) {
-        event.stopPropagation()
-        const dx = d.x,
-          dy = d.y,
-          scale = 1.7 // affects the zoom level
-        const translate = [
-          svg.node().width.baseVal.value / 2 - scale * dx,
-          svg.node().height.baseVal.value / 2 - scale * dy,
-        ]
+    // Not used right now but this adds a smooth zoom function on click for the nodes
+    // .on("click", function (event, d) {
+    //   event.stopPropagation()
+    //   const dx = d.x,
+    //     dy = d.y,
+    //     scale = 1.7 // affects the zoom level
+    //   const translate = [
+    //     svg.node().width.baseVal.value / 2 - scale * dx,
+    //     svg.node().height.baseVal.value / 2 - scale * dy,
+    //   ]
 
-        svg
-          .transition()
-          .duration(3000) // Transition duration here, 3000 is 3 seconds
-          .call(
-            zoom.transform,
-            d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
-          )
-      })
+    //   svg
+    //     .transition()
+    //     .duration(3000) // Transition duration here, 3000 is 3 seconds
+    //     .call(
+    //       zoom.transform,
+    //       d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
+    //     )
+    // })
 
     // Shows labels on click
     nodes.on("click", function (event, d) {
