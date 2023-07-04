@@ -5,6 +5,11 @@ fetch("../datasets/co_data_test.json")
     const therapyAreas = [
       ...new Set(data.nodes.map((node) => node.therapy_areas)),
     ]
+
+    const types_of_company = [
+      ...new Set(data.nodes.map((node) => node.type_of_company)),
+    ]
+
     var regExp = /[a-zA-Z]/g
     // Create a list with all unique therapy areas
     let therapy_list = []
@@ -18,6 +23,7 @@ fetch("../datasets/co_data_test.json")
         .join(",")
         .split(",")
       for (let j = 0; j < current_words.length; j++) {
+        current_words[j] = current_words[j].trim()
         if (current_words[j].includes("with")) {
           let index = current_words[j].indexOf("with")
           filtered_string = current_words[j].slice(0, index)
@@ -37,12 +43,45 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
+    type_list = []
+
+    for (let i = 0; i < types_of_company.length; i++) {
+      let current_words = types_of_company[i]
+        .split(" & ")
+        .join(",")
+        .split("N/A")
+        .join(",")
+        .split("/ ")
+        .join(",")
+        .split(",")
+      for (let j = 0; j < current_words.length; j++) {
+        current_words[j] = current_words[j].trim()
+        if (current_words[j].includes("with")) {
+          let index = current_words[j].indexOf("with")
+          filtered_string = current_words[j].slice(0, index)
+          current_words[j] = filtered_string
+        }
+        if (current_words[j].includes("(")) {
+          let index = current_words[j].indexOf("(")
+          filtered_string = current_words[j].slice(0, index)
+          current_words[j] = filtered_string
+        }
+        if (
+          !type_list.includes(current_words[j]) &&
+          regExp.test(current_words[j])
+        ) {
+          type_list.push(current_words[j])
+        }
+      }
+    }
+
     // Defines a function that is globally accessible for the label buttons
     window.handleButtonClick = function () {
       d3.select("svg").selectAll(".clickedLabelGroup").remove()
     }
 
     const filterDropdown = d3.select("#filterDropdown")
+    const filterDropdown_type = d3.select("#filterDropdown")
 
     const privateCheckbox = d3.select("#privateCheckbox")
     const publicCheckbox = d3.select("#publicCheckbox")
@@ -59,11 +98,21 @@ fetch("../datasets/co_data_test.json")
       .attr("value", (d) => d)
       .text((d) => d)
 
+    filterDropdown_type
+      .selectAll("option")
+      .data(type_list)
+      .enter()
+      .append("option")
+      .attr("value", (d) => d)
+      .text((d) => d)
+
     filterDropdown.on("change", handleFilterDropdown)
+    filterDropdown_type.on("change", handleFilterDropdown_type)
 
     // Initialize filterState
     let filterState = {
       therapyArea: "",
+      types_of_company: "",
       financing: {
         private: false,
         listed: false,
@@ -85,6 +134,12 @@ fetch("../datasets/co_data_test.json")
           if (
             filterState.therapyArea !== "" &&
             d.therapy_areas.includes(filterState.therapyArea)
+          ) {
+            radius *= 1.0
+          }
+          if (
+            filterState.types_of_company !== "" &&
+            d.type_of_company.includes(filterState.types_of_company)
           ) {
             radius *= 1.0
           }
@@ -128,8 +183,14 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Handle therapy area filter
-    function handleFilterDropdown() {
+    function handleFilterDropdown(chosen_filter) {
       filterState.therapyArea = this.value
+      applyFilters()
+    }
+
+    // Handle therapy area filter
+    function handleFilterDropdown_type(chosen_filter) {
+      filterState.types_of_company = this.value
       applyFilters()
     }
 
@@ -164,6 +225,7 @@ fetch("../datasets/co_data_test.json")
 
     // Attach event handlers to filters
     filterDropdown.on("change", handleFilterDropdown)
+    filterDropdown_type.on("change", handleFilterDropdown_type)
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
@@ -356,10 +418,10 @@ fetch("../datasets/co_data_test.json")
         ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
            <h4>${d.company_name}</h4>
            <p>${
-             d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
+             d.type_of_company ? `Type of company: ${d.type_of_company}` : ""
            }</p>
-           <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
-           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
+           <p>${d.therapy_areas ? `Therapy area: ${d.therapy_areas}` : ""}</p>
+           <p>${d.ceo ? `CEO: ${d.ceo}` : ""}</p>
            ${
              d.company_website
                ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
@@ -428,10 +490,10 @@ fetch("../datasets/co_data_test.json")
         ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
            <h4>${d.company_name}</h4>
            <p>${
-             d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
+             d.type_of_company ? `Type of company: ${d.type_of_company}` : ""
            }</p>
-           <p>${d.therapy_areas ? `Therapy Area: ${d.therapy_areas}` : ""}</p>
-           <p>${d.financing ? `Financing: ${d.financing}` : ""}</p>
+          <p>${d.therapy_areas ? `Therapy area: ${d.therapy_areas}` : ""}</p>
+          <p>${d.ceo ? `CEO: ${d.ceo}` : ""}</p>
            <button class="clickedLabelGroupButton" onclick="handleButtonClick()"></button>${
              d.company_website
                ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
