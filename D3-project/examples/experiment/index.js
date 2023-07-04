@@ -161,7 +161,7 @@ fetch("../datasets/co_data_test.json")
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
     // Create a function that links two nodes
-    const DEFAULT_DISTANCE = 30
+    const DEFAULT_DISTANCE = 90
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
@@ -170,21 +170,32 @@ fetch("../datasets/co_data_test.json")
       })
     }
 
-    for (let i = 0; i < data.links.length; i++) {
-      data.links[i].distance = DEFAULT_DISTANCE
-    }
+    // Not used for now but adds a distance to any link in the json file.
+    //   for (let i = 0; i < data.links.length; i++) {
+    //     if (i % 2 == 0) {
+    //       data.links[i].distance = DEFAULT_DISTANCE - 40
+    //     }
+    //     data.links[i].distance = DEFAULT_DISTANCE
+    //   }
 
     // Connect all the nodes to their Ecosystem node
     for (let i = 0; i < data.nodes.length; i++) {
+      if (i % 2 == 0) {
+        connectNodes(
+          data.nodes[i].id,
+          data.nodes[i].ecosystem,
+          DEFAULT_DISTANCE / 2
+        )
+      }
       connectNodes(data.nodes[i].id, data.nodes[i].ecosystem)
     }
 
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
       if (data.nodes[i].size_in_visualisation == "big") {
-        data.nodes[i].size = 30
+        data.nodes[i].size = 50
       } else {
-        data.nodes[i].size = 6
+        data.nodes[i].size = 12
       }
     }
 
@@ -222,7 +233,9 @@ fetch("../datasets/co_data_test.json")
         )
       )
 
-    // Create the links
+    // In defs we're going to add the images in the nodes
+    var defs = svg.append("defs")
+
     const links = container
       .selectAll(".link")
       .data(data.links)
@@ -237,9 +250,29 @@ fetch("../datasets/co_data_test.json")
       .data(data.nodes)
       .enter()
       .append("circle")
+      .style("fill", (d) => "url(#" + d.id + ")")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
+
+    // Adding the images in the nodes
+    defs
+      .selectAll("company-pattern")
+      .data(data.nodes)
+      .enter()
+      .append("pattern")
+      .attr("class", "company-pattern")
+      .append("pattern")
+      .attr("id", (d) => d.id)
+      .attr("height", "100%")
+      .attr("width", "100%")
+      .attr("patternContentUnits", "objectBoundingBox")
+      .append("image")
+      .attr("height", 1)
+      .attr("width", 1)
+      .attr("preserveAspectRatio", "none")
+      .attr("xmlns:xlink", "https://www.w3.org/1999/xlink")
+      .attr("xlink:href", (d) => d.image_path)
 
     // Create the labels for all nodes
     const labels = svg
