@@ -67,8 +67,7 @@ fetch("../datasets/co_data_test.json")
           current_words[j] = filtered_string
         }
         if (
-          !type_list.includes(current_words[j]) &&
-          regExp.test(current_words[j])
+          !type_list.includes(current_words[j]) // Regex tog bort drugs av någon anledning
         ) {
           type_list.push(current_words[j])
         }
