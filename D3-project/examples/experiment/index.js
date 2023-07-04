@@ -6,7 +6,7 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.therapy_areas)),
     ]
 
-    const types_of_company = [
+    const type_of_company = [
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
@@ -43,10 +43,10 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
-    type_list = []
+    let type_list = []
 
-    for (let i = 0; i < types_of_company.length; i++) {
-      let current_words = types_of_company[i]
+    for (let i = 0; i < type_of_company.length; i++) {
+      let current_words = type_of_company[i]
         .split(" & ")
         .join(",")
         .split("N/A")
@@ -81,7 +81,7 @@ fetch("../datasets/co_data_test.json")
     }
 
     const filterDropdown = d3.select("#filterDropdown")
-    const filterDropdown_type = d3.select("#filterDropdown")
+    const filterDropdownCompanyType = d3.select("#filterDropdownCompanyType")
 
     const privateCheckbox = d3.select("#privateCheckbox")
     const publicCheckbox = d3.select("#publicCheckbox")
@@ -98,7 +98,7 @@ fetch("../datasets/co_data_test.json")
       .attr("value", (d) => d)
       .text((d) => d)
 
-    filterDropdown_type
+    filterDropdownCompanyType
       .selectAll("option")
       .data(type_list)
       .enter()
@@ -106,13 +106,10 @@ fetch("../datasets/co_data_test.json")
       .attr("value", (d) => d)
       .text((d) => d)
 
-    filterDropdown.on("change", handleFilterDropdown)
-    filterDropdown_type.on("change", handleFilterDropdown_type)
-
     // Initialize filterState
     let filterState = {
       therapyArea: "",
-      types_of_company: "",
+      type_of_company: "",
       financing: {
         private: false,
         listed: false,
@@ -138,8 +135,8 @@ fetch("../datasets/co_data_test.json")
             radius *= 1.0
           }
           if (
-            filterState.types_of_company !== "" &&
-            d.type_of_company.includes(filterState.types_of_company)
+            filterState.type_of_company !== "" &&
+            d.type_of_company.includes(filterState.type_of_company)
           ) {
             radius *= 1.0
           }
@@ -169,6 +166,12 @@ fetch("../datasets/co_data_test.json")
             opacity = 0.2
           }
           if (
+            filterState.type_of_company !== "" &&
+            !d.type_of_company.includes(filterState.type_of_company)
+          ) {
+            opacity = 0.2
+          }
+          if (
             (filterState.financing.private || filterState.financing.public) &&
             !(filterState.financing.private && d.financing === "Private") &&
             !(filterState.financing.public && d.financing === "Listed")
@@ -190,7 +193,7 @@ fetch("../datasets/co_data_test.json")
 
     // Handle therapy area filter
     function handleFilterDropdown_type(chosen_filter) {
-      filterState.types_of_company = this.value
+      filterState.type_of_company = this.value
       applyFilters()
     }
 
@@ -225,7 +228,7 @@ fetch("../datasets/co_data_test.json")
 
     // Attach event handlers to filters
     filterDropdown.on("change", handleFilterDropdown)
-    filterDropdown_type.on("change", handleFilterDropdown_type)
+    filterDropdownCompanyType.on("change", handleFilterDropdown_type)
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
