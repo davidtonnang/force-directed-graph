@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Livvic&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Livvic&display=swap");
 
 body {
   margin: 0;
@@ -118,6 +118,7 @@ body {
 }
 
 .info-click-box {
+  position: relative;
   background-color: white;
   border: solid 1px black;
   padding: 5px;
@@ -150,4 +151,39 @@ body {
   max-height: 100%;
 }
 
+.clickedLabelGroupButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  color: darkgray;
+  border: none;
+  font-size: 20px;
+  line-height: 20px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  text-align: center;
+  background: white;
+  box-shadow: 0 0 5px grey;
+}
 
+.clickedLabelGroupButton:before {
+  content: "✖";
+}
+
+.websiteButton {
+  display: inline-block;
+  padding: 10px 80px;
+  color: black;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 4px;
+  transition: opacity 0.5s;
+  font-weight: bold;
+}
+
+.websiteButton:hover {
+  opacity: 0.6;
+}
