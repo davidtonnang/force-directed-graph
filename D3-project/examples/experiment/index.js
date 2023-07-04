@@ -283,7 +283,7 @@ fetch("../datasets/co_data_test.json")
       .enter()
       .append("text")
       .attr("class", "label")
-      .text((d) => d.id)
+      .text((d) => d.company_name)
       .style("fill", "white")
       .style("visibility", "hidden")
 
@@ -346,7 +346,7 @@ fetch("../datasets/co_data_test.json")
           .html(
             `<div class="info-box info-box-hidden">
         ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
-           <h4>${d.id}</h4>
+           <h4>${d.company_name}</h4>
            <p>${
              d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
            }</p>
@@ -418,7 +418,7 @@ fetch("../datasets/co_data_test.json")
         .html(
           `<div class="info-click-box info-click-box-hidden">
         ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
-           <h4>${d.id}</h4>
+           <h4>${d.company_name}</h4>
            <p>${
              d.amount_of_employees ? `Employees: ${d.amount_of_employees}` : ""
            }</p>
