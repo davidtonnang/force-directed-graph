@@ -200,7 +200,9 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub", 200)
+    connectNodes("GoCo", "BioVentureHub", 250)
+    connectNodes("Astra", "BioVentureHub", 250)
+    connectNodes("GoCo", "Astra", 250)
     // Create the SVG container
     const svg = d3.select("#graph")
 

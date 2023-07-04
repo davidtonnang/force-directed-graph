@@ -40,6 +40,25 @@
     },
     {
       "gruppering": "Drugs",
+      "ecosystem": "Astra",
+      "id": "Astra",
+      "turnover_sek": 1730000,
+      "amount_of_employees": 300,
+      "keywords": "",
+      "type_of_company": "",
+      "operational_focus": "",
+      "value_chain": "",
+      "therapy_areas": "",
+      "area": "",
+      "financing": "",
+      "ceo": "",
+      "company_website": "",
+      "company_linkedIn": "",
+      "size_in_visualisation": "big",
+      "image_path": "images/astra.png"
+    },
+    {
+      "gruppering": "Drugs",
       "ecosystem": "BioVentureHub",
       "id": "Alzinova",
       "turnover_sek": 1730000,
@@ -52,10 +71,10 @@
       "area": "Alzheimers",
       "financing": "Listed",
       "ceo": "Torfgård, Kristina",
-      "image_path": "",
-      "company_website": "https://www.alzinova.com/",
-      "company_linkedIn": "https://www.linkedin.com/company//alzinova-ab/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://www.alzinova.com//",
+      "company_linkedIn": "https://www.linkedin.com//company//alzinova-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/alzinova.png"
     },
     {
       "gruppering": "Diagnostics",
@@ -90,10 +109,10 @@
       "area": "Cardiovascular",
       "financing": "Listed",
       "ceo": "Sörensen, Sten",
-      "image_path": "",
       "company_website": "https://cerenoscientific.com/",
-      "company_linkedin": "https://www.linkedin.com/company/cereno-scientific-ab/",
-      "size_in_visualisation": "medium"
+      "company_linkedin": "https://www.linkedin.com//company//cereno-scientific-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/cereno.png"
     },
     {
       "gruppering": "Drugs",
@@ -145,10 +164,10 @@
       "area": "Oncology",
       "financing": "Listed",
       "ceo": "Manting, Erik Hans",
-      "image_path": "",
       "company_website": "https://mendus.com/",
-      "company_linkedin": "https://www.linkedin.com/company/mendus/",
-      "size_in_visualisation": "medium"
+      "company_linkedin": "https://www.linkedin.com//company//mendus//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/mendus.jpg"
     },
     {
       "gruppering": "Device",
@@ -182,10 +201,10 @@
       "area": "Analytics",
       "financing": "Private",
       "ceo": "Wahlström, Rickard",
-      "image_path": "",
-      "company_website": "https://qandqlabs.se/",
-      "company_linkedin": "https://www.linkedin.com/company/q&q-labs-ab/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://qandqlabs.se//",
+      "company_linkedin": "https://www.linkedin.com//company//q&q-labs-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/q&q.jpg"
     },
     {
       "gruppering": "Device",
@@ -240,10 +259,10 @@
       "area": "Antimicrobial",
       "financing": "Private",
       "ceo": "Rajasekaran, Anand",
-      "image_path": "",
-      "company_website": "https://www.amferia.com/",
-      "company_linkedin": "https://www.linkedin.com/company/amferia/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://www.amferia.com//",
+      "company_linkedin": "https://www.linkedin.com//company//amferia//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/amferia.png"
     },
     {
       "gruppering": "Drugs",
@@ -281,7 +300,7 @@
       "company_website": "Missing",
       "company_linkedin": "LinkedIn Missing",
       "size_in_visualisation": "medium",
-      "image_path": ""
+      "image_path": "images/betagenon.jpg"
     },
     {
       "gruppering": "Diagnostics",
@@ -296,10 +315,10 @@
       "area": "Oncology",
       "financing": "Listed",
       "ceo": "Sundh, Patrik",
-      "image_path": "",
-      "company_website": "https://www.clinescientific.com/",
-      "company_linkedin": "https://www.linkedin.com/company/cline-technologies/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://www.clinescientific.com//",
+      "company_linkedin": "https://www.linkedin.com//company//cline-technologies//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/cline.jpg"
     },
     {
       "gruppering": "Digital",
@@ -333,10 +352,10 @@
       "area": "Oncology",
       "financing": "Listed",
       "ceo": "Sjöblom-Hallén, Anna",
-      "image_path": "",
-      "company_website": "https://www.ectinresearch.com/",
-      "company_linkedin": "https://www.linkedin.com/company/ectin-research/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://www.ectinresearch.com//",
+      "company_linkedin": "https://www.linkedin.com//company//ectin-research//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/ectin.png"
     },
     {
       "gruppering": "Drugs",
@@ -370,10 +389,10 @@
       "area": "Analytics",
       "financing": "Private",
       "ceo": "Holm, Karl-Johan",
-      "image_path": "",
-      "company_website": "https://insingulo.com/",
-      "company_linkedin": "https://www.linkedin.com/company/insingulo-ab/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://insingulo.com//",
+      "company_linkedin": "https://www.linkedin.com//company//insingulo-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/insingula.png"
     },
     {
       "gruppering": "Digital",
@@ -388,10 +407,10 @@
       "area": "Digital",
       "financing": "Private",
       "ceo": "Zellmer, John",
-      "image_path": "",
-      "company_website": "https://intelligentimplants.ie/",
-      "company_linkedin": "https://www.linkedin.com/company/intelligent-implants/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://intelligentimplants.ie//",
+      "company_linkedin": "https://www.linkedin.com//company//intelligent-implants//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/intelligent_implants.png"
     },
     {
       "gruppering": "Drugs",
@@ -425,10 +444,10 @@
       "area": "Analytics",
       "financing": "Private",
       "ceo": "Fogelstrand, Per",
-      "image_path": "",
-      "company_website": "https://kromnigon.com/",
-      "company_linkedin": "https://www.linkedin.com/company/kromnigon-ab/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://kromnigon.com//",
+      "company_linkedin": "https://www.linkedin.com//company//kromnigon-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/kromnigon.png"
     },
     {
       "gruppering": "Device",
@@ -481,10 +500,10 @@
       "area": "Metabolism",
       "financing": "Financed by BioGaia that is listed",
       "ceo": "Malcus, Sara",
-      "image_path": "",
-      "company_website": "https://www.metabogen.se/",
-      "company_linkedin": "https://www.linkedin.com/company/metabogen-ab/",
-      "size_in_visualisation": "medium"
+      "company_website": "https://www.metabogen.se//",
+      "company_linkedin": "https://www.linkedin.com//company//metabogen-ab//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/metabogen.jpg"
     },
     {
       "gruppering": "Device",
@@ -518,10 +537,10 @@
       "area": "Imaging",
       "financing": "Private",
       "ceo": "Malmberg, Per",
-      "image_path": "",
-      "company_website": "https://www.chalmers.se/en/infrastructure/cii/about-us/",
-      "company_linkedin": "https://www.linkedin.com/company/chemical-imaging-infrastructure/",
-      "size_in_visualisation": "medium"
+      "company_website": "N/A https://www.chalmers.se//en//infrastructure//cii//about-us//",
+      "company_linkedin": "https://www.linkedin.com//company//chemical-imaging-infrastructure//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/cii.png"
     },
     {
       "gruppering": "Drugs",
@@ -536,10 +555,10 @@
       "area": "Pharmaceuticals",
       "financing": "Private",
       "ceo": "Matsson, Pär",
-      "image_path": "",
       "company_website": "https://oligonova.org/",
-      "company_linkedin": "https://www.linkedin.com/company/oligonova-hub/",
-      "size_in_visualisation": "medium"
+      "company_linkedin": "https://www.linkedin.com//company//oligonova-hub//",
+      "size_in_visualisation": "medium",
+      "image_path": "images/oligonova.png"
     },
     {
       "gruppering": "Device",
@@ -573,10 +592,10 @@
       "area": "Analytics",
       "financing": "Private",
       "ceo": "Lindström, Åsa",
-      "image_path": "",
       "company_website": "https://www.profundusimaging.com/",
       "company_linkedin": "https://www.linkedin.com/company/profundus-ab-sweden/",
-      "size_in_visualisation": "medium"
+      "size_in_visualisation": "medium",
+      "image_path": "images/profundus.jpg"
     },
     {
       "gruppering": "Device",
