@@ -1,5 +1,5 @@
 // Fetch the JSON data
-fetch("../datasets/co_data_test.json")
+fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
   .then((res) => res.json())
   .then((data) => {
     const therapyAreas = [
