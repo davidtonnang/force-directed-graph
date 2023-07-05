@@ -79,7 +79,7 @@
       "company_website": "https://www.alzinova.com/",
       "company_linkedIn": "https://www.linkedin.com/company/alzinova-ab/",
       "size_in_visualisation": "medium",
-      "image_path": "images/alzinova.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/alzinova.png"
     },
     {
       "group": "Diagnostics",
