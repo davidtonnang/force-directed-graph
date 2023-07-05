@@ -18,7 +18,7 @@
       "company_website": "",
       "company_linkedIn": "",
       "size_in_visualisation": "big",
-      "image_path": "images/bioventurehub.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/bioventurehub.png"
     },
     {
       "group": "Drugs",
