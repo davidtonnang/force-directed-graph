@@ -359,7 +359,7 @@
       "financing": "Private",
       "ceo": "El Rhali, Ahmed",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/data-metrix.jpg/jcr:content/renditions/cq5dam.web.320.data-metrix.jpg",
-      "image_path": "images/datametrix.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/datametrix.png",
       "company_website": "https://datametrix.ch/",
       "company_linkedin": "https://www.linkedin.com/company/datametrix-ag/",
       "size_in_visualisation": "medium"
@@ -382,7 +382,7 @@
       "company_website": "https://www.ectinresearch.com//",
       "company_linkedin": "https://www.linkedin.com/company/ectin-research/",
       "size_in_visualisation": "medium",
-      "image_path": "images/ectin.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/ectin.png"
     },
     {
       "group": "Drugs",
@@ -402,7 +402,7 @@
       "company_website": "https://inorbittx.com/",
       "company_linkedin": "LinkedIn Missing",
       "size_in_visualisation": "medium",
-      "image_path": "images/inorbittx.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/inorbittx.png"
     },
     {
       "group": "Device",
@@ -422,7 +422,7 @@
       "company_website": "https://insingulo.com//",
       "company_linkedin": "https://www.linkedin.com/company/insingulo-ab/",
       "size_in_visualisation": "medium",
-      "image_path": "images/insingulo.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/insingulo.png"
     },
     {
       "group": "Digital",
@@ -442,7 +442,7 @@
       "company_website": "https://intelligentimplants.ie//",
       "company_linkedin": "https://www.linkedin.com/company/intelligent-implants/",
       "size_in_visualisation": "medium",
-      "image_path": "images/intelligent_implants.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/intelligent_implants.png"
     },
     {
       "group": "Drugs",
@@ -459,7 +459,7 @@
       "financing": "Listed",
       "ceo": "Chaabane, Philip",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/i-tech.jpg/jcr:content/renditions/cq5dam.web.320.i-tech.jpg",
-      "image_path": "images/itech.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/itech.png",
       "company_website": "https://i-tech.se/",
       "company_linkedin": "https://www.linkedin.com/company/i-tech-ab/",
       "size_in_visualisation": "medium"
@@ -482,7 +482,7 @@
       "company_website": "https://kromnigon.com//",
       "company_linkedin": "https://www.linkedin.com//company//kromnigon-ab//",
       "size_in_visualisation": "medium",
-      "image_path": "images/kromnigon.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/kromnigon.png"
     },
     {
       "group": "Device",
@@ -499,7 +499,7 @@
       "financing": "Private",
       "ceo": "Jönsson, Håkan",
       "company_logo": "https://media.licdn.com/dms/image/C4D0BAQGkcfLVY-zvDA/company-logo_200_200/0/1534319667361?e=1696464000&v=beta&t=BIxif65vuxX7v1_YKsj3hkmT2oOfTEatbNy8Nt5qN1E",
-      "image_path": "images/kth.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/kth.png",
       "company_website": "https://www.kth.se/pro/nanobio/division-of-nanobiotechnology-1.185383",
       "company_linkedin": "https://www.linkedin.com/school/kth/",
       "size_in_visualisation": "medium"
@@ -519,7 +519,7 @@
       "financing": "Private",
       "ceo": "Jacklin, Christopher",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Lucero%20ny.png/jcr:content/renditions/cq5dam.web.480.Lucero%20ny.png",
-      "image_path": "images/lucero.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/lucero.png",
       "company_website": "https://www.lucerobio.com/",
       "company_linkedin": "https://www.linkedin.com/company/lucero/",
       "size_in_visualisation": "medium"
@@ -542,7 +542,7 @@
       "company_website": "https://www.metabogen.se/",
       "company_linkedin": "https://www.linkedin.com/company/metabogen-ab/",
       "size_in_visualisation": "medium",
-      "image_path": "images/metabogen.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/metabogen.png"
     },
     {
       "group": "Device",
@@ -559,7 +559,7 @@
       "financing": "Private",
       "ceo": "Löfgren, Nils",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Nanolyze_logo-900x400.png/jcr:content/renditions/cq5dam.web.320.Nanolyze_logo-900x400.png",
-      "image_path": "images/nanolyze.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/nanolyze.png",
       "company_website": "https://www.nanolyze.se/",
       "company_linkedin": "https://www.linkedin.com//company/nanolyze/",
       "size_in_visualisation": "medium"
@@ -582,7 +582,7 @@
       "company_website": "https://www.chalmers.se/en/infrastructure/cii/about-us/",
       "company_linkedin": "https://www.linkedin.com/company/chemical-imaging-infrastructure/",
       "size_in_visualisation": "medium",
-      "image_path": "images/cii.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/cii.png"
     },
     {
       "group": "Drugs",
@@ -602,7 +602,7 @@
       "company_website": "https://oligonova.org/",
       "company_linkedin": "https://www.linkedin.com/company/oligonova-hub/",
       "size_in_visualisation": "medium",
-      "image_path": "images/oligonova.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/oligonova.png"
     },
     {
       "group": "Device",
@@ -619,7 +619,7 @@
       "financing": "Private",
       "ceo": "Olovsson, Martin",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Ondosis_new_logo_horiz.jpg/jcr:content/renditions/cq5dam.web.320.Ondosis_new_logo_horiz.jpg",
-      "image_path": "images/ondosis.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/ondosis.png",
       "company_website": "https://www.ondosis.com/",
       "company_linkedin": "https://www.linkedin.com/company/ondosis/",
       "size_in_visualisation": "medium"
@@ -642,7 +642,7 @@
       "company_website": "https://www.profundusimaging.com/",
       "company_linkedin": "https://www.linkedin.com/company/profundus-ab-sweden/",
       "size_in_visualisation": "medium",
-      "image_path": "images/profundus.png"
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/profundus.png"
     },
     {
       "group": "Device",
@@ -659,7 +659,7 @@
       "financing": "Listed",
       "ceo": "Larsson, Magnus",
       "company_logo": "https://media.licdn.com/dms/image/C4D0BAQGNeMDAsSOduw/company-logo_200_200/0/1519917156696?e=2147483647&v=beta&t=-0qaVjnyjDc41bIDrnjUuxdSff7-MfhUYzQKTvESlj4",
-      "image_path": "images/promimic.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/promimic.png",
       "company_website": "https://promimic.com/",
       "company_linkedin": "https://www.linkedin.com/company/promimic/",
       "size_in_visualisation": "medium"
@@ -679,7 +679,7 @@
       "financing": "Private",
       "ceo": "Faijerson Säljö, Jonas",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Synegon_logo.png/jcr:content/renditions/cq5dam.web.320.Synegon_logo.png",
-      "image_path": "images/synergon.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/synergon.png",
       "company_website": "https://www.synergon.se/se",
       "company_linkedin": "https://www.linkedin.com/company/synergon_2/",
       "size_in_visualisation": "medium"
