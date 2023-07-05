@@ -1,7 +1,7 @@
 {
   "nodes": [
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "BioVentureHub",
       "id": "BioVentureHub",
@@ -21,7 +21,7 @@
       "image_path": "images/bioventurehub.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "GoCo",
       "company_name": "GoCo",
       "id": "GoCo",
@@ -41,7 +41,7 @@
       "image_path": "images/goco.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "Astra",
       "company_name": "AstraZeneca",
       "id": "Astra",
@@ -61,7 +61,7 @@
       "image_path": "images/astrazeneca.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Alzinova",
       "id": "Alzinova",
@@ -82,7 +82,7 @@
       "image_path": "images/alzinova.png"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "Antaros Medical",
       "id": "Antaros_Medical",
@@ -103,7 +103,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Cereno Scientific",
       "id": "Cereno_Scientific",
@@ -123,7 +123,7 @@
       "image_path": "images/cereno.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Corline Biomedical",
       "id": "Corline_Biomedical",
@@ -142,7 +142,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Emeriti Bio",
       "id": "Emeriti_Bio",
@@ -162,7 +162,7 @@
       "image_path": "images/emeriti_bio.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Mendus",
       "id": "Mendus",
@@ -182,7 +182,7 @@
       "image_path": "images/mendus.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Mölnlycke Health Care",
       "id": "Mölnlycke_Health_Care",
@@ -202,7 +202,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "Q&Q Labs",
       "id": "Q&Q_Labs",
@@ -222,7 +222,7 @@
       "image_path": "images/qqlabs.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Waters Sverige",
       "id": "Waters_Sverige",
@@ -242,7 +242,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Digital",
+      "group": "Digital",
       "ecosystem": "BioVentureHub",
       "company_name": "Albus Health",
       "id": "Albus_Health",
@@ -263,7 +263,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "Amferia",
       "id": "Amferia",
@@ -284,7 +284,7 @@
       "image_path": "images/amferia.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Apconix",
       "id": "Apconix",
@@ -305,7 +305,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Betagenon",
       "id": "Betagenon",
@@ -325,7 +325,7 @@
       "image_path": "images/betagenon.png"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "Cline Scientific",
       "id": "Cline_Scientific",
@@ -345,7 +345,7 @@
       "image_path": "images/cline.png"
     },
     {
-      "gruppering": "Digital",
+      "group": "Digital",
       "ecosystem": "BioVentureHub",
       "company_name": "Datametrix",
       "id": "Datametrix",
@@ -365,7 +365,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Ectin Research",
       "id": "Ectin_Research",
@@ -385,7 +385,7 @@
       "image_path": "images/ectin.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Inorbittx",
       "id": "Inorbittx",
@@ -405,7 +405,7 @@
       "image_path": "images/inorbittx.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "In Singulo Solutions",
       "id": "In_Singulo_Solutions",
@@ -425,7 +425,7 @@
       "image_path": "images/insingulo.png"
     },
     {
-      "gruppering": "Digital",
+      "group": "Digital",
       "ecosystem": "BioVentureHub",
       "company_name": "Intelligent Implants",
       "id": "Intelligent_Implants",
@@ -445,7 +445,7 @@
       "image_path": "images/intelligent_implants.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "I-Tech",
       "id": "I-Tech",
@@ -465,7 +465,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Kromnigon",
       "id": "Kromnigon",
@@ -485,7 +485,7 @@
       "image_path": "images/kromnigon.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "KTH Nanobiotech",
       "id": "KTH_Nanobiotech",
@@ -505,7 +505,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Lucero",
       "id": "Lucero",
@@ -525,7 +525,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Metabogen",
       "id": "Metabogen",
@@ -545,7 +545,7 @@
       "image_path": "images/metabogen.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Nanolyze",
       "id": "Nanolyze",
@@ -565,7 +565,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "CII / Chemical Imaging Infrastructure",
       "id": "CII_//_Chemical_Imaging_Infrastructure",
@@ -585,7 +585,7 @@
       "image_path": "images/cii.png"
     },
     {
-      "gruppering": "Drugs",
+      "group": "Drugs",
       "ecosystem": "BioVentureHub",
       "company_name": "Oligonova",
       "id": "OligoNova",
@@ -605,7 +605,7 @@
       "image_path": "images/oligonova.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Ondosis",
       "id": "Ondosis",
@@ -625,7 +625,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Diagnostics",
+      "group": "Diagnostics",
       "ecosystem": "BioVentureHub",
       "company_name": "Profundus",
       "id": "Profundus",
@@ -645,7 +645,7 @@
       "image_path": "images/profundus.png"
     },
     {
-      "gruppering": "Device",
+      "group": "Device",
       "ecosystem": "BioVentureHub",
       "company_name": "Promimic",
       "id": "Promimic",
@@ -665,7 +665,7 @@
       "size_in_visualisation": "medium"
     },
     {
-      "gruppering": "Digital",
+      "group": "Digital",
       "ecosystem": "BioVentureHub",
       "company_name": "Synergon",
       "id": "Synergon",
