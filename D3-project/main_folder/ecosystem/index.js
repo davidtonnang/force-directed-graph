@@ -10,9 +10,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    var regExp = /[a-zA-Z]/g
+    //var regExp = /[a-zA-Z]/g
     // Create a list with all unique therapy areas
-    let therapy_list = []
+    let therapy_list = ["Title"]
     for (let i = 0; i < therapyAreas.length; i++) {
       let current_words = therapyAreas[i]
         .split(" & ")
@@ -36,14 +36,14 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         }
         if (
           !therapy_list.includes(current_words[j]) &&
-          regExp.test(current_words[j])
+          current_words[j].length > 0
         ) {
           therapy_list.push(current_words[j])
         }
       }
     }
 
-    let type_list = []
+    let type_list = ["Title"]
 
     for (let i = 0; i < type_of_company.length; i++) {
       let current_words = type_of_company[i]
@@ -67,7 +67,8 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
           current_words[j] = filtered_string
         }
         if (
-          !type_list.includes(current_words[j]) // Regex tog bort drugs av någon anledning
+          !type_list.includes(current_words[j]) &&
+          current_words[j].length > 0 // Regex tog bort drugs av någon anledning
         ) {
           type_list.push(current_words[j])
         }
@@ -310,14 +311,6 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
     // In defs we're going to add the images in the nodes
     var defs = svg.append("defs")
 
-    const links = container
-      .selectAll(".link")
-      .data(data.links)
-      .enter()
-      .append("line")
-      .attr("class", "link")
-      .style("stroke", "rgba(255, 255, 255, 1)") // Set the color of the links
-
     // Create the nodes
     const nodes = container
       .selectAll(".node")
@@ -328,6 +321,25 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
+
+    const links = container
+      .selectAll(".link")
+      .data(data.links)
+      .enter()
+      .append("line")
+      //      .attr("class", "link")
+      //      .style("stroke", "rgba (255,255,255,1")
+      .attr("class", function (d) {
+        if (
+          d.source.size_in_visualisation == "big" &&
+          d.target.size_in_visualisation == "big"
+        ) {
+          return "dashed"
+        } else {
+          return "solid"
+        }
+      })
+      .lower()
 
     // Adding the images in the nodes
     defs
@@ -414,6 +426,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       ) {
         data.nodes[i].label_adjustment = -100
       } else {
+        data.nodes[i].label_adjustment = 0
+      }
+      if (data.nodes[i].size_in_visualisation == "big") {
         data.nodes[i].label_adjustment = 0
       }
     }
