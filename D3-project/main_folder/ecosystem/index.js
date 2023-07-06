@@ -1,5 +1,5 @@
 // Fetch the JSON data
-fetch("../datasets/co_data_test.json")
+fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
   .then((res) => res.json())
   .then((data) => {
     const therapyAreas = [
@@ -127,7 +127,7 @@ fetch("../datasets/co_data_test.json")
       nodes
         .attr("r", (d) => {
           // If the node is one of the special nodes, we do not filter
-          if (["GoCo", "BioVentureHub", "Astra"].includes(d.id)) {
+          if (["BioVentureHub"].includes(d.id)) {
             return d.size
           }
           // Adjust radius based on filters
@@ -158,7 +158,7 @@ fetch("../datasets/co_data_test.json")
         })
         .style("opacity", (d) => {
           // If the node is one of the special nodes, do not filter
-          if (["GoCo", "BioVentureHub", "Astra"].includes(d.id)) {
+          if (["BioVentureHub"].includes(d.id)) {
             return 1
           }
           // Adjust opacity based on filters

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div>
+      <select id="filterDropdownCompanyType">
+        <option value="">Type of Company</option>
+      </select>
+    </div>
+
+    <div>
+      <select id="filterDropdown">
+        <option value="">All Therapy Areas</option>
+      </select>
+    </div>
+
+    <div class="slider-container">
+      <label class="filter-label">Filter by employees:</label>
+      <input
+        class="slider-bar"
+        type="range"
+        id="employeeRange"
+        min="0"
+        max="9"
+        step="1"
+        value="0"
+      />
+      <label for="employeeRange"></label>
+      <span id="employeeValue" class="slider-value">0</span>
+    </div>
+
+    <div class="checkbox-container" id="private-container">
+      <input type="checkbox" id="privateCheckbox" />
+      <label for="privateCheckbox" id="privateLabel">Private</label>
+    </div>
+    <div class="checkbox-container" id="public-container">
+      <input type="checkbox" id="publicCheckbox" />
+      <label for="publicCheckbox" id="publicLabel">Public</label>
+    </div>
+
+    <svg id="graph">
+      <defs>
+        <pattern
+          id="test-image"
+          height="100%"
+          width="100%"
+          patternContentUnits="objectBoundingBox"
+        >
+          <image
+            height="1"
+            width="1"
+            preserveAspectRatio="none"
+            xmlns:xlink="https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Antaros-Medical.jpg/jcr:content/renditions/cq5dam.web.320.Antaros-Medical.jpg"
+            xlink:href="Antaros-Medical.jpg"
+          ></image>
+        </pattern>
+      </defs>
+      <circle cx="500" cy="100" r="30" fill="url(#Antaros)"></circle>
+    </svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
