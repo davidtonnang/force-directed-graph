@@ -393,6 +393,31 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         .attr("dy", "1.2em")
     })
 
+    var bvh_x = data.nodes[0].x // Important that bvh is first in json
+    var bvh_y = data.nodes[0].y
+
+    for (let i = 0; i < data.nodes.length; i++) {
+      if (
+        data.nodes[i].y > bvh_y &&
+        i % 2 == 1 &&
+        Math.abs(data.nodes[i].y - bvh_y) > 30
+      ) {
+        data.nodes[i].label_adjustment = -300
+      } else if (
+        data.nodes[i].y > bvh_y &&
+        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
+      ) {
+        data.nodes[i].label_adjustment = -200
+      } else if (
+        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
+        Math.abs(data.nodes[i].y - bvh_y) < 30
+      ) {
+        data.nodes[i].label_adjustment = -100
+      } else {
+        data.nodes[i].label_adjustment = 0
+      }
+    }
+
     nodes
       .on("mouseover", function (event, d) {
         const transform = d3.zoomTransform(svg.node())
@@ -411,8 +436,8 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         // Append a foreignObject to the group
         const foreignObject = labelGroup
           .append("foreignObject")
-          .attr("x", scaledX + 15) // adjust position
-          .attr("y", scaledY - 50) // adjust position
+          .attr("x", scaledX + 15) // adjust position  här
+          .attr("y", scaledY + d.label_adjustment) // adjust position
           .attr("width", 300) // set width
           .attr("height", 400) // set height
           .html(
@@ -484,7 +509,7 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       const foreignObject = clickedLabelGroup
         .append("foreignObject")
         .attr("x", scaledX + 15) // adjust position
-        .attr("y", scaledY - 50) // adjust position
+        .attr("y", scaledY + d.label_adjustment) // adjust position  här!
         .attr("width", 300) // set width
         .attr("height", 400) // set height
         .html(
