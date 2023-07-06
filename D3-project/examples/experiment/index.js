@@ -10,9 +10,9 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    var regExp = /[a-zA-Z]/g
+    //var regExp = /[a-zA-Z]/g
     // Create a list with all unique therapy areas
-    let therapy_list = []
+    let therapy_list = ["Title"]
     for (let i = 0; i < therapyAreas.length; i++) {
       let current_words = therapyAreas[i]
         .split(" & ")
@@ -36,14 +36,15 @@ fetch("../datasets/co_data_test.json")
         }
         if (
           !therapy_list.includes(current_words[j]) &&
-          regExp.test(current_words[j])
+          current_words[j].length > 0
         ) {
           therapy_list.push(current_words[j])
         }
+        console.log(therapy_list)
       }
     }
 
-    let type_list = []
+    let type_list = ["Title"]
 
     for (let i = 0; i < type_of_company.length; i++) {
       let current_words = type_of_company[i]
@@ -67,10 +68,14 @@ fetch("../datasets/co_data_test.json")
           current_words[j] = filtered_string
         }
         if (
-          !type_list.includes(current_words[j]) // Regex tog bort drugs av någon anledning
+          !type_list.includes(current_words[j]) &&
+          current_words[j].length > 0 // Regex tog bort drugs av någon anledning
         ) {
           type_list.push(current_words[j])
         }
+        console.log(current_words[j])
+        console.log(current_words[j].length > 0)
+        console.log(type_list)
       }
     }
 
@@ -393,6 +398,7 @@ fetch("../datasets/co_data_test.json")
         .attr("dy", "1.2em")
     })
 
+    console.log("Drugs".length > 0)
     nodes
       .on("mouseover", function (event, d) {
         const transform = d3.zoomTransform(svg.node())
