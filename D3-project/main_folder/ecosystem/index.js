@@ -66,7 +66,7 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         current_words[j] = current_words[j].trim()
         if (
           !type_list.includes(current_words[j]) &&
-          current_words[j].length > 0 // Regex tog bort drugs av någon anledning
+          current_words[j].length > 0
         ) {
           type_list.push(current_words[j])
         }
@@ -154,6 +154,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
           // If the node is one of the special nodes, do not filter
           if (["BioVentureHub"].includes(d.id)) {
             return 1
+          }
+          if (["Astra", "GoCo"].includes(d.id)) {
+            return 0.2 // Keeps opacity lower for astra and goco
           }
           // Adjust opacity based on filters
           let opacity = 1
@@ -319,6 +322,13 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
+      .style("opacity", function (node) {
+        if (["Astra", "GoCo"].includes(node.id)) {
+          return 0.2
+        } else {
+          return 1
+        }
+      }) // Sets opacity lower for astra and goco from start
 
     const links = container
       .selectAll(".link")
