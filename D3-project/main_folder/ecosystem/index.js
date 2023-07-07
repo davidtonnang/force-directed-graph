@@ -39,43 +39,24 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Create a list with all unique therapy areas
-    let therapy_list = ["Title"]
-    for (let i = 0; i < therapyAreas.length; i++) {
-      let current_words = therapyAreas[i]
-        .split(" & ")
-        .join(",")
-        .split("N/A")
-        .join(",")
-        .split("/ ")
-        .join(",")
-        .split(",")
-      for (let j = 0; j < current_words.length; j++) {
-        current_words[j] = current_words[j].trim()
-        current_words[j] = remove_all_after(current_words[j], "with")
-        current_words[j] = remove_all_after(current_words[j], "(")
-        if (
-          !therapy_list.includes(current_words[j]) &&
-          current_words[j].length > 0
-        ) {
-          therapy_list.push(current_words[j])
+    function createList(input, separator) {
+      let list = ["Title"]
+      for (let i = 0; i < input.length; i++) {
+        let current_words = input[i].split(separator)
+        for (let j = 0; j < current_words.length; j++) {
+          current_words[j] = current_words[j].trim()
+          current_words[j] = remove_all_after(current_words[j], "with")
+          current_words[j] = remove_all_after(current_words[j], "(")
+          if (!list.includes(current_words[j]) && current_words[j].length > 0) {
+            list.push(current_words[j])
+          }
         }
       }
+      return list
     }
 
-    let type_list = ["Title"]
-
-    for (let i = 0; i < type_of_company.length; i++) {
-      let current_words = type_of_company[i].split(",")
-      for (let j = 0; j < current_words.length; j++) {
-        current_words[j] = current_words[j].trim()
-        if (
-          !type_list.includes(current_words[j]) &&
-          current_words[j].length > 0
-        ) {
-          type_list.push(current_words[j])
-        }
-      }
-    }
+    let therapy_list = createList(therapyAreas, ",")
+    let type_list = createList(type_of_company, ",")
 
     // Defines a function that is globally accessible for the label buttons
     window.handleButtonClick = function () {
@@ -577,6 +558,25 @@ fetch("../datasets/co_data_test.json")
         )
     })
 
+    const SPECIAL_IDS = ["BioVentureHub", "GoCo", "Astra"]
+
+    function updateLinkVisibility(d, bvhCompaniesNode) {
+      if (
+        (d.source.id === "BioVentureHub" &&
+          d.target.id === "BVH_Companies" &&
+          bvhCompaniesNode.isVisible) ||
+        (d.target.id === "BioVentureHub" &&
+          d.source.id === "BVH_Companies" &&
+          bvhCompaniesNode.isVisible) ||
+        (SPECIAL_IDS.includes(d.source.id) && SPECIAL_IDS.includes(d.target.id))
+      ) {
+        return "inline"
+      }
+      return d.isVisible && d.source.isVisible && d.target.isVisible
+        ? "inline"
+        : "none"
+    }
+
     nodes.on("click", function (event, d) {
       if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
         const bvhCompaniesNode = data.nodes.find(
@@ -638,42 +638,18 @@ fetch("../datasets/co_data_test.json")
         }
 
         // update node display
-        nodes.style("display", (d) => {
-          if (["Astra", "GoCo", "BioVentureHub"].includes(d.id)) {
-            return "inline"
-          }
-          return d.isVisible ? "inline" : "none"
-        })
+        nodes.style("display", (d) =>
+          SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
+        )
 
         // update link display
-        links.style("display", (d) => {
-          if (
-            d.source.id === "BioVentureHub" &&
-            d.target.id === "BVH_Companies" &&
-            bvhCompaniesNode.isVisible
-          ) {
-            return "inline"
-          }
-          if (
-            d.target.id === "BioVentureHub" &&
-            d.source.id === "BVH_Companies" &&
-            bvhCompaniesNode.isVisible
-          ) {
-            return "inline" //
-          }
-          // Always display the links between BioVentureHub, GoCo, and Astra
-          if (
-            ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
-            ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
-          ) {
-            return "inline"
-          }
-          return d.isVisible && d.source.isVisible && d.target.isVisible
-            ? "inline"
-            : "none"
-        })
+        links.style("display", (d) => updateLinkVisibility(d, bvhCompaniesNode))
       }
     })
+
+    const bvhCompaniesNode = data.nodes.find(
+      (node) => node.id === "BVH_Companies"
+    )
 
     // Updates the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
@@ -683,32 +659,7 @@ fetch("../datasets/co_data_test.json")
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y)
 
-      links.style("display", (d) => {
-        if (
-          d.source.id === "BioVentureHub" &&
-          d.target.id === "BVH_Companies" &&
-          d.target.isVisible
-        ) {
-          return "inline"
-        }
-        if (
-          d.target.id === "BioVentureHub" &&
-          d.source.id === "BVH_Companies" &&
-          d.source.isVisible
-        ) {
-          return "inline"
-        }
-        if (
-          ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
-          ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
-        ) {
-          return "inline"
-        }
-        // Only display the link if it is visible and both its source and target nodes are visible to remove the company nodes when BVH Companies no longer is visible
-        return d.isVisible && d.source.isVisible && d.target.isVisible
-          ? "inline"
-          : "none"
-      })
+      links.style("display", (d) => updateLinkVisibility(d, bvhCompaniesNode))
 
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
