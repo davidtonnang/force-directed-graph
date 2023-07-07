@@ -582,7 +582,7 @@ fetch("../datasets/co_data_test.json")
         const bvhCompaniesNode = data.nodes.find(
           (node) => node.id === "BVH_Companies"
         )
-        // This block will always show the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+        // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
         const linkBetweenBHAndBVC = data.links.find(
           (link) =>
             ["BioVentureHub", "BVH_Companies"].includes(link.source.id) &&
@@ -652,23 +652,22 @@ fetch("../datasets/co_data_test.json")
             d.target.id === "BVH_Companies" &&
             bvhCompaniesNode.isVisible
           ) {
-            return "inline" // Always display the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+            return "inline"
           }
           if (
             d.target.id === "BioVentureHub" &&
             d.source.id === "BVH_Companies" &&
             bvhCompaniesNode.isVisible
           ) {
-            return "inline" // Always display the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+            return "inline" //
           }
-          // Always display the link between BioVentureHub, GoCo, and Astra
+          // Always display the links between BioVentureHub, GoCo, and Astra
           if (
             ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
             ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
           ) {
             return "inline"
           }
-          // Only display the link if it is visible and both its source and target nodes are visible
           return d.isVisible && d.source.isVisible && d.target.isVisible
             ? "inline"
             : "none"
@@ -699,14 +698,13 @@ fetch("../datasets/co_data_test.json")
         ) {
           return "inline"
         }
-        // Always display the link between BioVentureHub, GoCo, and Astra
         if (
           ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
           ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
         ) {
           return "inline"
         }
-        // Only display the link if it is visible and both its source and target nodes are visible
+        // Only display the link if it is visible and both its source and target nodes are visible to remove the company nodes when BVH Companies no longer is visible
         return d.isVisible && d.source.isVisible && d.target.isVisible
           ? "inline"
           : "none"
