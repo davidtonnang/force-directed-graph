@@ -23,7 +23,7 @@
     {
       "group": "Drugs",
       "ecosystem": "BioVentureHub",
-      "company_name": "BVH_Companies",
+      "company_name": "BVH Companies",
       "id": "BVH_Companies",
       "turnover_sek": 1730000,
       "amount_of_employees": 300,
@@ -37,7 +37,7 @@
       "ceo": "",
       "company_website": "",
       "company_linkedIn": "",
-      "size_in_visualisation": "medium",
+      "size_in_visualisation": "BVH",
       "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/bioventurehub.png"
     },
     {

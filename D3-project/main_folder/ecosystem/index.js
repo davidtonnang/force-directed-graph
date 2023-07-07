@@ -248,6 +248,15 @@ fetch("../datasets/co_data_test.json")
       })
     }
 
+    // Connect all the nodes to their Ecosystem node
+    for (let i = 0; i < data.nodes.length; i++) {
+      connectNodes(
+        data.nodes[i].id,
+        "BVH_Companies",
+        i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+      )
+    }
+
     // Not used for now but adds a distance to any link in the json file.
     //   for (let i = 0; i < data.links.length; i++) {
     //     if (i % 2 == 0) {
@@ -255,15 +264,6 @@ fetch("../datasets/co_data_test.json")
     //     }
     //     data.links[i].distance = DEFAULT_DISTANCE
     //   }
-
-    // Connect all the nodes to their Ecosystem node
-    for (let i = 0; i < data.nodes.length; i++) {
-      connectNodes(
-        data.nodes[i].id,
-        "BioVentureHub",
-        i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
-      )
-    }
 
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
@@ -277,8 +277,8 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub", 450)
-    connectNodes("Astra", "BioVentureHub", 450)
+    connectNodes("GoCo", "BioVentureHub", 300)
+    connectNodes("Astra", "BioVentureHub", 300)
     connectNodes("GoCo", "Astra", 300)
     // Create the SVG container
     const svg = d3.select("#graph")
@@ -293,6 +293,16 @@ fetch("../datasets/co_data_test.json")
     })
     svg.call(zoom)
 
+    const bvhOffsetX = 300 // adjust this value to move BVH_Companies to the right
+    const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub to the right
+
+    const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX // X coordinate for BVH_Companies
+    const bvhY = svg.node().height.baseVal.value / 2 // Y coordinate for BVH_Companies
+
+    const bioVentureHubX =
+      svg.node().width.baseVal.value / 2 + bioVentureHubOffsetX
+    const bioVentureHubY = svg.node().height.baseVal.value / 2
+
     // Create the force simulation
     const simulation = d3
       .forceSimulation(data.nodes)
@@ -303,13 +313,17 @@ fetch("../datasets/co_data_test.json")
           .id((d) => d.id)
           .distance((link) => link.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-400))
       .force(
         "center",
         d3.forceCenter(
           svg.node().width.baseVal.value / 2,
           svg.node().height.baseVal.value / 2
         )
+      )
+      .force(
+        "circular",
+        d3.forceRadial((d) => (d.id === "BVH_Companies" ? 0 : 300), bvhX, bvhY)
       )
 
     // In defs we're going to add the images in the nodes
@@ -561,24 +575,25 @@ fetch("../datasets/co_data_test.json")
     })
 
     nodes.on("click", function (event, d) {
-      if (d.id === "BioVentureHub") {
+      if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
         // Toggle visibility of connected nodes
         data.links.forEach((link) => {
-          if (
-            link.source.id === "BioVentureHub" &&
-            link.target.id !== "BioVentureHub"
-          ) {
+          if (link.source.id === d.id && link.target.id !== d.id) {
             link.target.isVisible = !link.target.isVisible
-          } else if (
-            link.target.id === "BioVentureHub" &&
-            link.source.id !== "BioVentureHub"
-          ) {
+          } else if (link.target.id === d.id && link.source.id !== d.id) {
             link.source.isVisible = !link.source.isVisible
           }
         })
 
         // Update visibility of nodes and links
-        nodes.style("display", (d) => (d.isVisible ? "inline" : "none"))
+        nodes.style("display", (d) => {
+          // If the node is Astra or GoCo, always display it
+          if (["Astra", "GoCo"].includes(d.id)) {
+            return "inline"
+          }
+          // Otherwise, display based on its visibility
+          return d.isVisible ? "inline" : "none"
+        })
         links.style("display", (d) =>
           d.source.isVisible && d.target.isVisible ? "inline" : "none"
         )
