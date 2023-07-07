@@ -11,6 +11,29 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
     ]
 
     //var regExp = /[a-zA-Z]/g
+
+    // Attempt to make function that removes characters and splits a long string to a list
+    //function remove_characters(words, character_list) {
+    //  for (let i = 0; character_list.length; i++) {
+    //    words.split(character_list[i])
+    //    words.join(",")
+    //  }
+    //  words.split(",")
+    //  return words
+    //}
+
+    // Function that looks for string in a word, and removes it and everything after if it finds it
+    function remove_all_after(word, char) {
+      if (word.includes(char)) {
+        let index = word.indexOf(char)
+        filtered_string = word.slice(0, index)
+      } else {
+        filtered_string = word
+      }
+
+      return filtered_string
+    }
+
     // Create a list with all unique therapy areas
     let therapy_list = ["Title"]
     for (let i = 0; i < therapyAreas.length; i++) {
@@ -24,16 +47,8 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         .split(",")
       for (let j = 0; j < current_words.length; j++) {
         current_words[j] = current_words[j].trim()
-        if (current_words[j].includes("with")) {
-          let index = current_words[j].indexOf("with")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
-        if (current_words[j].includes("(")) {
-          let index = current_words[j].indexOf("(")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
+        current_words[j] = remove_all_after(current_words[j], "with")
+        current_words[j] = remove_all_after(current_words[j], "(")
         if (
           !therapy_list.includes(current_words[j]) &&
           current_words[j].length > 0
@@ -46,26 +61,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
     let type_list = ["Title"]
 
     for (let i = 0; i < type_of_company.length; i++) {
-      let current_words = type_of_company[i]
-        .split(" & ")
-        .join(",")
-        .split("N/A")
-        .join(",")
-        .split("/ ")
-        .join(",")
-        .split(",")
+      let current_words = type_of_company[i].split(",")
       for (let j = 0; j < current_words.length; j++) {
         current_words[j] = current_words[j].trim()
-        if (current_words[j].includes("with")) {
-          let index = current_words[j].indexOf("with")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
-        if (current_words[j].includes("(")) {
-          let index = current_words[j].indexOf("(")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
         if (
           !type_list.includes(current_words[j]) &&
           current_words[j].length > 0 // Regex tog bort drugs av någon anledning
