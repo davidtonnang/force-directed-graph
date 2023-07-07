@@ -579,9 +579,6 @@ fetch("../datasets/co_data_test.json")
 
     nodes.on("click", function (event, d) {
       if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
-        const bvhCompaniesNode = data.nodes.find(
-          (node) => node.id === "BVH_Companies"
-        )
         // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
         const linkBetweenBHAndBVC = data.links.find(
           (link) =>
