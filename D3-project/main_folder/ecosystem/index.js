@@ -10,9 +10,32 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    var regExp = /[a-zA-Z]/g
+    //var regExp = /[a-zA-Z]/g
+
+    // Attempt to make function that removes characters and splits a long string to a list
+    //function remove_characters(words, character_list) {
+    //  for (let i = 0; character_list.length; i++) {
+    //    words.split(character_list[i])
+    //    words.join(",")
+    //  }
+    //  words.split(",")
+    //  return words
+    //}
+
+    // Function that looks for string in a word, and removes it and everything after if it finds it
+    function remove_all_after(word, char) {
+      if (word.includes(char)) {
+        let index = word.indexOf(char)
+        filtered_string = word.slice(0, index)
+      } else {
+        filtered_string = word
+      }
+
+      return filtered_string
+    }
+
     // Create a list with all unique therapy areas
-    let therapy_list = []
+    let therapy_list = ["Title"]
     for (let i = 0; i < therapyAreas.length; i++) {
       let current_words = therapyAreas[i]
         .split(" & ")
@@ -24,50 +47,26 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
         .split(",")
       for (let j = 0; j < current_words.length; j++) {
         current_words[j] = current_words[j].trim()
-        if (current_words[j].includes("with")) {
-          let index = current_words[j].indexOf("with")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
-        if (current_words[j].includes("(")) {
-          let index = current_words[j].indexOf("(")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
+        current_words[j] = remove_all_after(current_words[j], "with")
+        current_words[j] = remove_all_after(current_words[j], "(")
         if (
           !therapy_list.includes(current_words[j]) &&
-          regExp.test(current_words[j])
+          current_words[j].length > 0
         ) {
           therapy_list.push(current_words[j])
         }
       }
     }
 
-    let type_list = []
+    let type_list = ["Title"]
 
     for (let i = 0; i < type_of_company.length; i++) {
-      let current_words = type_of_company[i]
-        .split(" & ")
-        .join(",")
-        .split("N/A")
-        .join(",")
-        .split("/ ")
-        .join(",")
-        .split(",")
+      let current_words = type_of_company[i].split(",")
       for (let j = 0; j < current_words.length; j++) {
         current_words[j] = current_words[j].trim()
-        if (current_words[j].includes("with")) {
-          let index = current_words[j].indexOf("with")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
-        if (current_words[j].includes("(")) {
-          let index = current_words[j].indexOf("(")
-          filtered_string = current_words[j].slice(0, index)
-          current_words[j] = filtered_string
-        }
         if (
-          !type_list.includes(current_words[j]) // Regex tog bort drugs av någon anledning
+          !type_list.includes(current_words[j]) &&
+          current_words[j].length > 0
         ) {
           type_list.push(current_words[j])
         }
@@ -155,6 +154,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
           // If the node is one of the special nodes, do not filter
           if (["BioVentureHub"].includes(d.id)) {
             return 1
+          }
+          if (["Astra", "GoCo"].includes(d.id)) {
+            return 0.2 // Keeps opacity lower for astra and goco
           }
           // Adjust opacity based on filters
           let opacity = 1
@@ -310,14 +312,6 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
     // In defs we're going to add the images in the nodes
     var defs = svg.append("defs")
 
-    const links = container
-      .selectAll(".link")
-      .data(data.links)
-      .enter()
-      .append("line")
-      .attr("class", "link")
-      .style("stroke", "rgba(255, 255, 255, 1)") // Set the color of the links
-
     // Create the nodes
     const nodes = container
       .selectAll(".node")
@@ -328,6 +322,32 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
+      .style("opacity", function (node) {
+        if (["Astra", "GoCo"].includes(node.id)) {
+          return 0.2
+        } else {
+          return 1
+        }
+      }) // Sets opacity lower for astra and goco from start
+
+    const links = container
+      .selectAll(".link")
+      .data(data.links)
+      .enter()
+      .append("line")
+      //      .attr("class", "link")
+      //      .style("stroke", "rgba (255,255,255,1")
+      .attr("class", function (d) {
+        if (
+          d.source.size_in_visualisation == "big" &&
+          d.target.size_in_visualisation == "big"
+        ) {
+          return "dashed"
+        } else {
+          return "solid"
+        }
+      })
+      .lower()
 
     // Adding the images in the nodes
     defs
@@ -414,6 +434,9 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       ) {
         data.nodes[i].label_adjustment = -100
       } else {
+        data.nodes[i].label_adjustment = 0
+      }
+      if (data.nodes[i].size_in_visualisation == "big") {
         data.nodes[i].label_adjustment = 0
       }
     }
