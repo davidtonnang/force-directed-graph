@@ -588,7 +588,7 @@ fetch("../datasets/co_data_test.json")
         // Update visibility of nodes and links
         nodes.style("display", (d) => {
           // If the node is Astra or GoCo, always display it
-          if (["Astra", "GoCo"].includes(d.id)) {
+          if (["Astra", "GoCo", "BioVentureHub"].includes(d.id)) {
             return "inline"
           }
           // Otherwise, display based on its visibility
