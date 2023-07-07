@@ -1,5 +1,5 @@
 // Fetch the JSON data
-fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
+fetch("../datasets/co_data_test.json")
   .then((res) => res.json())
   .then((data) => {
     const therapyAreas = [
@@ -9,6 +9,10 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
     const type_of_company = [
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
+
+    data.nodes.forEach((node) => {
+      node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
+    })
 
     //var regExp = /[a-zA-Z]/g
 
@@ -254,29 +258,28 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
 
     // Connect all the nodes to their Ecosystem node
     for (let i = 0; i < data.nodes.length; i++) {
-      if (i % 2 == 0) {
-        connectNodes(
-          data.nodes[i].id,
-          data.nodes[i].ecosystem,
-          DEFAULT_DISTANCE / 2
-        )
-      }
-      connectNodes(data.nodes[i].id, data.nodes[i].ecosystem)
+      connectNodes(
+        data.nodes[i].id,
+        "BioVentureHub",
+        i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+      )
     }
 
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
       if (data.nodes[i].size_in_visualisation == "big") {
         data.nodes[i].size = 50
+      } else if (data.nodes[i].size_in_visualisation == "BVH") {
+        data.nodes[i].size = 35
       } else {
         data.nodes[i].size = 12
       }
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub", 250)
-    connectNodes("Astra", "BioVentureHub", 250)
-    connectNodes("GoCo", "Astra", 250)
+    connectNodes("GoCo", "BioVentureHub", 450)
+    connectNodes("Astra", "BioVentureHub", 450)
+    connectNodes("GoCo", "Astra", 300)
     // Create the SVG container
     const svg = d3.select("#graph")
 
@@ -322,6 +325,7 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
+      .style("display", (d) => (d.isVisible ? "inline" : "none"))
       .style("opacity", function (node) {
         if (["Astra", "GoCo"].includes(node.id)) {
           return 0.2
@@ -337,10 +341,13 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
       .append("line")
       //      .attr("class", "link")
       //      .style("stroke", "rgba (255,255,255,1")
+      .style("display", (d) =>
+        d.source.isVisible && d.target.isVisible ? "inline" : "none"
+      )
       .attr("class", function (d) {
         if (
           d.source.size_in_visualisation == "big" &&
-          d.target.size_in_visualisation == "big"
+          d.target.size_in_visualisation == "BVH"
         ) {
           return "dashed"
         } else {
@@ -551,6 +558,31 @@ fetch("https://davidtonnang.github.io/force-directed-graph/co_data_test.json")
            }
          </div>`
         )
+    })
+
+    nodes.on("click", function (event, d) {
+      if (d.id === "BioVentureHub") {
+        // Toggle visibility of connected nodes
+        data.links.forEach((link) => {
+          if (
+            link.source.id === "BioVentureHub" &&
+            link.target.id !== "BioVentureHub"
+          ) {
+            link.target.isVisible = !link.target.isVisible
+          } else if (
+            link.target.id === "BioVentureHub" &&
+            link.source.id !== "BioVentureHub"
+          ) {
+            link.source.isVisible = !link.source.isVisible
+          }
+        })
+
+        // Update visibility of nodes and links
+        nodes.style("display", (d) => (d.isVisible ? "inline" : "none"))
+        links.style("display", (d) =>
+          d.source.isVisible && d.target.isVisible ? "inline" : "none"
+        )
+      }
     })
 
     // Updates the node and link positions on each tick of the simulation
