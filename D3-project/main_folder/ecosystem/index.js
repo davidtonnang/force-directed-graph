@@ -27,12 +27,12 @@ fetch("../datasets/co_data_test.json")
     //}
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
-    function remove_all_after(sentence, char) {
-      if (sentence.includes(char)) {
-        let index = sentence.indexOf(char)
-        filtered_string = sentence.slice(0, index)
+    function remove_all_after(word, char) {
+      if (word.includes(char)) {
+        let index = word.indexOf(char)
+        filtered_string = word.slice(0, index)
       } else {
-        filtered_string = sentence
+        filtered_string = word
       }
 
       return filtered_string
@@ -245,16 +245,19 @@ fetch("../datasets/co_data_test.json")
         source,
         target,
         distance,
+        isVisible: true,
       })
     }
 
     // Connect all the nodes to their Ecosystem node
     for (let i = 0; i < data.nodes.length; i++) {
-      connectNodes(
-        data.nodes[i].id,
-        "BVH_Companies",
-        i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
-      )
+      if (!["Astra", "GoCo"].includes(data.nodes[i].id)) {
+        connectNodes(
+          data.nodes[i].id,
+          "BVH_Companies",
+          i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+        )
+      }
     }
 
     // Not used for now but adds a distance to any link in the json file.
@@ -285,7 +288,7 @@ fetch("../datasets/co_data_test.json")
 
     // Create a group for the graph elements
 
-    const container = svg.append("g") //Is g = group?
+    const container = svg.append("g")
 
     // Enable zooming and panning behavior
     const zoom = d3.zoom().on("zoom", (event) => {
@@ -327,7 +330,7 @@ fetch("../datasets/co_data_test.json")
       )
 
     // In defs we're going to add the images in the nodes
-    var defs = container.append("defs")
+    var defs = svg.append("defs")
 
     // Create the nodes
     const nodes = container
@@ -335,7 +338,7 @@ fetch("../datasets/co_data_test.json")
       .data(data.nodes)
       .enter()
       .append("circle")
-      .style("fill", (d) => "url(#" + d.id + ")") // puts the image in the node
+      .style("fill", (d) => "url(#" + d.id + ")")
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
@@ -437,7 +440,6 @@ fetch("../datasets/co_data_test.json")
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
     var bvh_y = data.nodes[0].y
 
-    // Here we adjust position of the labels based on position of nodes in image
     for (let i = 0; i < data.nodes.length; i++) {
       if (
         data.nodes[i].y > bvh_y &&
@@ -577,27 +579,100 @@ fetch("../datasets/co_data_test.json")
 
     nodes.on("click", function (event, d) {
       if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
-        // Toggle visibility of connected nodes
-        data.links.forEach((link) => {
-          if (link.source.id === d.id && link.target.id !== d.id) {
-            link.target.isVisible = !link.target.isVisible
-          } else if (link.target.id === d.id && link.source.id !== d.id) {
-            link.source.isVisible = !link.source.isVisible
-          }
-        })
+        const bvhCompaniesNode = data.nodes.find(
+          (node) => node.id === "BVH_Companies"
+        )
+        // This block will always show the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+        const linkBetweenBHAndBVC = data.links.find(
+          (link) =>
+            ["BioVentureHub", "BVH_Companies"].includes(link.source.id) &&
+            ["BioVentureHub", "BVH_Companies"].includes(link.target.id)
+        )
+        if (linkBetweenBHAndBVC) {
+          linkBetweenBHAndBVC.isVisible = bvhCompaniesNode.isVisible
+        }
 
-        // Update visibility of nodes and links
+        if (bvhCompaniesNode.isVisible && d.id === "BioVentureHub") {
+          bvhCompaniesNode.isVisible = false
+          data.links.forEach((link) => {
+            if (link.source.id === "BVH_Companies") {
+              link.target.isVisible = false
+              link.isVisible = false
+            } else if (link.target.id === "BVH_Companies") {
+              link.source.isVisible = false
+              link.isVisible = false
+            }
+          })
+        } else {
+          data.links.forEach((link) => {
+            if (
+              link.source.id === "BioVentureHub" &&
+              ["GoCo", "Astra"].includes(link.target.id)
+            ) {
+              link.target.isVisible = true
+            } else if (
+              link.target.id === "BioVentureHub" &&
+              ["GoCo", "Astra"].includes(link.source.id)
+            ) {
+              link.source.isVisible = true
+            } else if (
+              link.source.id === d.id &&
+              link.target.id !== d.id &&
+              link.target.id !== "BioVentureHub"
+            ) {
+              link.target.isVisible = !link.target.isVisible
+              if (d.id === "BVH_Companies") {
+                link.isVisible = link.target.isVisible
+              }
+            } else if (
+              link.target.id === d.id &&
+              link.source.id !== d.id &&
+              link.source.id !== "BioVentureHub"
+            ) {
+              link.source.isVisible = !link.source.isVisible
+              if (d.id === "BVH_Companies") {
+                link.isVisible = link.source.isVisible
+              }
+            }
+          })
+        }
+
+        // update node display
         nodes.style("display", (d) => {
-          // If the node is Astra or GoCo, always display it
           if (["Astra", "GoCo", "BioVentureHub"].includes(d.id)) {
             return "inline"
           }
-          // Otherwise, display based on its visibility
           return d.isVisible ? "inline" : "none"
         })
-        links.style("display", (d) =>
-          d.source.isVisible && d.target.isVisible ? "inline" : "none"
-        )
+
+        // update link display
+        links.style("display", (d) => {
+          if (
+            d.source.id === "BioVentureHub" &&
+            d.target.id === "BVH_Companies" &&
+            bvhCompaniesNode.isVisible
+          ) {
+            return "inline" // Always display the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+          }
+          if (
+            d.target.id === "BioVentureHub" &&
+            d.source.id === "BVH_Companies" &&
+            bvhCompaniesNode.isVisible
+          ) {
+            return "inline" // Always display the link between BVH_Companies and BioVentureHub if BVH_Companies is visible
+          }
+          // Always display the link between BioVentureHub, GoCo, and Astra
+          if (
+            ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
+            ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
+          ) {
+            return "inline"
+          }
+          // Only display the link if it is visible and both its source and target nodes are visible
+          return d.isVisible && d.source.isVisible && d.target.isVisible
+            ? "inline"
+            : "none"
+        })
       }
     })
 
@@ -608,6 +683,34 @@ fetch("../datasets/co_data_test.json")
         .attr("y1", (d) => d.source.y)
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y)
+
+      links.style("display", (d) => {
+        if (
+          d.source.id === "BioVentureHub" &&
+          d.target.id === "BVH_Companies" &&
+          d.target.isVisible
+        ) {
+          return "inline"
+        }
+        if (
+          d.target.id === "BioVentureHub" &&
+          d.source.id === "BVH_Companies" &&
+          d.source.isVisible
+        ) {
+          return "inline"
+        }
+        // Always display the link between BioVentureHub, GoCo, and Astra
+        if (
+          ["BioVentureHub", "GoCo", "Astra"].includes(d.source.id) &&
+          ["BioVentureHub", "GoCo", "Astra"].includes(d.target.id)
+        ) {
+          return "inline"
+        }
+        // Only display the link if it is visible and both its source and target nodes are visible
+        return d.isVisible && d.source.isVisible && d.target.isVisible
+          ? "inline"
+          : "none"
+      })
 
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
