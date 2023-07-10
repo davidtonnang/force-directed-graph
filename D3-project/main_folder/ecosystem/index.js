@@ -242,12 +242,11 @@ fetch("../datasets/co_data_test.json")
 
       if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
         // Connect BVH_Alumni and BVH_Usp to BioVentureHub
-        connectNodes(
-          data.nodes[i].id,
-          bioVentureHubNode.id,
-          i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
-        )
-      } else if (data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem) {
+        connectNodes(data.nodes[i].id, bioVentureHubNode.id, 200)
+      } else if (
+        data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem &&
+        data.nodes[i].id != "BioVentureHub"
+      ) {
         // For other nodes, connect them to BVH_Companies if they belong to the same ecosystem
         connectNodes(
           data.nodes[i].id,
@@ -280,7 +279,7 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "BioVentureHub", 200)
     connectNodes("Astra", "BioVentureHub", 200)
     connectNodes("GoCo", "Astra", 200)
-    //connectNodes("BioVentureHub", "BVH_Companies", 300)
+    connectNodes("BioVentureHub", "BVH_Companies", 1000)
     // Create the SVG container
     const svg = d3.select("#graph")
 
@@ -314,7 +313,7 @@ fetch("../datasets/co_data_test.json")
           .id((d) => d.id)
           .distance((link) => link.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-200))
       .force(
         "center",
         d3
@@ -358,14 +357,42 @@ fetch("../datasets/co_data_test.json")
         d3
           .forceX()
           .strength((node) => (node.id === "BVH_USP" ? 0.5 : 0))
-          .x((3 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
+          .x((3.5 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
       )
       .force(
         "BVH_Alumni_forceX",
         d3
           .forceX()
           .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
-          .x((3 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
+          .x((3.5 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
+      )
+      .force(
+        "Astra_forceY",
+        d3
+          .forceY()
+          .strength((node) => (node.id === "Astra" ? 0.5 : 0))
+          .y(svg.node().height.baseVal.value / 4) // affects the y-position for the BVH_USP node
+      )
+      .force(
+        "GoCo_forceY",
+        d3
+          .forceY()
+          .strength((node) => (node.id === "GoCo" ? 0.5 : 0))
+          .y((3 * svg.node().height.baseVal.value) / 4) // affects the y-position for the BVH_Alumni node
+      )
+      .force(
+        "Astra_forceX",
+        d3
+          .forceX()
+          .strength((node) => (node.id === "Astra" ? 0.5 : 0))
+          .x((1 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
+      )
+      .force(
+        "GoCo_forceX",
+        d3
+          .forceX()
+          .strength((node) => (node.id === "GoCo" ? 0.5 : 0))
+          .x((1 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
       )
 
     console.log(data.nodes[0])
@@ -482,7 +509,7 @@ fetch("../datasets/co_data_test.json")
     data.nodes[0].x = svg.node().width.baseVal.value / 2
 
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
-    var bvh_y = data.nodes[1].y
+    var bvh_y = data.nodes[1].y // samma problem med bvhY
 
     for (let i = 0; i < data.nodes.length; i++) {
       if (
