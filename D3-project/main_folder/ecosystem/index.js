@@ -10,6 +10,7 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
+    // Sets which nodes are visible
     data.nodes.forEach((node) => {
       node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
     })
@@ -280,6 +281,8 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "BioVentureHub", 300)
     connectNodes("Astra", "BioVentureHub", 300)
     connectNodes("GoCo", "Astra", 300)
+    connectNodes("Astra", "BVH_Companies", 600)
+    connectNodes("GoCo", "BVH_Companies", 600)
     // Create the SVG container
     const svg = d3.select("#graph")
 
@@ -579,9 +582,17 @@ fetch("../datasets/co_data_test.json")
       if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
         // Toggle visibility of connected nodes
         data.links.forEach((link) => {
-          if (link.source.id === d.id && link.target.id !== d.id) {
+          if (
+            link.source.id === d.id &&
+            link.target.id !== d.id &&
+            !["Astra", "GoCo"].includes(link.source.id)
+          ) {
             link.target.isVisible = !link.target.isVisible
-          } else if (link.target.id === d.id && link.source.id !== d.id) {
+          } else if (
+            link.target.id === d.id &&
+            link.source.id !== d.id &&
+            !["Astra", "GoCo"].includes(link.source.id)
+          ) {
             link.source.isVisible = !link.source.isVisible
           }
         })
@@ -595,11 +606,16 @@ fetch("../datasets/co_data_test.json")
           // Otherwise, display based on its visibility
           return d.isVisible ? "inline" : "none"
         })
-        links.style("display", (d) =>
-          d.source.isVisible && d.target.isVisible ? "inline" : "none"
-        )
+        links.style("display", (d) => {
+          return d.source.isVisible && d.target.isVisible ? "inline" : "none"
+        })
       }
     })
+
+    console.log(data.nodes[0].isVisible)
+    console.log(data.nodes[1].isVisible)
+    console.log(data.nodes[2].isVisible)
+    console.log(data.nodes[3].isVisible)
 
     // Updates the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
