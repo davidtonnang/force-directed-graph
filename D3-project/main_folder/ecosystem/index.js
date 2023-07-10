@@ -240,7 +240,7 @@ fetch("../datasets/co_data_test.json")
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
     // Create a function that links two nodes
-    const DEFAULT_DISTANCE = 90
+    const DEFAULT_DISTANCE = 100
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
@@ -254,7 +254,7 @@ fetch("../datasets/co_data_test.json")
       connectNodes(
         data.nodes[i].id,
         "BVH_Companies",
-        i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+        i % 2 == 0 ? DEFAULT_DISTANCE / 2 : DEFAULT_DISTANCE
       )
     }
 
@@ -316,7 +316,7 @@ fetch("../datasets/co_data_test.json")
           .id((d) => d.id)
           .distance((link) => link.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-400))
+      .force("charge", d3.forceManyBody().strength(-200))
       .force(
         "center",
         d3.forceCenter(
@@ -612,10 +612,10 @@ fetch("../datasets/co_data_test.json")
       }
     })
 
-    console.log(data.nodes[0].isVisible)
-    console.log(data.nodes[1].isVisible)
-    console.log(data.nodes[2].isVisible)
-    console.log(data.nodes[3].isVisible)
+    console.log(data.links[0].distance)
+    console.log(data.links[1].distance)
+    console.log(data.links[2].distance)
+    console.log(data.links[3].distance)
 
     // Updates the node and link positions on each tick of the simulation
     simulation.on("tick", () => {
@@ -629,4 +629,18 @@ fetch("../datasets/co_data_test.json")
 
       labels.attr("x", (d) => d.x + 10).attr("y", (d) => d.y - 10)
     })
+
+    function ticked() {
+      var alpha = this.alpha()
+      var chargeStrength
+
+      if (alpha > 0.2) {
+        chargeStrength = alpha - 0.2 / 0.8
+      } else {
+        chargeStrength = 0
+      }
+
+      this.force("charge", d3.forceManyBody().strength(-30 * chargeStrength))
+    }
+    // simulation.on("tick", ticked)
   })
