@@ -616,10 +616,21 @@ fetch("../datasets/co_data_test.json")
       ) {
         return "inline"
       }
+
+      if (
+        ((d.source.id === "BVH_Alumni" || d.source.id === "BVH_USP") &&
+          d.source.isVisible) ||
+        ((d.target.id === "BVH_Alumni" || d.target.id === "BVH_USP") &&
+          d.target.isVisible)
+      ) {
+        return "inline"
+      }
+
       return d.isVisible && d.source.isVisible && d.target.isVisible
         ? "inline"
         : "none"
     }
+
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
 
     nodes.on("click", function (event, d) {
