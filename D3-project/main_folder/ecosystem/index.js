@@ -285,10 +285,9 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub", 200)
-    connectNodes("Astra", "BioVentureHub", 200)
-    connectNodes("GoCo", "Astra", 200)
-    //connectNodes("BioVentureHub", "BVH_Companies", 300)
+    connectNodes("GoCo", "BioVentureHub", 300)
+    connectNodes("Astra", "BioVentureHub", 300)
+    connectNodes("GoCo", "Astra", 300)
     // Create the SVG container
     const svg = d3.select("#graph")
 
@@ -302,7 +301,7 @@ fetch("../datasets/co_data_test.json")
     })
     svg.call(zoom)
 
-    const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the right
+    const bvhOffsetX = 300 // adjust this value to move BVH_Companies to the right
     const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub to the right
 
     const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX // X coordinate for BVH_Companies
@@ -322,30 +321,17 @@ fetch("../datasets/co_data_test.json")
           .id((d) => d.id)
           .distance((link) => link.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-200))
       .force(
         "center",
-        d3
-          .forceCenter(
-            svg.node().width.baseVal.value / 2,
-            svg.node().height.baseVal.value / 2
-          )
-          .strength(0.001)
+        d3.forceCenter(
+          svg.node().width.baseVal.value / 2,
+          svg.node().height.baseVal.value / 2
+        )
       )
       .force(
         "circular",
-        d3
-          .forceRadial(
-            (d) =>
-              d.index % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE,
-            bvhX,
-            bvhY
-          )
-          .strength(function (d) {
-            // gör varannan
-            if (d.ecosystem == "BioVentureHub") return 1.5
-            else return 0
-          })
+        d3.forceRadial((d) => (d.id === "BVH_Companies" ? 0 : 300), bvhX, bvhY)
       )
       .force(
         "BVH_USP_forceY",
@@ -375,8 +361,6 @@ fetch("../datasets/co_data_test.json")
           .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
           .x((3 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
       )
-
-    console.log(data.nodes[0])
 
     // In defs we're going to add the images in the nodes
     var defs = svg.append("defs")
@@ -486,11 +470,8 @@ fetch("../datasets/co_data_test.json")
         .attr("dy", "1.2em")
     })
 
-    data.nodes[0].y = svg.node().height.baseVal.value / 2
-    data.nodes[0].x = svg.node().width.baseVal.value / 2
-
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
-    var bvh_y = data.nodes[1].y
+    var bvh_y = data.nodes[0].y
 
     for (let i = 0; i < data.nodes.length; i++) {
       if (
@@ -795,10 +776,6 @@ fetch("../datasets/co_data_test.json")
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
       labels.attr("x", (d) => d.x + 10).attr("y", (d) => d.y - 10)
-      //data.nodes[0].y = svg.node().height.baseVal.value / 2
-      //data.nodes[0].x = svg.node().width.baseVal.value / 2
-      data.nodes[1].y = bvhY
-      data.nodes[1].x = bvhX
     })
 
     function ticked() {
