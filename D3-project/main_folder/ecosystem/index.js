@@ -706,12 +706,33 @@ fetch("../datasets/co_data_test.json")
               data.nodes[i].isVisible = !data.nodes[i].isVisible
             }
           }
+          if (d.id === "Alumni") {
+            for (let i = 0; i < data.nodes.length; i++) {
+              if (
+                data.nodes[i].ecosystem == "Alumni" &&
+                data.nodes[i].size_in_visualisation == "medium"
+              ) {
+                data.nodes[i].isVisible = !data.nodes[i].isVisible
+              }
+            }
+          }
         }
 
         if (d.id === "BVH_Companies") {
           for (let i = 0; i < data.nodes.length; i++) {
             if (
               data.nodes[i].ecosystem == "BioVentureHub" &&
+              data.nodes[i].size_in_visualisation == "medium"
+            ) {
+              data.nodes[i].isVisible = !data.nodes[i].isVisible
+            }
+          }
+        }
+
+        if (d.id === "Alumni") {
+          for (let i = 0; i < data.nodes.length; i++) {
+            if (
+              data.nodes[i].ecosystem == "Alumni" &&
               data.nodes[i].size_in_visualisation == "medium"
             ) {
               data.nodes[i].isVisible = !data.nodes[i].isVisible
