@@ -220,7 +220,7 @@ fetch("../datasets/co_data_test.json")
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
     // Create a function that links two nodes
-    const DEFAULT_DISTANCE = 90
+    const DEFAULT_DISTANCE = 100
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
@@ -297,7 +297,7 @@ fetch("../datasets/co_data_test.json")
           .id((d) => d.id)
           .distance((link) => link.distance)
       )
-      .force("charge", d3.forceManyBody().strength(-400))
+      .force("charge", d3.forceManyBody().strength(-200))
       .force(
         "center",
         d3.forceCenter(
@@ -662,4 +662,18 @@ fetch("../datasets/co_data_test.json")
 
       labels.attr("x", (d) => d.x + 10).attr("y", (d) => d.y - 10)
     })
+
+    function ticked() {
+      var alpha = this.alpha()
+      var chargeStrength
+
+      if (alpha > 0.2) {
+        chargeStrength = alpha - 0.2 / 0.8
+      } else {
+        chargeStrength = 0
+      }
+
+      this.force("charge", d3.forceManyBody().strength(-30 * chargeStrength))
+    }
+    // simulation.on("tick", ticked)
   })
