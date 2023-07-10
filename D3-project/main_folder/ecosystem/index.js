@@ -684,10 +684,10 @@ fetch("../datasets/co_data_test.json")
         : "none"
     }
 
-
     function updateLinkVisibility_2(d) {
       if (d.source.isVisible && d.target.isVisible) return "inline"
       else return "none"
+    }
 
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
     nodes.on("click", function (event, d) {
@@ -706,7 +706,6 @@ fetch("../datasets/co_data_test.json")
           bvhUspNode.isVisible = !bvhUspNode.isVisible
           bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
           for (let i = 0; i < data.nodes.length; i++) {
-
             if (
               data.nodes[i].ecosystem == "BioVentureHub" &&
               data.nodes[i].size_in_visualisation == "medium"
@@ -718,9 +717,19 @@ fetch("../datasets/co_data_test.json")
 
         if (d.id === "BVH_Companies") {
           for (let i = 0; i < data.nodes.length; i++) {
-
             if (
               data.nodes[i].ecosystem == "BioVentureHub" &&
+              data.nodes[i].size_in_visualisation == "medium"
+            ) {
+              data.nodes[i].isVisible = !data.nodes[i].isVisible
+            }
+          }
+        }
+
+        if (d.id === "BVH_Alumni") {
+          for (let i = 0; i < data.nodes.length; i++) {
+            if (
+              data.nodes[i].ecosystem == "Alumni" &&
               data.nodes[i].size_in_visualisation == "medium"
             ) {
               data.nodes[i].isVisible = !data.nodes[i].isVisible
