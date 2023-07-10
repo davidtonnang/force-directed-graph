@@ -677,94 +677,46 @@ fetch("../datasets/co_data_test.json")
         : "none"
     }
 
+    function updateLinkVisibility_2(d) {
+      if (d.source.isVisible && d.target.isVisible) return "inline"
+      else return "none"
+    }
+
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
 
     nodes.on("click", function (event, d) {
       // Fetch BVH_USP and BVH_Alumni nodes
       const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
       const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-      if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
-        // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
-        const linkBetweenBHAndBVC = data.links.find(
-          (link) =>
-            ["BioVentureHub", "BVH_Companies"].includes(link.source.id) &&
-            ["BioVentureHub", "BVH_Companies"].includes(link.target.id)
-        )
-        if (linkBetweenBHAndBVC) {
-          linkBetweenBHAndBVC.isVisible = bvhCompaniesNode.isVisible
+      if (
+        d.id === "BioVentureHub" ||
+        d.id === "BVH_Companies" ||
+        d.id === "BVH_Alumni" ||
+        d.id === "USP"
+      ) {
+        if (d.id === "BioVentureHub") {
+          bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
+          bvhUspNode.isVisible = !bvhUspNode.isVisible
+          bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+          for (let i = 0; i < data.nodes.length; i++) {
+            if (
+              data.nodes[i].ecosystem == "BioVentureHub" &&
+              data.nodes[i].size_in_visualisation == "medium"
+            ) {
+              data.nodes[i].isVisible = !data.nodes[i].isVisible
+            }
+          }
         }
 
-        if (bvhCompaniesNode.isVisible && d.id === "BioVentureHub") {
-          bvhCompaniesNode.isVisible = false
-          if (bvhUspNode) {
-            bvhUspNode.isVisible = !bvhUspNode.isVisible
+        if (d.id === "BVH_Companies") {
+          for (let i = 0; i < data.nodes.length; i++) {
+            if (
+              data.nodes[i].ecosystem == "BioVentureHub" &&
+              data.nodes[i].size_in_visualisation == "medium"
+            ) {
+              data.nodes[i].isVisible = !data.nodes[i].isVisible
+            }
           }
-          if (bvhAlumniNode) {
-            bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
-          }
-          data.links.forEach((link) => {
-            if (
-              link.source.id === "BVH_Alumni" &&
-              link.target.id !== "BioVentureHub"
-            ) {
-              link.isVisible = bvhAlumniNode.isVisible
-            } else if (
-              link.target.id === "BVH_Alumni" &&
-              link.source.id !== "BioVentureHub"
-            ) {
-              link.isVisible = bvhAlumniNode.isVisible
-            }
-            if (
-              link.source.id === "BVH_USP" &&
-              link.target.id !== "BioVentureHub"
-            ) {
-              link.isVisible = bvhUspNode.isVisible
-            } else if (
-              link.target.id === "BVH_USP" &&
-              link.source.id !== "BioVentureHub"
-            ) {
-              link.isVisible = bvhUspNode.isVisible
-            }
-            if (link.source.id === "BVH_Companies") {
-              link.target.isVisible = false
-              link.isVisible = false
-            } else if (link.target.id === "BVH_Companies") {
-              link.source.isVisible = false
-              link.isVisible = false
-            }
-          })
-        } else {
-          data.links.forEach((link) => {
-            if (
-              link.source.id === "BioVentureHub" &&
-              ["GoCo", "Astra"].includes(link.target.id)
-            ) {
-              link.target.isVisible = true
-            } else if (
-              link.target.id === "BioVentureHub" &&
-              ["GoCo", "Astra"].includes(link.source.id)
-            ) {
-              link.source.isVisible = true
-            } else if (
-              link.source.id === d.id &&
-              link.target.id !== d.id &&
-              link.target.id !== "BioVentureHub"
-            ) {
-              link.target.isVisible = !link.target.isVisible
-              if (d.id === "BVH_Companies") {
-                link.isVisible = link.target.isVisible
-              }
-            } else if (
-              link.target.id === d.id &&
-              link.source.id !== d.id &&
-              link.source.id !== "BioVentureHub"
-            ) {
-              link.source.isVisible = !link.source.isVisible
-              if (d.id === "BVH_Companies") {
-                link.isVisible = link.source.isVisible
-              }
-            }
-          })
         }
 
         // update node display
@@ -773,7 +725,7 @@ fetch("../datasets/co_data_test.json")
         )
 
         // update link display
-        links.style("display", (d) => updateLinkVisibility(d, bvhCompaniesNode))
+        links.style("display", (d) => updateLinkVisibility_2(d))
       }
     })
 
@@ -789,7 +741,7 @@ fetch("../datasets/co_data_test.json")
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y)
 
-      links.style("display", (d) => updateLinkVisibility(d, bvhCompaniesNode))
+      links.style("display", (d) => updateLinkVisibility_2(d))
 
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
