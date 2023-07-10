@@ -2,7 +2,7 @@
   "nodes": [
     {
       "group": "Drugs",
-      "ecosystem": "BioVentureHub",
+      "ecosystem": "BioVentureHubs",
       "company_name": "BioVentureHub",
       "id": "BioVentureHub",
       "turnover_sek": 1730000,
@@ -22,7 +22,7 @@
     },
     {
       "group": "Drugs",
-      "ecosystem": "BioVentureHub",
+      "ecosystem": "BioVentureHubs",
       "company_name": "BVH Companies",
       "id": "BVH_Companies",
       "turnover_sek": 1730000,
