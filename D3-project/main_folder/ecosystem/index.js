@@ -232,7 +232,23 @@ fetch("../datasets/co_data_test.json")
 
     // Connect all the nodes to their Ecosystem node
     for (let i = 0; i < data.nodes.length; i++) {
-      if (!["Astra", "GoCo"].includes(data.nodes[i].id)) {
+      // Check if the ecosystem of the current node matches that of 'BVH_Companies'
+      let bvhCompaniesNode = data.nodes.find(
+        (node) => node.id === "BVH_Companies"
+      )
+      let bioVentureHubNode = data.nodes.find(
+        (node) => node.id === "BioVentureHub"
+      )
+
+      if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
+        // Connect BVH_Alumni and BVH_Usp to BioVentureHub
+        connectNodes(
+          data.nodes[i].id,
+          bioVentureHubNode.id,
+          i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+        )
+      } else if (data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem) {
+        // For other nodes, connect them to BVH_Companies if they belong to the same ecosystem
         connectNodes(
           data.nodes[i].id,
           "BVH_Companies",
@@ -322,6 +338,34 @@ fetch("../datasets/co_data_test.json")
             if (d.ecosystem == "BioVentureHub") return 1.5
             else return 0
           })
+      )
+      .force(
+        "BVH_USP_forceY",
+        d3
+          .forceY()
+          .strength((node) => (node.id === "BVH_USP" ? 0.5 : 0))
+          .y(svg.node().height.baseVal.value / 4) // affects the y-position for the BVH_USP node
+      )
+      .force(
+        "BVH_Alumni_forceY",
+        d3
+          .forceY()
+          .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
+          .y((3 * svg.node().height.baseVal.value) / 4) // affects the y-position for the BVH_Alumni node
+      )
+      .force(
+        "BVH_USP_forceX",
+        d3
+          .forceX()
+          .strength((node) => (node.id === "BVH_USP" ? 0.5 : 0))
+          .x((3 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
+      )
+      .force(
+        "BVH_Alumni_forceX",
+        d3
+          .forceX()
+          .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
+          .x((3 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
       )
 
     console.log(data.nodes[0])
@@ -591,12 +635,27 @@ fetch("../datasets/co_data_test.json")
       ) {
         return "inline"
       }
+
+      if (
+        ((d.source.id === "BVH_Alumni" || d.source.id === "BVH_USP") &&
+          d.source.isVisible) ||
+        ((d.target.id === "BVH_Alumni" || d.target.id === "BVH_USP") &&
+          d.target.isVisible)
+      ) {
+        return "inline"
+      }
+
       return d.isVisible && d.source.isVisible && d.target.isVisible
         ? "inline"
         : "none"
     }
 
+    // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
+
     nodes.on("click", function (event, d) {
+      // Fetch BVH_USP and BVH_Alumni nodes
+      const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
+      const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
       if (d.id === "BioVentureHub" || d.id === "BVH_Companies") {
         // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
         const linkBetweenBHAndBVC = data.links.find(
@@ -610,7 +669,35 @@ fetch("../datasets/co_data_test.json")
 
         if (bvhCompaniesNode.isVisible && d.id === "BioVentureHub") {
           bvhCompaniesNode.isVisible = false
+          if (bvhUspNode) {
+            bvhUspNode.isVisible = !bvhUspNode.isVisible
+          }
+          if (bvhAlumniNode) {
+            bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+          }
           data.links.forEach((link) => {
+            if (
+              link.source.id === "BVH_Alumni" &&
+              link.target.id !== "BioVentureHub"
+            ) {
+              link.isVisible = bvhAlumniNode.isVisible
+            } else if (
+              link.target.id === "BVH_Alumni" &&
+              link.source.id !== "BioVentureHub"
+            ) {
+              link.isVisible = bvhAlumniNode.isVisible
+            }
+            if (
+              link.source.id === "BVH_USP" &&
+              link.target.id !== "BioVentureHub"
+            ) {
+              link.isVisible = bvhUspNode.isVisible
+            } else if (
+              link.target.id === "BVH_USP" &&
+              link.source.id !== "BioVentureHub"
+            ) {
+              link.isVisible = bvhUspNode.isVisible
+            }
             if (link.source.id === "BVH_Companies") {
               link.target.isVisible = false
               link.isVisible = false
