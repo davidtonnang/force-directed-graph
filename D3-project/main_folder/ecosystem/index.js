@@ -10,6 +10,7 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
+    // Sets which nodes are visible
     data.nodes.forEach((node) => {
       node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
     })
@@ -27,12 +28,12 @@ fetch("../datasets/co_data_test.json")
     //}
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
-    function remove_all_after(word, char) {
-      if (word.includes(char)) {
-        let index = word.indexOf(char)
-        filtered_string = word.slice(0, index)
+    function remove_all_after(sentence, char) {
+      if (sentence.includes(char)) {
+        let index = sentence.indexOf(char)
+        filtered_string = sentence.slice(0, index)
       } else {
-        filtered_string = word
+        filtered_string = sentence
       }
 
       return filtered_string
@@ -264,12 +265,14 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "BioVentureHub", 300)
     connectNodes("Astra", "BioVentureHub", 300)
     connectNodes("GoCo", "Astra", 300)
+    connectNodes("Astra", "BVH_Companies", 600)
+    connectNodes("GoCo", "BVH_Companies", 600)
     // Create the SVG container
     const svg = d3.select("#graph")
 
     // Create a group for the graph elements
 
-    const container = svg.append("g")
+    const container = svg.append("g") //Is g = group?
 
     // Enable zooming and panning behavior
     const zoom = d3.zoom().on("zoom", (event) => {
@@ -311,7 +314,7 @@ fetch("../datasets/co_data_test.json")
       )
 
     // In defs we're going to add the images in the nodes
-    var defs = svg.append("defs")
+    var defs = container.append("defs")
 
     // Create the nodes
     const nodes = container
@@ -319,7 +322,7 @@ fetch("../datasets/co_data_test.json")
       .data(data.nodes)
       .enter()
       .append("circle")
-      .style("fill", (d) => "url(#" + d.id + ")")
+      .style("fill", (d) => "url(#" + d.id + ")") // puts the image in the node
       .attr("class", "node")
       .style("cursor", "pointer")
       .attr("r", (node) => node.size)
@@ -421,6 +424,7 @@ fetch("../datasets/co_data_test.json")
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
     var bvh_y = data.nodes[0].y
 
+    // Here we adjust position of the labels based on position of nodes in image
     for (let i = 0; i < data.nodes.length; i++) {
       if (
         data.nodes[i].y > bvh_y &&
