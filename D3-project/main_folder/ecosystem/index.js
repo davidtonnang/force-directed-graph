@@ -239,6 +239,7 @@ fetch("../datasets/co_data_test.json")
       let bioVentureHubNode = data.nodes.find(
         (node) => node.id === "BioVentureHub"
       )
+      let bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
 
       if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
         // Connect BVH_Alumni and BVH_Usp to BioVentureHub
@@ -251,6 +252,13 @@ fetch("../datasets/co_data_test.json")
         connectNodes(
           data.nodes[i].id,
           "BVH_Companies",
+          i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+        )
+      } else if (data.nodes[i].ecosystem.includes("Alumni")) {
+        // For nodes with "Alumni" in their ecosystem, connect them to BVH_Alumni
+        connectNodes(
+          data.nodes[i].id,
+          bvhAlumniNode.id, // Connect to BVH_Alumni
           i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
         )
       }
@@ -658,21 +666,20 @@ fetch("../datasets/co_data_test.json")
         (d.target.id === "BioVentureHub" &&
           d.source.id === "BVH_Companies" &&
           bvhCompaniesNode.isVisible) ||
-        (SPECIAL_IDS.includes(d.source.id) && SPECIAL_IDS.includes(d.target.id))
-      ) {
-        return "inline"
-      }
-
-      if (
-        ((d.source.id === "BVH_Alumni" || d.source.id === "BVH_USP") &&
-          d.source.isVisible) ||
-        ((d.target.id === "BVH_Alumni" || d.target.id === "BVH_USP") &&
+        (d.source.id === "BVH_Alumni" &&
+          d.source.isVisible &&
+          d.target.isVisible) ||
+        (d.target.id === "BVH_Alumni" &&
+          d.source.isVisible &&
           d.target.isVisible)
       ) {
         return "inline"
       }
 
-      return d.isVisible && d.source.isVisible && d.target.isVisible
+      return (d.source.id === "GoCo" && d.target.id === "BioVentureHub") ||
+        (d.source.id === "Astra" && d.target.id === "BioVentureHub")
+        ? "inline"
+        : d.isVisible && d.source.isVisible && d.target.isVisible
         ? "inline"
         : "none"
     }
@@ -683,11 +690,11 @@ fetch("../datasets/co_data_test.json")
     }
 
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
-
     nodes.on("click", function (event, d) {
       // Fetch BVH_USP and BVH_Alumni nodes
       const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
       const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
+
       if (
         d.id === "BioVentureHub" ||
         d.id === "BVH_Companies" ||
@@ -729,7 +736,7 @@ fetch("../datasets/co_data_test.json")
           }
         }
 
-        if (d.id === "Alumni") {
+        if (d.id === "BVH_Alumni") {
           for (let i = 0; i < data.nodes.length; i++) {
             if (
               data.nodes[i].ecosystem == "Alumni" &&
