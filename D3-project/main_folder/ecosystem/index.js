@@ -146,7 +146,14 @@ fetch("../datasets/co_data_test.json")
         })
         .style("opacity", (d) => {
           // If the node is one of the special nodes, do not filter
-          if (["BioVentureHub"].includes(d.id)) {
+          if (
+            [
+              "BioVentureHub",
+              "BVH_Companies",
+              "BVH_Alumni",
+              "BVH_USP",
+            ].includes(d.id)
+          ) {
             return 1
           }
           if (["Astra", "GoCo"].includes(d.id)) {
@@ -408,6 +415,22 @@ fetch("../datasets/co_data_test.json")
     // In defs we're going to add the images in the nodes
     var defs = svg.append("defs")
 
+    // Adjust x value accordingly to place it to the right
+    const rightPanelContainer = d3
+      .select("#graph")
+      .append("foreignObject")
+      .attr("x", "80%") // Position from the left
+      .attr("y", "0") // Position from the top
+      .attr("width", "20%") // Width of the rectangle
+      .attr("height", "100%") // Full height of the rectangle
+
+    // Append a div to the foreignObject
+    const rightPanelDiv = rightPanelContainer
+      .append("xhtml:div")
+      .style("height", "100%")
+      .style("width", "100%")
+      .style("background", "lightblue")
+
     // Create the nodes
     const nodes = container
       .selectAll(".node")
@@ -643,13 +666,48 @@ fetch("../datasets/co_data_test.json")
       else return "none"
     }
 
+    console.log(data.links[0].isVisible)
+
     function toggle_ecosystem(ecoSys, bvh = false) {
       for (let i = 0; i < data.nodes.length; i++) {
         if (
           data.nodes[i].ecosystem == ecoSys &&
           data.nodes[i].size_in_visualisation == "medium"
         ) {
+          // Toggle node visibility
           data.nodes[i].isVisible = !data.nodes[i].isVisible
+
+          // Update visibility for links connected to this node
+          data.links.forEach((link) => {
+            if (
+              link.source.id === data.nodes[i].id ||
+              link.target.id === data.nodes[i].id
+            ) {
+              link.isVisible = data.nodes[i].isVisible
+            }
+          })
+
+          // Select the node that is being toggled and apply the transition
+          d3.select("#graph")
+            .selectAll(".node")
+            .filter((node) => node.id === data.nodes[i].id)
+            .style("opacity", 0)
+            .transition()
+            .duration(2000)
+            .style("opacity", data.nodes[i].isVisible ? 1 : 0)
+
+          // Select the links that are being toggled and apply the transition
+          d3.select("#graph")
+            .selectAll(".link")
+            .filter(
+              (link) =>
+                link.source.id === data.nodes[i].id ||
+                link.target.id === data.nodes[i].id
+            )
+            .style("opacity", 0)
+            .transition()
+            .duration(2000)
+            .style("opacity", data.links[i].isVisible ? 1 : 0)
         }
       }
     }
