@@ -661,7 +661,7 @@ fetch("../datasets/co_data_test.json")
       else return "none"
     }
 
-    function toggle_ecosystem(ecoSys) {
+    function toggle_ecosystem(ecoSys, bvh = false) {
       for (let i = 0; i < data.nodes.length; i++) {
         if (
           data.nodes[i].ecosystem == ecoSys &&
@@ -677,7 +677,12 @@ fetch("../datasets/co_data_test.json")
       // Fetch BVH_USP and BVH_Alumni nodes
       const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
       const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-
+      const companiesNode = data.nodes.find(
+        (node) => node.id === "Antaros_Medical"
+      )
+      const alumniCompNode = data.nodes.find(
+        (node) => node.id === "alumni_company_one"
+      )
       if (
         d.id === "BioVentureHub" ||
         d.id === "BVH_Companies" ||
@@ -685,6 +690,12 @@ fetch("../datasets/co_data_test.json")
         d.id === "USP"
       ) {
         if (d.id === "BioVentureHub") {
+          if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
+            toggle_ecosystem("BioVentureHub")
+          }
+          if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
+            toggle_ecosystem("Alumni")
+          }
           bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
           bvhUspNode.isVisible = !bvhUspNode.isVisible
           bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
@@ -697,18 +708,6 @@ fetch("../datasets/co_data_test.json")
         if (d.id === "BVH_Alumni") {
           toggle_ecosystem("Alumni")
         }
-
-        if (d.id === "Alumni") {
-          for (let i = 0; i < data.nodes.length; i++) {
-            if (
-              data.nodes[i].ecosystem == "Alumni" &&
-              data.nodes[i].size_in_visualisation == "medium"
-            ) {
-              data.nodes[i].isVisible = !data.nodes[i].isVisible
-            }
-          }
-        }
-
         // update node display
         nodes.style("display", (d) =>
           SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
