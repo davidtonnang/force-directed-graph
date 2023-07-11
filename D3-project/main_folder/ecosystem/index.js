@@ -14,18 +14,6 @@ fetch("../datasets/co_data_test.json")
       node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
     })
 
-    //var regExp = /[a-zA-Z]/g
-
-    // Attempt to make function that removes characters and splits a long string to a list
-    //function remove_characters(words, character_list) {
-    //  for (let i = 0; character_list.length; i++) {
-    //    words.split(character_list[i])
-    //    words.join(",")
-    //  }
-    //  words.split(",")
-    //  return words
-    //}
-
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
       if (word.includes(char)) {
@@ -63,33 +51,11 @@ fetch("../datasets/co_data_test.json")
       d3.select("svg").selectAll(".clickedLabelGroup").remove()
     }
 
-    const filterDropdown = d3.select("#filterDropdown")
-    const filterDropdownCompanyType = d3.select("#filterDropdownCompanyType")
-
     const privateCheckbox = d3.select("#privateCheckbox")
     const publicCheckbox = d3.select("#publicCheckbox")
     const employeeRange = document.getElementById("employeeRange")
 
-    privateCheckbox.on("change", handleFilterSelection)
-    publicCheckbox.on("change", handleFilterSelection)
-
-    filterDropdown
-      .selectAll("option")
-      .data(therapy_list)
-      .enter()
-      .append("option")
-      .attr("value", (d) => d)
-      .text((d) => d)
-
-    filterDropdownCompanyType
-      .selectAll("option")
-      .data(type_list)
-      .enter()
-      .append("option")
-      .attr("value", (d) => d)
-      .text((d) => d)
-
-    d3
+    const filterContainer = d3
       .select("#graph")
       .append("foreignObject")
       .attr("x", "22")
@@ -110,6 +76,27 @@ fetch("../datasets/co_data_test.json")
   </select>
 </div>
   `)
+
+    // Adds Therapy area to the filtering
+    const therapyAreaSelect = d3.select("#filterDropdown")
+    therapyAreaSelect
+      .selectAll("option")
+      .data(therapy_list)
+      .enter()
+      .append("option")
+      .text((d) => d)
+      .attr("value", (d) => d)
+
+    // Adds the Company Type to the filtering
+
+    const companyTypeSelect = d3.select("#filterDropdownCompanyType")
+    companyTypeSelect
+      .selectAll("option")
+      .data(type_list)
+      .enter()
+      .append("option")
+      .text((d) => d)
+      .attr("value", (d) => d)
 
     // Initialize filterState
     let filterState = {
@@ -194,14 +181,14 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Handle therapy area filter
-    function handleFilterDropdown(chosen_filter) {
-      filterState.therapyArea = this.value
+    function handleFilterDropdown(event) {
+      filterState.therapyArea = event.target.value
       applyFilters()
     }
 
-    // Handle therapy area filter
-    function handleFilterDropdown_type(chosen_filter) {
-      filterState.type_of_company = this.value
+    // Handle type of company filter
+    function handleFilterDropdown_type(event) {
+      filterState.type_of_company = event.target.value
       applyFilters()
     }
 
@@ -210,6 +197,7 @@ fetch("../datasets/co_data_test.json")
       filterState.financing.private = privateCheckbox.property("checked")
       filterState.financing.public = publicCheckbox.property("checked")
       applyFilters()
+      console.log("hello")
 
       privateCheckbox.on("change", function () {
         if (this.checked) {
@@ -235,8 +223,8 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Attach event handlers to filters
-    filterDropdown.on("change", handleFilterDropdown)
-    filterDropdownCompanyType.on("change", handleFilterDropdown_type)
+    therapyAreaSelect.on("change", handleFilterDropdown)
+    companyTypeSelect.on("change", handleFilterDropdown_type)
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
@@ -285,14 +273,6 @@ fetch("../datasets/co_data_test.json")
         )
       }
     }
-
-    // Not used for now but adds a distance to any link in the json file.
-    //   for (let i = 0; i < data.links.length; i++) {
-    //     if (i % 2 == 0) {
-    //       data.links[i].distance = DEFAULT_DISTANCE - 40
-    //     }
-    //     data.links[i].distance = DEFAULT_DISTANCE
-    //   }
 
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
@@ -616,26 +596,6 @@ fetch("../datasets/co_data_test.json")
       .on("mouseout", function (event, d) {
         svg.selectAll(".labelGroup").remove() // remove group on mouseout
       })
-
-    // Not used right now but this adds a smooth zoom function on click for the nodes
-    // .on("click", function (event, d) {
-    //   event.stopPropagation()
-    //   const dx = d.x,
-    //     dy = d.y,
-    //     scale = 1.7 // affects the zoom level
-    //   const translate = [
-    //     svg.node().width.baseVal.value / 2 - scale * dx,
-    //     svg.node().height.baseVal.value / 2 - scale * dy,
-    //   ]
-
-    //   svg
-    //     .transition()
-    //     .duration(3000) // Transition duration here, 3000 is 3 seconds
-    //     .call(
-    //       zoom.transform,
-    //       d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
-    //     )
-    // })
 
     // Shows labels on click
     nodes.on("click", function (event, d) {
