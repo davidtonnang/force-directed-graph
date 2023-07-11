@@ -89,6 +89,28 @@ fetch("../datasets/co_data_test.json")
       .attr("value", (d) => d)
       .text((d) => d)
 
+    d3
+      .select("#graph")
+      .append("foreignObject")
+      .attr("x", "22")
+      .attr("y", "0")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .append("xhtml:div")
+      .attr("class", "filter-container").html(`
+  <div>
+  <select id="filterDropdownCompanyType">
+    <option value="">Type of Company</option>
+  </select>
+</div>
+
+<div>
+  <select id="filterDropdown">
+    <option value="">All Therapy Areas</option>
+  </select>
+</div>
+  `)
+
     // Initialize filterState
     let filterState = {
       therapyArea: "",
