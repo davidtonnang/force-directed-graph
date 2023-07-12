@@ -10,9 +10,19 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    data.nodes.forEach((node) => {
-      node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
-    })
+    const first_view = new Set([
+      "BioVentureHub",
+      "Astra",
+      "GoCo",
+      "BVH_USP",
+      "BVH_Companies",
+      "BVH_Alumni",
+    ])
+
+    for (let node of data.nodes) {
+      node.isVisible =
+        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
+    }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
@@ -283,9 +293,9 @@ fetch("../datasets/co_data_test.json")
 
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
-      if (data.nodes[i].size_in_visualisation == "big") {
+      if (data.nodes[i].size_in_visualization == "big") {
         data.nodes[i].size = 50
-      } else if (data.nodes[i].size_in_visualisation == "BVH") {
+      } else if (data.nodes[i].size_in_visualization == "BVH") {
         data.nodes[i].size = 35
       } else {
         data.nodes[i].size = 12
@@ -427,9 +437,10 @@ fetch("../datasets/co_data_test.json")
     // Append a div to the foreignObject
     const rightPanelDiv = rightPanelContainer
       .append("xhtml:div")
+      .attr("id", "rightPanel") // give the div an id for easy selection
       .style("height", "100%")
       .style("width", "100%")
-      .style("background", "lightblue")
+      .style("background", "white")
 
     // Create the nodes
     const nodes = container
@@ -462,8 +473,8 @@ fetch("../datasets/co_data_test.json")
       )
       .attr("class", function (d) {
         if (
-          d.source.size_in_visualisation == "big" &&
-          d.target.size_in_visualisation == "BVH"
+          d.source.size_in_visualization == "big" &&
+          d.target.size_in_visualization == "BVH"
         ) {
           return "dashed"
         } else {
@@ -562,7 +573,7 @@ fetch("../datasets/co_data_test.json")
       } else {
         data.nodes[i].label_adjustment = 0
       }
-      if (data.nodes[i].size_in_visualisation == "big") {
+      if (data.nodes[i].size_in_visualization == "big") {
         data.nodes[i].label_adjustment = 0
       }
     }
@@ -620,43 +631,94 @@ fetch("../datasets/co_data_test.json")
         svg.selectAll(".labelGroup").remove() // remove group on mouseout
       })
 
-    // Shows labels on click
+    // Shows labels inside panel on click
     nodes.on("click", function (event, d) {
-      const transform = d3.zoomTransform(svg.node())
-      const scaledX = d.x * transform.k + transform.x
-      const scaledY = d.y * transform.k + transform.y
+      console.log(d)
+      console.log(`size_in_visualization: ${d.size_in_visualization}`)
+      if (d.size_in_visualization === "medium") {
+        console.log("Funkar")
 
-      // Removes any already existing labels
-      svg.selectAll(".clickedLabelGroup").remove()
+        // Clear the existing content of rightPanelDiv
+        d3.select("#rightPanel").html("")
 
-      // Create a new label group for the clicked node
-      const clickedLabelGroup = svg
-        .append("g")
-        .attr("class", "clickedLabelGroup")
+        // Append new content to the right panel div
+        d3.select("#rightPanel")
+          .append("img") // Add this line
+          .attr("src", d.company_logo) // And this line
+          .attr("alt", `${d.company_name} logo`) // And this line
+          .attr("width", "200") // And this line, adjust the width as necessary
 
-      // Append a foreignObject to the group
-      const foreignObject = clickedLabelGroup
-        .append("foreignObject")
-        .attr("x", scaledX + 15) // adjust position
-        .attr("y", scaledY + d.label_adjustment) // adjust position  här!
-        .attr("width", 300) // set width
-        .attr("height", 400) // set height
-        .html(
-          `<div class="info-click-box info-click-box-hidden">
-        ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
-           <h4>${d.company_name}</h4>
-           <p>${
-             d.type_of_company ? `Type of company: ${d.type_of_company}` : ""
-           }</p>
-          <p>${d.therapy_areas ? `Therapy area: ${d.therapy_areas}` : ""}</p>
-          <p>${d.ceo ? `CEO: ${d.ceo}` : ""}</p>
-           <button class="clickedLabelGroupButton" onclick="handleButtonClick()"></button>${
-             d.company_website
-               ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
-               : ""
-           }
-         </div>`
+        d3.select("#rightPanel").append("h4").text(`Company: ${d.company_name}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Type of Company: ${d.type_of_company}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Therapy area: ${d.therapy_areas}`)
+
+        d3.select("#rightPanel").append("p").text(`CEO: ${d.ceo}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Mission Statement: ${d.mission_statement}`)
+
+        if (d.company_website) {
+          d3.select("#rightPanel")
+            .append("a")
+            .attr("href", d.company_website)
+            .attr("target", "_blank")
+            .attr("class", "websiteButton")
+            .text("Visit Website")
+        }
+      } else {
+        console.log("andra funktionen")
+        // Fetch BVH_USP and BVH_Alumni nodes
+        const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
+        const bvhAlumniNode = data.nodes.find(
+          (node) => node.id === "BVH_Alumni"
         )
+        const companiesNode = data.nodes.find(
+          (node) => node.id === "Antaros_Medical"
+        )
+        const alumniCompNode = data.nodes.find(
+          (node) => node.id === "alumni_company_one"
+        )
+        if (
+          d.id === "BioVentureHub" ||
+          d.id === "BVH_Companies" ||
+          d.id === "BVH_Alumni" ||
+          d.id === "USP"
+        ) {
+          if (d.id === "BioVentureHub") {
+            if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
+              toggle_ecosystem("BioVentureHub")
+            }
+            if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
+              toggle_ecosystem("Alumni")
+            }
+            bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
+            bvhUspNode.isVisible = !bvhUspNode.isVisible
+            bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+          }
+
+          if (d.id === "BVH_Companies") {
+            toggle_ecosystem("BioVentureHub")
+          }
+
+          if (d.id === "BVH_Alumni") {
+            toggle_ecosystem("Alumni")
+          }
+          // update node display
+          nodes.style("display", (d) =>
+            SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
+          )
+
+          // update link display
+          links.style("display", (d) => updateLinkVisibility_2(d))
+        }
+      }
     })
 
     const SPECIAL_IDS = ["BioVentureHub", "GoCo", "Astra"]
@@ -666,13 +728,11 @@ fetch("../datasets/co_data_test.json")
       else return "none"
     }
 
-    console.log(data.links[0].isVisible)
-
     function toggle_ecosystem(ecoSys, bvh = false) {
       for (let i = 0; i < data.nodes.length; i++) {
         if (
           data.nodes[i].ecosystem == ecoSys &&
-          data.nodes[i].size_in_visualisation == "medium"
+          data.nodes[i].size_in_visualization == "medium"
         ) {
           // Toggle node visibility
           data.nodes[i].isVisible = !data.nodes[i].isVisible
@@ -713,50 +773,51 @@ fetch("../datasets/co_data_test.json")
     }
 
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
-    nodes.on("click", function (event, d) {
-      // Fetch BVH_USP and BVH_Alumni nodes
-      const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
-      const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-      const companiesNode = data.nodes.find(
-        (node) => node.id === "Antaros_Medical"
-      )
-      const alumniCompNode = data.nodes.find(
-        (node) => node.id === "alumni_company_one"
-      )
-      if (
-        d.id === "BioVentureHub" ||
-        d.id === "BVH_Companies" ||
-        d.id === "BVH_Alumni" ||
-        d.id === "USP"
-      ) {
-        if (d.id === "BioVentureHub") {
-          if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
-            toggle_ecosystem("BioVentureHub")
-          }
-          if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
-            toggle_ecosystem("Alumni")
-          }
-          bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
-          bvhUspNode.isVisible = !bvhUspNode.isVisible
-          bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
-        }
+    // nodes.on("click", function (event, d) {
+    //   console.log("hello")
+    //   // Fetch BVH_USP and BVH_Alumni nodes
+    //   const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
+    //   const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
+    //   const companiesNode = data.nodes.find(
+    //     (node) => node.id === "Antaros_Medical"
+    //   )
+    //   const alumniCompNode = data.nodes.find(
+    //     (node) => node.id === "alumni_company_one"
+    //   )
+    //   if (
+    //     d.id === "BioVentureHub" ||
+    //     d.id === "BVH_Companies" ||
+    //     d.id === "BVH_Alumni" ||
+    //     d.id === "USP"
+    //   ) {
+    //     if (d.id === "BioVentureHub") {
+    //       if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
+    //         toggle_ecosystem("BioVentureHub")
+    //       }
+    //       if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
+    //         toggle_ecosystem("Alumni")
+    //       }
+    //       bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
+    //       bvhUspNode.isVisible = !bvhUspNode.isVisible
+    //       bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+    //     }
 
-        if (d.id === "BVH_Companies") {
-          toggle_ecosystem("BioVentureHub")
-        }
+    //     if (d.id === "BVH_Companies") {
+    //       toggle_ecosystem("BioVentureHub")
+    //     }
 
-        if (d.id === "BVH_Alumni") {
-          toggle_ecosystem("Alumni")
-        }
-        // update node display
-        nodes.style("display", (d) =>
-          SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
-        )
+    //     if (d.id === "BVH_Alumni") {
+    //       toggle_ecosystem("Alumni")
+    //     }
+    //     // update node display
+    //     nodes.style("display", (d) =>
+    //       SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
+    //     )
 
-        // update link display
-        links.style("display", (d) => updateLinkVisibility_2(d))
-      }
-    })
+    //     // update link display
+    //     links.style("display", (d) => updateLinkVisibility_2(d))
+    //   }
+    // })
 
     const bvhCompaniesNode = data.nodes.find(
       (node) => node.id === "BVH_Companies"
