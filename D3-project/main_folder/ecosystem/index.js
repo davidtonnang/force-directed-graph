@@ -73,6 +73,10 @@ fetch("../datasets/co_data_test.json")
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
 
+    const svg = d3.select("#graph")
+    //const filterDropdown = svg.append("filterDropdown")
+    //const filterDropdownCompanyType = svg.append("filterDropdownCompanyType")
+
     filterDropdown
       .selectAll("option")
       .data(therapy_list)
@@ -88,6 +92,8 @@ fetch("../datasets/co_data_test.json")
       .append("option")
       .attr("value", (d) => d)
       .text((d) => d)
+
+    //
 
     // Initialize filterState
     let filterState = {
@@ -289,7 +295,7 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "Astra", 200)
     connectNodes("BioVentureHub", "BVH_Companies", 1000)
     // Create the SVG container
-    const svg = d3.select("#graph")
+    //const svg = d3.select("#graph")
 
     // Create a group for the graph elements
 
@@ -517,30 +523,33 @@ fetch("../datasets/co_data_test.json")
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
     var bvh_y = data.nodes[1].y // samma problem med bvhY
 
-    for (let i = 0; i < data.nodes.length; i++) {
-      if (
-        data.nodes[i].y > bvh_y &&
-        i % 2 == 1 &&
-        Math.abs(data.nodes[i].y - bvh_y) > 30
-      ) {
-        data.nodes[i].label_adjustment = -300
-      } else if (
-        data.nodes[i].y > bvh_y &&
-        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
-      ) {
-        data.nodes[i].label_adjustment = -200
-      } else if (
-        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
-        Math.abs(data.nodes[i].y - bvh_y) < 30
-      ) {
-        data.nodes[i].label_adjustment = -100
-      } else {
-        data.nodes[i].label_adjustment = 0
-      }
-      if (data.nodes[i].size_in_visualisation == "big") {
-        data.nodes[i].label_adjustment = 0
-      }
-    }
+    //    for (let i = 0; i < data.nodes.length; i++) {
+    //      if (
+    //        data.nodes[i].y > bvh_y &&
+    //        i % 2 == 1 &&
+    //        Math.abs(data.nodes[i].y - bvh_y) > 30
+    //      ) {
+    //        data.nodes[i].label_adjustment = -300
+    //      } else if (
+    //        data.nodes[i].y > bvh_y &&
+    //        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
+    //      ) {
+    //        data.nodes[i].label_adjustment = -200
+    //      } else if (
+    //        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
+    //        Math.abs(data.nodes[i].y - bvh_y) < 30
+    //      ) {
+    //        data.nodes[i].label_adjustment = -100
+    //      } else {
+    //        data.nodes[i].label_adjustment = 0
+    //      }
+    //      if (
+    //        data.nodes[i].size_in_visualisation == "big" ||
+    //        data.nodes[i].size_in_visualisation == "BVH"
+    //      ) {
+    //        data.nodes[i].label_adjustment = 0
+    //      }
+    //    }
 
     nodes
       .on("mouseover", function (event, d) {
