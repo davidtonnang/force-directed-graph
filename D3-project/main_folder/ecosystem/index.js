@@ -647,22 +647,65 @@ fetch("../datasets/co_data_test.json")
           .attr("src", d.company_logo) // And this line
           .attr("alt", `${d.company_name} logo`) // And this line
           .attr("width", "200") // And this line, adjust the width as necessary
+          .attr("class", "company_logo_panel")
 
         d3.select("#rightPanel").append("h4").text(`Company: ${d.company_name}`)
 
-        d3.select("#rightPanel")
-          .append("p")
-          .text(`Type of Company: ${d.type_of_company}`)
+        // Create the paragraph
+        const p = d3.select("#rightPanel").append("p")
+
+        // Append the non-clickable part of the text
+        p.append("span")
+          .text(`Type of Company: `)
+          .attr("class", "type_of_company_panel_header")
+
+        // Split the type_of_company string into an array
+        const typesOfCompany = d.type_of_company.split(", ")
+
+        // For each type of company, append a clickable span
+        typesOfCompany.forEach((type, index) => {
+          if (index !== 0) {
+            // If it's not the first type, prepend a comma and a space
+            p.append("span").text(", ")
+          }
+
+          p.append("span")
+            .attr("class", "type_of_company_panel_text")
+            .style("cursor", "pointer") // Make the text look clickable
+            .style("text-decoration", "none") // Remove the underline
+            .text(type)
+            .on("click", function () {
+              // Add the click event
+              // Set the filterState to the clicked type_of_company
+              filterState.type_of_company = type
+
+              // Call the applyFilters function
+              applyFilters()
+
+              // Reset the dropdown to match the selected type of company
+              companyTypeSelect.property("value", type)
+            })
+        })
 
         d3.select("#rightPanel")
           .append("p")
           .text(`Therapy area: ${d.therapy_areas}`)
-
-        d3.select("#rightPanel").append("p").text(`CEO: ${d.ceo}`)
+          .attr("class", "therapy_area_panel")
 
         d3.select("#rightPanel")
           .append("p")
-          .text(`Mission Statement: ${d.mission_statement}`)
+          .text(`CEO: ${d.ceo}`)
+          .attr("class", "ceo_panel")
+
+        d3.select("#rightPanel")
+          .append("p")
+          .attr("class", "mission_statement_header")
+          .text(`Mission Statement:`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .attr("class", "mission_statement_text")
+          .text(`${d.mission_statement}`)
 
         if (d.company_website) {
           d3.select("#rightPanel")
