@@ -10,21 +10,19 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    data.nodes.forEach((node) => {
-      node.isVisible = ["BioVentureHub", "Astra", "GoCo"].includes(node.id)
-    })
+    const first_view = new Set([
+      "BioVentureHub",
+      "Astra",
+      "GoCo",
+      "BVH_USP",
+      "BVH_Companies",
+      "BVH_Alumni",
+    ])
 
-    //var regExp = /[a-zA-Z]/g
-
-    // Attempt to make function that removes characters and splits a long string to a list
-    //function remove_characters(words, character_list) {
-    //  for (let i = 0; character_list.length; i++) {
-    //    words.split(character_list[i])
-    //    words.join(",")
-    //  }
-    //  words.split(",")
-    //  return words
-    //}
+    for (let node of data.nodes) {
+      node.isVisible =
+        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
+    }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
@@ -63,37 +61,52 @@ fetch("../datasets/co_data_test.json")
       d3.select("svg").selectAll(".clickedLabelGroup").remove()
     }
 
-    const filterDropdown = d3.select("#filterDropdown")
-    const filterDropdownCompanyType = d3.select("#filterDropdownCompanyType")
-
     const privateCheckbox = d3.select("#privateCheckbox")
     const publicCheckbox = d3.select("#publicCheckbox")
     const employeeRange = document.getElementById("employeeRange")
 
-    privateCheckbox.on("change", handleFilterSelection)
-    publicCheckbox.on("change", handleFilterSelection)
+    const filterContainer = d3
+      .select("#graph")
+      .append("foreignObject")
+      .attr("x", "22")
+      .attr("y", "0")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .append("xhtml:div")
+      .attr("class", "filter-container").html(`
+  <div>
+  <select id="filterDropdownCompanyType">
+    <option value="">Type of Company</option>
+  </select>
+</div>
 
-    const svg = d3.select("#graph")
-    //const filterDropdown = svg.append("filterDropdown")
-    //const filterDropdownCompanyType = svg.append("filterDropdownCompanyType")
+<div>
+  <select id="filterDropdown">
+    <option value="">All Therapy Areas</option>
+  </select>
+</div>
+  `)
 
-    filterDropdown
+    // Adds Therapy area to the filtering
+    const therapyAreaSelect = d3.select("#filterDropdown")
+    therapyAreaSelect
       .selectAll("option")
       .data(therapy_list)
       .enter()
       .append("option")
-      .attr("value", (d) => d)
       .text((d) => d)
+      .attr("value", (d) => d)
 
-    filterDropdownCompanyType
+    // Adds the Company Type to the filtering
+
+    const companyTypeSelect = d3.select("#filterDropdownCompanyType")
+    companyTypeSelect
       .selectAll("option")
       .data(type_list)
       .enter()
       .append("option")
-      .attr("value", (d) => d)
       .text((d) => d)
-
-    //
+      .attr("value", (d) => d)
 
     // Initialize filterState
     let filterState = {
@@ -143,7 +156,14 @@ fetch("../datasets/co_data_test.json")
         })
         .style("opacity", (d) => {
           // If the node is one of the special nodes, do not filter
-          if (["BioVentureHub"].includes(d.id)) {
+          if (
+            [
+              "BioVentureHub",
+              "BVH_Companies",
+              "BVH_Alumni",
+              "BVH_USP",
+            ].includes(d.id)
+          ) {
             return 1
           }
           if (["Astra", "GoCo"].includes(d.id)) {
@@ -178,14 +198,14 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Handle therapy area filter
-    function handleFilterDropdown(chosen_filter) {
-      filterState.therapyArea = this.value
+    function handleFilterDropdown(event) {
+      filterState.therapyArea = event.target.value
       applyFilters()
     }
 
-    // Handle therapy area filter
-    function handleFilterDropdown_type(chosen_filter) {
-      filterState.type_of_company = this.value
+    // Handle type of company filter
+    function handleFilterDropdown_type(event) {
+      filterState.type_of_company = event.target.value
       applyFilters()
     }
 
@@ -194,6 +214,7 @@ fetch("../datasets/co_data_test.json")
       filterState.financing.private = privateCheckbox.property("checked")
       filterState.financing.public = publicCheckbox.property("checked")
       applyFilters()
+      console.log("hello")
 
       privateCheckbox.on("change", function () {
         if (this.checked) {
@@ -219,8 +240,8 @@ fetch("../datasets/co_data_test.json")
     }
 
     // Attach event handlers to filters
-    filterDropdown.on("change", handleFilterDropdown)
-    filterDropdownCompanyType.on("change", handleFilterDropdown_type)
+    therapyAreaSelect.on("change", handleFilterDropdown)
+    companyTypeSelect.on("change", handleFilterDropdown_type)
     privateCheckbox.on("change", handleFilterSelection)
     publicCheckbox.on("change", handleFilterSelection)
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
@@ -270,19 +291,11 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
-    // Not used for now but adds a distance to any link in the json file.
-    //   for (let i = 0; i < data.links.length; i++) {
-    //     if (i % 2 == 0) {
-    //       data.links[i].distance = DEFAULT_DISTANCE - 40
-    //     }
-    //     data.links[i].distance = DEFAULT_DISTANCE
-    //   }
-
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
-      if (data.nodes[i].size_in_visualisation == "big") {
+      if (data.nodes[i].size_in_visualization == "big") {
         data.nodes[i].size = 50
-      } else if (data.nodes[i].size_in_visualisation == "BVH") {
+      } else if (data.nodes[i].size_in_visualization == "BVH") {
         data.nodes[i].size = 35
       } else {
         data.nodes[i].size = 12
@@ -295,7 +308,7 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "Astra", 200)
     connectNodes("BioVentureHub", "BVH_Companies", 1000)
     // Create the SVG container
-    //const svg = d3.select("#graph")
+    const svg = d3.select("#graph")
 
     // Create a group for the graph elements
 
@@ -412,6 +425,23 @@ fetch("../datasets/co_data_test.json")
     // In defs we're going to add the images in the nodes
     var defs = svg.append("defs")
 
+    // Adjust x value accordingly to place it to the right
+    const rightPanelContainer = d3
+      .select("#graph")
+      .append("foreignObject")
+      .attr("x", "80%") // Position from the left
+      .attr("y", "0") // Position from the top
+      .attr("width", "20%") // Width of the rectangle
+      .attr("height", "100%") // Full height of the rectangle
+
+    // Append a div to the foreignObject
+    const rightPanelDiv = rightPanelContainer
+      .append("xhtml:div")
+      .attr("id", "rightPanel") // give the div an id for easy selection
+      .style("height", "100%")
+      .style("width", "100%")
+      .style("background", "white")
+
     // Create the nodes
     const nodes = container
       .selectAll(".node")
@@ -443,8 +473,8 @@ fetch("../datasets/co_data_test.json")
       )
       .attr("class", function (d) {
         if (
-          d.source.size_in_visualisation == "big" &&
-          d.target.size_in_visualisation == "BVH"
+          d.source.size_in_visualization == "big" &&
+          d.target.size_in_visualization == "BVH"
         ) {
           return "dashed"
         } else {
@@ -523,33 +553,30 @@ fetch("../datasets/co_data_test.json")
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
     var bvh_y = data.nodes[1].y // samma problem med bvhY
 
-    //    for (let i = 0; i < data.nodes.length; i++) {
-    //      if (
-    //        data.nodes[i].y > bvh_y &&
-    //        i % 2 == 1 &&
-    //        Math.abs(data.nodes[i].y - bvh_y) > 30
-    //      ) {
-    //        data.nodes[i].label_adjustment = -300
-    //      } else if (
-    //        data.nodes[i].y > bvh_y &&
-    //        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
-    //      ) {
-    //        data.nodes[i].label_adjustment = -200
-    //      } else if (
-    //        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
-    //        Math.abs(data.nodes[i].y - bvh_y) < 30
-    //      ) {
-    //        data.nodes[i].label_adjustment = -100
-    //      } else {
-    //        data.nodes[i].label_adjustment = 0
-    //      }
-    //      if (
-    //        data.nodes[i].size_in_visualisation == "big" ||
-    //        data.nodes[i].size_in_visualisation == "BVH"
-    //      ) {
-    //        data.nodes[i].label_adjustment = 0
-    //      }
-    //    }
+    for (let i = 0; i < data.nodes.length; i++) {
+      if (
+        data.nodes[i].y > bvh_y &&
+        i % 2 == 1 &&
+        Math.abs(data.nodes[i].y - bvh_y) > 30
+      ) {
+        data.nodes[i].label_adjustment = -300
+      } else if (
+        data.nodes[i].y > bvh_y &&
+        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
+      ) {
+        data.nodes[i].label_adjustment = -200
+      } else if (
+        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
+        Math.abs(data.nodes[i].y - bvh_y) < 30
+      ) {
+        data.nodes[i].label_adjustment = -100
+      } else {
+        data.nodes[i].label_adjustment = 0
+      }
+      if (data.nodes[i].size_in_visualization == "big") {
+        data.nodes[i].label_adjustment = 0
+      }
+    }
 
     nodes
       .on("mouseover", function (event, d) {
@@ -604,63 +631,94 @@ fetch("../datasets/co_data_test.json")
         svg.selectAll(".labelGroup").remove() // remove group on mouseout
       })
 
-    // Not used right now but this adds a smooth zoom function on click for the nodes
-    // .on("click", function (event, d) {
-    //   event.stopPropagation()
-    //   const dx = d.x,
-    //     dy = d.y,
-    //     scale = 1.7 // affects the zoom level
-    //   const translate = [
-    //     svg.node().width.baseVal.value / 2 - scale * dx,
-    //     svg.node().height.baseVal.value / 2 - scale * dy,
-    //   ]
-
-    //   svg
-    //     .transition()
-    //     .duration(3000) // Transition duration here, 3000 is 3 seconds
-    //     .call(
-    //       zoom.transform,
-    //       d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale)
-    //     )
-    // })
-
-    // Shows labels on click
+    // Shows labels inside panel on click
     nodes.on("click", function (event, d) {
-      const transform = d3.zoomTransform(svg.node())
-      const scaledX = d.x * transform.k + transform.x
-      const scaledY = d.y * transform.k + transform.y
+      console.log(d)
+      console.log(`size_in_visualization: ${d.size_in_visualization}`)
+      if (d.size_in_visualization === "medium") {
+        console.log("Funkar")
 
-      // Removes any already existing labels
-      svg.selectAll(".clickedLabelGroup").remove()
+        // Clear the existing content of rightPanelDiv
+        d3.select("#rightPanel").html("")
 
-      // Create a new label group for the clicked node
-      const clickedLabelGroup = svg
-        .append("g")
-        .attr("class", "clickedLabelGroup")
+        // Append new content to the right panel div
+        d3.select("#rightPanel")
+          .append("img") // Add this line
+          .attr("src", d.company_logo) // And this line
+          .attr("alt", `${d.company_name} logo`) // And this line
+          .attr("width", "200") // And this line, adjust the width as necessary
 
-      // Append a foreignObject to the group
-      const foreignObject = clickedLabelGroup
-        .append("foreignObject")
-        .attr("x", scaledX + 15) // adjust position
-        .attr("y", scaledY + d.label_adjustment) // adjust position  här!
-        .attr("width", 300) // set width
-        .attr("height", 400) // set height
-        .html(
-          `<div class="info-click-box info-click-box-hidden">
-        ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
-           <h4>${d.company_name}</h4>
-           <p>${
-             d.type_of_company ? `Type of company: ${d.type_of_company}` : ""
-           }</p>
-          <p>${d.therapy_areas ? `Therapy area: ${d.therapy_areas}` : ""}</p>
-          <p>${d.ceo ? `CEO: ${d.ceo}` : ""}</p>
-           <button class="clickedLabelGroupButton" onclick="handleButtonClick()"></button>${
-             d.company_website
-               ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
-               : ""
-           }
-         </div>`
+        d3.select("#rightPanel").append("h4").text(`Company: ${d.company_name}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Type of Company: ${d.type_of_company}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Therapy area: ${d.therapy_areas}`)
+
+        d3.select("#rightPanel").append("p").text(`CEO: ${d.ceo}`)
+
+        d3.select("#rightPanel")
+          .append("p")
+          .text(`Mission Statement: ${d.mission_statement}`)
+
+        if (d.company_website) {
+          d3.select("#rightPanel")
+            .append("a")
+            .attr("href", d.company_website)
+            .attr("target", "_blank")
+            .attr("class", "websiteButton")
+            .text("Visit Website")
+        }
+      } else {
+        console.log("andra funktionen")
+        // Fetch BVH_USP and BVH_Alumni nodes
+        const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
+        const bvhAlumniNode = data.nodes.find(
+          (node) => node.id === "BVH_Alumni"
         )
+        const companiesNode = data.nodes.find(
+          (node) => node.id === "Antaros_Medical"
+        )
+        const alumniCompNode = data.nodes.find(
+          (node) => node.id === "alumni_company_one"
+        )
+        if (
+          d.id === "BioVentureHub" ||
+          d.id === "BVH_Companies" ||
+          d.id === "BVH_Alumni" ||
+          d.id === "USP"
+        ) {
+          if (d.id === "BioVentureHub") {
+            if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
+              toggle_ecosystem("BioVentureHub")
+            }
+            if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
+              toggle_ecosystem("Alumni")
+            }
+            bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
+            bvhUspNode.isVisible = !bvhUspNode.isVisible
+            bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+          }
+
+          if (d.id === "BVH_Companies") {
+            toggle_ecosystem("BioVentureHub")
+          }
+
+          if (d.id === "BVH_Alumni") {
+            toggle_ecosystem("Alumni")
+          }
+          // update node display
+          nodes.style("display", (d) =>
+            SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
+          )
+
+          // update link display
+          links.style("display", (d) => updateLinkVisibility_2(d))
+        }
+      }
     })
 
     const SPECIAL_IDS = ["BioVentureHub", "GoCo", "Astra"]
@@ -674,58 +732,92 @@ fetch("../datasets/co_data_test.json")
       for (let i = 0; i < data.nodes.length; i++) {
         if (
           data.nodes[i].ecosystem == ecoSys &&
-          data.nodes[i].size_in_visualisation == "medium"
+          data.nodes[i].size_in_visualization == "medium"
         ) {
+          // Toggle node visibility
           data.nodes[i].isVisible = !data.nodes[i].isVisible
+
+          // Update visibility for links connected to this node
+          data.links.forEach((link) => {
+            if (
+              link.source.id === data.nodes[i].id ||
+              link.target.id === data.nodes[i].id
+            ) {
+              link.isVisible = data.nodes[i].isVisible
+            }
+          })
+
+          // Select the node that is being toggled and apply the transition
+          d3.select("#graph")
+            .selectAll(".node")
+            .filter((node) => node.id === data.nodes[i].id)
+            .style("opacity", 0)
+            .transition()
+            .duration(2000)
+            .style("opacity", data.nodes[i].isVisible ? 1 : 0)
+
+          // Select the links that are being toggled and apply the transition
+          d3.select("#graph")
+            .selectAll(".link")
+            .filter(
+              (link) =>
+                link.source.id === data.nodes[i].id ||
+                link.target.id === data.nodes[i].id
+            )
+            .style("opacity", 0)
+            .transition()
+            .duration(2000)
+            .style("opacity", data.links[i].isVisible ? 1 : 0)
         }
       }
     }
 
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
-    nodes.on("click", function (event, d) {
-      // Fetch BVH_USP and BVH_Alumni nodes
-      const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
-      const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-      const companiesNode = data.nodes.find(
-        (node) => node.id === "Antaros_Medical"
-      )
-      const alumniCompNode = data.nodes.find(
-        (node) => node.id === "alumni_company_one"
-      )
-      if (
-        d.id === "BioVentureHub" ||
-        d.id === "BVH_Companies" ||
-        d.id === "BVH_Alumni" ||
-        d.id === "USP"
-      ) {
-        if (d.id === "BioVentureHub") {
-          if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
-            toggle_ecosystem("BioVentureHub")
-          }
-          if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
-            toggle_ecosystem("Alumni")
-          }
-          bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
-          bvhUspNode.isVisible = !bvhUspNode.isVisible
-          bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
-        }
+    // nodes.on("click", function (event, d) {
+    //   console.log("hello")
+    //   // Fetch BVH_USP and BVH_Alumni nodes
+    //   const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
+    //   const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
+    //   const companiesNode = data.nodes.find(
+    //     (node) => node.id === "Antaros_Medical"
+    //   )
+    //   const alumniCompNode = data.nodes.find(
+    //     (node) => node.id === "alumni_company_one"
+    //   )
+    //   if (
+    //     d.id === "BioVentureHub" ||
+    //     d.id === "BVH_Companies" ||
+    //     d.id === "BVH_Alumni" ||
+    //     d.id === "USP"
+    //   ) {
+    //     if (d.id === "BioVentureHub") {
+    //       if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
+    //         toggle_ecosystem("BioVentureHub")
+    //       }
+    //       if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
+    //         toggle_ecosystem("Alumni")
+    //       }
+    //       bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
+    //       bvhUspNode.isVisible = !bvhUspNode.isVisible
+    //       bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+    //     }
 
-        if (d.id === "BVH_Companies") {
-          toggle_ecosystem("BioVentureHub")
-        }
+    //     if (d.id === "BVH_Companies") {
+    //       toggle_ecosystem("BioVentureHub")
+    //     }
 
-        if (d.id === "BVH_Alumni") {
-          toggle_ecosystem("Alumni")
-        }
-        // update node display
-        nodes.style("display", (d) =>
-          SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
-        )
+    //     if (d.id === "BVH_Alumni") {
+    //       toggle_ecosystem("Alumni")
+    //     }
+    //     // update node display
+    //     nodes.style("display", (d) =>
+    //       SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
+    //     )
 
-        // update link display
-        links.style("display", (d) => updateLinkVisibility_2(d))
-      }
-    })
+    //     // update link display
+    //     links.style("display", (d) => updateLinkVisibility_2(d))
+    //   }
+    // })
 
     const bvhCompaniesNode = data.nodes.find(
       (node) => node.id === "BVH_Companies"

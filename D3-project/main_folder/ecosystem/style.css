@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Livvic&display=swap");
 
 body {
-  margin: 0;
+  margin: -1.3rem;
   padding: 0;
   width: 100%;
   height: 100%;
@@ -20,17 +20,19 @@ body {
   stroke-opacity: 0.6;
 }
 
-.solid{
+.solid {
   stroke: #999;
   stroke-opacity: 0.6;
 }
 
-.dashed{
+.dashed {
   stroke: #999;
   stroke-dasharray: 5;
 }
 
 #graph {
+  padding: 0;
+  margin: 0;
   width: 100vw;
   height: 100vh;
 }
@@ -43,7 +45,8 @@ body {
 
 .slider-container {
   position: relative;
-  top: 1rem;
+  top: 4.6rem;
+  left: 1.7rem;
 }
 
 .filter-label {
@@ -151,10 +154,6 @@ body {
   margin-bottom: 0;
 }
 
-/* .info-click box-hidden {
-  opacity: 0;
-} */
-
 .info-click-box img {
   max-width: 100%;
   max-height: 100%;
@@ -195,4 +194,17 @@ body {
 
 .websiteButton:hover {
   opacity: 0.6;
+}
+
+#rightPanel {
+  position: relative;
+  background-color: white;
+  border: solid 1px black;
+  padding: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+  text-align: center;
+  border-radius: 10px;
+  font-family: Helvetica, Arial, sans-serif;
 }
