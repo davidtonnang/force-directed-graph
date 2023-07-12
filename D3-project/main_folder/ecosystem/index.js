@@ -214,7 +214,6 @@ fetch("../datasets/co_data_test.json")
       filterState.financing.private = privateCheckbox.property("checked")
       filterState.financing.public = publicCheckbox.property("checked")
       applyFilters()
-      console.log("hello")
 
       privateCheckbox.on("change", function () {
         if (this.checked) {
@@ -584,6 +583,12 @@ fetch("../datasets/co_data_test.json")
         const scaledX = d.x * transform.k + transform.x
         const scaledY = d.y * transform.k + transform.y
 
+        // Console logs the node's Y value
+        for (let i = 0; i < data.nodes.length; i++) {
+          console.log(data.nodes[i])
+          console.log(data.nodes[i].y)
+        }
+
         svg.selectAll(".clickedLabelGroup").remove()
 
         // Create a group to hold the foreignObject and label
@@ -633,11 +638,7 @@ fetch("../datasets/co_data_test.json")
 
     // Shows labels inside panel on click
     nodes.on("click", function (event, d) {
-      console.log(d)
-      console.log(`size_in_visualization: ${d.size_in_visualization}`)
       if (d.size_in_visualization === "medium") {
-        console.log("Funkar")
-
         // Clear the existing content of rightPanelDiv
         d3.select("#rightPanel").html("")
 
@@ -716,7 +717,6 @@ fetch("../datasets/co_data_test.json")
             .text("Visit Website")
         }
       } else {
-        console.log("andra funktionen")
         // Fetch BVH_USP and BVH_Alumni nodes
         const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
         const bvhAlumniNode = data.nodes.find(
