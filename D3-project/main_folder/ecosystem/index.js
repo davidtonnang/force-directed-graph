@@ -10,6 +10,10 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
+    for (let i = 0; i < data.nodes.length; i++) {
+      console.log(data.nodes[i].y)
+    }
+
     const first_view = new Set([
       "BioVentureHub",
       "Astra",
@@ -18,11 +22,6 @@ fetch("../datasets/co_data_test.json")
       "BVH_Companies",
       "BVH_Alumni",
     ])
-
-    for (let node of data.nodes) {
-      node.isVisible =
-        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
-    }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
@@ -272,7 +271,7 @@ fetch("../datasets/co_data_test.json")
         connectNodes(data.nodes[i].id, bioVentureHubNode.id, 200)
       } else if (
         data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem &&
-        data.nodes[i].id != "BioVentureHub"
+        data.nodes[i].id !== "BioVentureHub"
       ) {
         // For other nodes, connect them to BVH_Companies if they belong to the same ecosystem
         connectNodes(
@@ -465,11 +464,11 @@ fetch("../datasets/co_data_test.json")
       .data(data.links)
       .enter()
       .append("line")
-      //      .attr("class", "link")
-      //      .style("stroke", "rgba (255,255,255,1")
-      .style("display", (d) =>
-        d.source.isVisible && d.target.isVisible ? "inline" : "none"
-      )
+      .style("display", (d) => {
+        updateLinkVisibility_2(d)
+        if (d.isVisible) return "inline"
+        else return "none"
+      })
       .attr("class", function (d) {
         if (
           d.source.size_in_visualization == "big" &&
@@ -480,6 +479,7 @@ fetch("../datasets/co_data_test.json")
           return "solid"
         }
       })
+      .style("opacity", 1)
       .lower()
 
     // Adding the images in the nodes
@@ -552,30 +552,40 @@ fetch("../datasets/co_data_test.json")
     var bvh_x = data.nodes[0].x // Important that bvh is first in json
     var bvh_y = data.nodes[1].y // samma problem med bvhY
 
+    //  for (let i = 0; i < data.nodes.length; i++) {
+    //    if (
+    //      data.nodes[i].y > bvh_y &&
+    //      i % 2 == 1 &&
+    //      Math.abs(data.nodes[i].y - bvh_y) > 30
+    //    ) {
+    //      data.nodes[i].label_adjustmet = -300
+    //    } else if (
+    //      data.nodes[i].y > bvh_y &&
+    //      (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
+    //    ) {
+    //      data.nodes[i].label_adjustment = -200
+    //    } else if (
+    //      (data.nodes[i].y < bvh_y && i % 2 == 0) ||
+    //      Math.abs(data.nodes[i].y - bvh_y) < 30
+    //    ) {
+    //      data.nodes[i].label_adjustment = -100
+    //    } else {
+    //      data.nodes[i].label_adjustment = 0
+    //    }
+    //    if (data.nodes[i].size_in_visualization == "big") {
+    //      data.nodes[i].label_adjustment = 0
+    //    }
+    //  }
+
     for (let i = 0; i < data.nodes.length; i++) {
-      if (
-        data.nodes[i].y > bvh_y &&
-        i % 2 == 1 &&
-        Math.abs(data.nodes[i].y - bvh_y) > 30
-      ) {
+      if (data.nodes[i].index == 1) {
         data.nodes[i].label_adjustment = -300
-      } else if (
-        data.nodes[i].y > bvh_y &&
-        (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
-      ) {
-        data.nodes[i].label_adjustment = -200
-      } else if (
-        (data.nodes[i].y < bvh_y && i % 2 == 0) ||
-        Math.abs(data.nodes[i].y - bvh_y) < 30
-      ) {
-        data.nodes[i].label_adjustment = -100
       } else {
         data.nodes[i].label_adjustment = 0
       }
-      if (data.nodes[i].size_in_visualization == "big") {
-        data.nodes[i].label_adjustment = 0
-      }
     }
+
+    console.log(bvh_y)
 
     nodes
       .on("mouseover", function (event, d) {
@@ -744,6 +754,9 @@ fetch("../datasets/co_data_test.json")
             bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
             bvhUspNode.isVisible = !bvhUspNode.isVisible
             bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
+            data.links.forEach((link) => {
+              updateLinkVisibility_2(link)
+            })
           }
 
           if (d.id === "BVH_Companies") {
@@ -753,13 +766,15 @@ fetch("../datasets/co_data_test.json")
           if (d.id === "BVH_Alumni") {
             toggle_ecosystem("Alumni")
           }
+
           // update node display
           nodes.style("display", (d) =>
             SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
           )
 
           // update link display
-          links.style("display", (d) => updateLinkVisibility_2(d))
+          //links.style("display", (d) => if (d.isVisible) )
+          links.style("display", (d) => (d.isVisible ? "inline" : "none"))
         }
       }
     })
@@ -767,8 +782,11 @@ fetch("../datasets/co_data_test.json")
     const SPECIAL_IDS = ["BioVentureHub", "GoCo", "Astra"]
 
     function updateLinkVisibility_2(d) {
-      if (d.source.isVisible && d.target.isVisible) return "inline"
-      else return "none"
+      if (d.source.isVisible && d.target.isVisible) {
+        d.isVisible = true
+      } else {
+        d.isVisible = false
+      }
     }
 
     function toggle_ecosystem(ecoSys, bvh = false) {
@@ -780,16 +798,6 @@ fetch("../datasets/co_data_test.json")
           // Toggle node visibility
           data.nodes[i].isVisible = !data.nodes[i].isVisible
 
-          // Update visibility for links connected to this node
-          data.links.forEach((link) => {
-            if (
-              link.source.id === data.nodes[i].id ||
-              link.target.id === data.nodes[i].id
-            ) {
-              link.isVisible = data.nodes[i].isVisible
-            }
-          })
-
           // Select the node that is being toggled and apply the transition
           d3.select("#graph")
             .selectAll(".node")
@@ -798,23 +806,28 @@ fetch("../datasets/co_data_test.json")
             .transition()
             .duration(2000)
             .style("opacity", data.nodes[i].isVisible ? 1 : 0)
+        }
 
-          // Select the links that are being toggled and apply the transition
-          d3.select("#graph")
-            .selectAll(".link")
-            .filter(
-              (link) =>
-                link.source.id === data.nodes[i].id ||
-                link.target.id === data.nodes[i].id
-            )
-            .style("opacity", 0)
-            .transition()
-            .duration(2000)
-            .style("opacity", data.links[i].isVisible ? 1 : 0)
+        for (let i = 0; i < data.links.length; i++) {
+          link_state = data.links[i].isVisible
+          updateLinkVisibility_2(data.links[i])
+          if (data.links[i].isVisible !== link_state) {
+            d3.select("#graph")
+              .selectAll(".solid")
+              .filter((link) => link.index === data.links[i].index)
+              .style("opacity", 0)
+              .transition()
+              .duration(2000)
+              .style("opacity", data.links[i].isVisible ? 0.6 : 0)
+          }
         }
       }
     }
 
+    for (let i = 0; i < data.nodes.length; i++) {
+      console.log(data.nodes[i])
+      console.log(data.nodes[i].y)
+    }
     // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
     // nodes.on("click", function (event, d) {
     //   console.log("hello")
@@ -874,7 +887,7 @@ fetch("../datasets/co_data_test.json")
         .attr("x2", (d) => d.target.x)
         .attr("y2", (d) => d.target.y)
 
-      links.style("display", (d) => updateLinkVisibility_2(d))
+      //links.style("display", (d) => updateLinkVisibility_2(d))
 
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
