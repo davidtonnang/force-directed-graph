@@ -10,10 +10,6 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
-    for (let i = 0; i < data.nodes.length; i++) {
-      console.log(data.nodes[i].y)
-    }
-
     const first_view = new Set([
       "BioVentureHub",
       "Astra",
@@ -22,6 +18,11 @@ fetch("../datasets/co_data_test.json")
       "BVH_Companies",
       "BVH_Alumni",
     ])
+
+    for (let node of data.nodes) {
+      node.isVisible =
+        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
+    }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
@@ -479,8 +480,8 @@ fetch("../datasets/co_data_test.json")
           return "solid"
         }
       })
-      .style("opacity", 1)
       .lower()
+    //      .style("opacity", 1)
 
     // Adding the images in the nodes
     defs
@@ -549,43 +550,29 @@ fetch("../datasets/co_data_test.json")
     data.nodes[0].y = svg.node().height.baseVal.value / 2
     data.nodes[0].x = svg.node().width.baseVal.value / 2
 
-    var bvh_x = data.nodes[0].x // Important that bvh is first in json
-    var bvh_y = data.nodes[1].y // samma problem med bvhY
-
-    //  for (let i = 0; i < data.nodes.length; i++) {
-    //    if (
-    //      data.nodes[i].y > bvh_y &&
-    //      i % 2 == 1 &&
-    //      Math.abs(data.nodes[i].y - bvh_y) > 30
-    //    ) {
-    //      data.nodes[i].label_adjustmet = -300
-    //    } else if (
-    //      data.nodes[i].y > bvh_y &&
-    //      (i % 2 == 0 || Math.abs(data.nodes[i].y - bvh_y) < 30)
-    //    ) {
-    //      data.nodes[i].label_adjustment = -200
-    //    } else if (
-    //      (data.nodes[i].y < bvh_y && i % 2 == 0) ||
-    //      Math.abs(data.nodes[i].y - bvh_y) < 30
-    //    ) {
-    //      data.nodes[i].label_adjustment = -100
-    //    } else {
-    //      data.nodes[i].label_adjustment = 0
-    //    }
-    //    if (data.nodes[i].size_in_visualization == "big") {
-    //      data.nodes[i].label_adjustment = 0
-    //    }
-    //  }
-
-    for (let i = 0; i < data.nodes.length; i++) {
-      if (data.nodes[i].index == 1) {
-        data.nodes[i].label_adjustment = -300
-      } else {
-        data.nodes[i].label_adjustment = 0
+    function setLabelAdjustment(bvh_y, node_y, node_x, size) {
+      var label_adjustment_y = 0 // Top nodes (node_y + 80) < bvh_y
+      var label_adjustment_x = 15
+      if (node_y > bvh_y + 80) {
+        label_adjustment_y = -300
+      } else if (node_y > bvh_y + 15) {
+        label_adjustment_y = -200
+      } else if (Math.abs(node_y - bvh_y) < 15) {
+        label_adjustment_y = -150
+      } else if (node_y > bvh_y - 80) {
+        label_adjustment_y = -100
       }
+      if (size != "medium") {
+        label_adjustment_y = 0
+      }
+      if (node_x > svg.node().width.baseVal.value * 0.55) {
+        label_adjustment_x = -310
+      }
+      //      else if (node_x > svg.node().width.baseVal.value * 0.65) {
+      //        label_adjustment_x = -150
+      //      }
+      return [label_adjustment_y, label_adjustment_x]
     }
-
-    console.log(bvh_y)
 
     nodes
       .on("mouseover", function (event, d) {
@@ -593,11 +580,24 @@ fetch("../datasets/co_data_test.json")
         const scaledX = d.x * transform.k + transform.x
         const scaledY = d.y * transform.k + transform.y
 
+        var bvh_y = data.nodes[1].y
+        var adjustments = setLabelAdjustment(
+          bvh_y,
+          scaledY,
+          scaledX,
+          d.size_in_visualization
+        )
+
+        label_adjustment_y = adjustments[0]
+        label_adjustment_x = adjustments[1]
         // Console logs the node's Y value
-        for (let i = 0; i < data.nodes.length; i++) {
-          console.log(data.nodes[i])
-          console.log(data.nodes[i].y)
-        }
+        //for (let i = 0; i < data.nodes.length; i++) {
+        //  console.log(data.nodes[i])
+        //  console.log(data.nodes[i].y)
+        //}
+        console.log(d)
+        console.log(d.x)
+        console.log(scaledX)
 
         svg.selectAll(".clickedLabelGroup").remove()
 
@@ -611,8 +611,8 @@ fetch("../datasets/co_data_test.json")
         // Append a foreignObject to the group
         const foreignObject = labelGroup
           .append("foreignObject")
-          .attr("x", scaledX + 15) // adjust position  här
-          .attr("y", scaledY + d.label_adjustment) // adjust position
+          .attr("x", scaledX + label_adjustment_x) // adjust position  här
+          .attr("y", scaledY + label_adjustment_y) // adjust position
           .attr("width", 300) // set width
           .attr("height", 400) // set height
           .html(
@@ -823,57 +823,6 @@ fetch("../datasets/co_data_test.json")
         }
       }
     }
-
-    for (let i = 0; i < data.nodes.length; i++) {
-      console.log(data.nodes[i])
-      console.log(data.nodes[i].y)
-    }
-    // This block will always show the link between BVH Companies and BioVentureHub if BVH Companies node is visible
-    // nodes.on("click", function (event, d) {
-    //   console.log("hello")
-    //   // Fetch BVH_USP and BVH_Alumni nodes
-    //   const bvhUspNode = data.nodes.find((node) => node.id === "BVH_USP")
-    //   const bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-    //   const companiesNode = data.nodes.find(
-    //     (node) => node.id === "Antaros_Medical"
-    //   )
-    //   const alumniCompNode = data.nodes.find(
-    //     (node) => node.id === "alumni_company_one"
-    //   )
-    //   if (
-    //     d.id === "BioVentureHub" ||
-    //     d.id === "BVH_Companies" ||
-    //     d.id === "BVH_Alumni" ||
-    //     d.id === "USP"
-    //   ) {
-    //     if (d.id === "BioVentureHub") {
-    //       if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
-    //         toggle_ecosystem("BioVentureHub")
-    //       }
-    //       if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
-    //         toggle_ecosystem("Alumni")
-    //       }
-    //       bvhCompaniesNode.isVisible = !bvhCompaniesNode.isVisible
-    //       bvhUspNode.isVisible = !bvhUspNode.isVisible
-    //       bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
-    //     }
-
-    //     if (d.id === "BVH_Companies") {
-    //       toggle_ecosystem("BioVentureHub")
-    //     }
-
-    //     if (d.id === "BVH_Alumni") {
-    //       toggle_ecosystem("Alumni")
-    //     }
-    //     // update node display
-    //     nodes.style("display", (d) =>
-    //       SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
-    //     )
-
-    //     // update link display
-    //     links.style("display", (d) => updateLinkVisibility_2(d))
-    //   }
-    // })
 
     const bvhCompaniesNode = data.nodes.find(
       (node) => node.id === "BVH_Companies"
