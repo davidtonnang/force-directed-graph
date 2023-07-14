@@ -10,6 +10,10 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
+    for (let i = 0; i < data.nodes.length; i++) {
+      console.log(data.nodes[i].y)
+    }
+
     const first_view = new Set([
       "BioVentureHub",
       "Astra",
@@ -18,11 +22,6 @@ fetch("../datasets/co_data_test.json")
       "BVH_Companies",
       "BVH_Alumni",
     ])
-
-    for (let node of data.nodes) {
-      node.isVisible =
-        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
-    }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
     function remove_all_after(word, char) {
@@ -480,6 +479,7 @@ fetch("../datasets/co_data_test.json")
           return "solid"
         }
       })
+      .style("opacity", 1)
       .lower()
     //      .style("opacity", 1)
 
@@ -573,6 +573,8 @@ fetch("../datasets/co_data_test.json")
       //      }
       return [label_adjustment_y, label_adjustment_x]
     }
+
+    console.log(bvh_y)
 
     nodes
       .on("mouseover", function (event, d) {
@@ -823,7 +825,7 @@ fetch("../datasets/co_data_test.json")
         }
       }
     }
-
+      
     const bvhCompaniesNode = data.nodes.find(
       (node) => node.id === "BVH_Companies"
     )
