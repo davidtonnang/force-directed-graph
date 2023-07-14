@@ -139,7 +139,7 @@
       "company_website": "https://www.alzinova.com/",
       "company_linkedIn": "https://www.linkedin.com/company/alzinova-ab/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/alzinova.png",
+      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/alzinova.png",
       "mission_statement": "Alzinova is specializing in the treatment of Alzheimer’s Disease by targeting Alzinova AB is a Swedish clinical-stage biopharma company specialising in the treatment of Alzheimer’s disease targeting neurotoxic amyloid beta oligomers. The lead candidate, ALZ-101, is being developed as a therapeutic vaccine for the treatment of Alzheimer's. Alzinova’s proprietary AβCC peptide™ technology enables the development of disease-modifying therapies that target the toxic amyloid beta oligomers involved in the onset and progression of the disease with high precision. Alzheimer’s is one of the most common and devastating neurological diseases globally, with of the order of 40 million people afflicted today. In addition, the antibody ALZ-201 is in preclinical development, and the ambition is to expand the pipeline further.the toxic amyloid-β oligomers. Alzinova’s proprietary AβCC peptide™ technology enables the development of disease-modifying therapies that with high precision could target the toxic amyloid-β oligomers involved in the onset and progression of the disease. The lead candidate, ALZ-101, is in late preclinical development as a therapeutic vaccine and is currently being prepared for the first clinical trial in patients with Alzheimer’s disease, in Q2 2021"
     },
     {
@@ -158,7 +158,7 @@
       "financing": "Private",
       "ceo": "Hulthe, Johannes",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Antaros-Medical.jpg/jcr:content/renditions/cq5dam.web.320.Antaros-Medical.jpg",
-      "image_path": "images_text/antaros_medical.png",
+      "image_path": "images/antaros_medical.png",
       "company_website": "https://antarosmedical.com/",
       "company_linkedin": "https://www.linkedin.com/company/antaros-medical/",
       "size_in_visualization": "medium",
@@ -200,7 +200,7 @@
       "financing": "Listed",
       "ceo": "Nittmar, Henrik",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/corline-biomedical.jpg/jcr:content/renditions/cq5dam.web.320.corline-biomedical.jpg",
-      "image_path": "images_text/corline_biomedical.png",
+      "image_path": "images/corline_biomedical.png",
       "company_website": "https://www.corline.se/home",
       "size_in_visualization": "medium",
       "mission_statement": "Corline Biomedical AB is a Nasdaq/OMX First North (CLBIO) listed company that develops, manufactures and markets heparin-based solutions to improve kidney transplantation, cell therapies and applications in the evolving field of regenerative medicine."
@@ -244,7 +244,7 @@
       "company_website": "https://mendus.com/",
       "company_linkedin": "https://www.linkedin.com//company//mendus//",
       "size_in_visualization": "medium",
-      "image_path": "images_text/mendus.png",
+      "image_path": "images/mendus.png",
       "mission_statement": "Mendus is establishing a unique immuno-oncology approach through the development of allogeneic, off-the-shelf cell-based therapies. The company's lead product ilixadencel, consisting of pro-inflammatory allogeneic dendritic cells, has the potential to become a backbone component of modern cancer combination treatments in a variety of solid tumor indications."
     },
     {
@@ -286,7 +286,7 @@
       "company_website": "https://qandqlabs.se//",
       "company_linkedin": "https://www.linkedin.com/company/q&q-labs-ab/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/qqlabs.png",
+      "image_path": "images/qqlabs.png",
       "mission_statement": "Q&Q Labs offer bespoke analyses within organic chemistry. We develop customer specific analysis methods for characterization and quantification of organic substances for producers and importers of primarily pharmaceuticals and medical device. While specializing in method development on chromatography/mass spectrometry instruments we also have equipment for batch control/release testing of pharmaceuticals or pharm dev. We are audited for applicable parts of GMP, GLP & GCP "
     },
     {
@@ -326,7 +326,7 @@
       "financing": "Private",
       "ceo": "Udani, Mikesh",
       "company_logo": "https://media.licdn.com/dms/image/C4E0BAQG8fm5Gwqngyw/company-logo_200_200/0/1567093418232?e=1696464000&v=beta&t=2KS-lBTJt5ULqmmDGjxOPpeyG45Opq1KwRA8nDsi9xM",
-      "image_path": "images_text/albus_health.png",
+      "image_path": "images/albus_health.png",
       "company_website": "https://albushealth.com/",
       "company_linkedin": "https://www.linkedin.com/company/albushealth/",
       "size_in_visualization": "medium",
@@ -351,7 +351,7 @@
       "company_website": "https://www.amferia.com/",
       "company_linkedin": "https://www.linkedin.com/company//amferia/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/amferia_2.png",
+      "image_path": "images/amferia.png",
       "mission_statement": "Amferia’s proprietary patented technology is a new and effective antibacterial material. The material consists of bioinspired and amphiphilic antibacterial polymers that target and rapidly kill bacteria upon contact, including numerous antibiotic resistant bacteria like MRSA and MDR E. Coli."
     },
     {
@@ -370,7 +370,7 @@
       "financing": "Private",
       "ceo": "Knight, Richard",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Apconix.jpg/jcr:content/renditions/cq5dam.web.320.Apconix.jpg",
-      "image_path": "images_text/apconix.png",
+      "image_path": "images/apconix.png",
       "company_website": "https://www.apconix.com/",
       "company_linkedin": "https://www.linkedin.com/company/apconix/",
       "size_in_visualization": "medium",
@@ -415,7 +415,7 @@
       "company_website": "https://www.clinescientific.com//",
       "company_linkedin": "https://www.linkedin.com/company/cline-technologies/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/cline.png",
+      "image_path": "images/cline.png",
       "mission_statement": "Cline Scientific is an innovative life science company focusing on the use of nanotechnology and nanoscale surface gradients to improve stem cell and cancer research. The company is using nanoscale surface engineering to support cell biology research, through two main applications; stem cell differentiation and culture, and migration in cancer cell research."
     },
     {
@@ -433,7 +433,7 @@
       "financing": "Private",
       "ceo": "El Rhali, Ahmed",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/data-metrix.jpg/jcr:content/renditions/cq5dam.web.320.data-metrix.jpg",
-      "image_path": "images_text/datametrix.png",
+      "image_path": "images/datametrix.png",
       "company_website": "https://datametrix.ch/",
       "company_linkedin": "https://www.linkedin.com/company/datametrix-ag/",
       "size_in_visualization": "medium",
@@ -457,7 +457,7 @@
       "company_website": "https://www.ectinresearch.com//",
       "company_linkedin": "https://www.linkedin.com/company/ectin-research/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/ectin.png",
+      "image_path": "images/ectin.png",
       "mission_statement": "Ectin Research is a cancer therapy company with a technology based on repositioning of approved drugs and an initial efficacy observation in a bladder cancer patient with spread and incurable disease. The initial aim of the company is to focus on treating metastasized bladder cancer to prove the efficacy of the therapy. Following this, Ectin Research plans to explore the treatment of other cancer indications."
     },
     {
@@ -499,7 +499,7 @@
       "company_website": "https://insingulo.com//",
       "company_linkedin": "https://www.linkedin.com/company/insingulo-ab/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/insingulo.png",
+      "image_path": "images/insingulo.png",
       "mission_statement": "At InSingulo, we specialize in the characterization of drug interactions with complex targets down to the single molecule level. Our biosensing technology allows for drug profiling on membrane proteins embedded in their native environment. We enable drug screening programs against membrane proteins and other challenging therapeutic targets.InSingulo was founded in 2017 following a collaboration between Chalmers University of Technology and AstraZeneca, bringing a new class of biosensing technology to overcome some of the toughest challenges in drug discovery."
     },
     {
@@ -520,7 +520,7 @@
       "company_website": "https://intelligentimplants.ie//",
       "company_linkedin": "https://www.linkedin.com/company/intelligent-implants/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/intelligent_implants.png",
+      "image_path": "images/intelligent_implants.png",
       "mission_statement": "Intelligent Implants is developing a wireless implantable bioelectronic stimulation platform incorporated into standard orthopedic implants. With excellent pre-clinical trial outcomes, Intelligent Implants is now looking to bring its breakthrough technology into the clinic."
     },
     {
@@ -538,8 +538,8 @@
       "financing": "Listed",
       "ceo": "Chaabane, Philip",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/i-tech.jpg/jcr:content/renditions/cq5dam.web.320.i-tech.jpg",
-      "image_path": "images_text/itech.png",
-      "company_website": "https://itech.se/",
+      "image_path": "images/itech.png",
+      "company_website": "https://i-tech.se/",
       "company_linkedin": "https://www.linkedin.com/company/i-tech-ab/",
       "size_in_visualization": "medium",
       "mission_statement": "I-Tech, develops, manufacture and market an antifouling substance, Selektope. Selektope has proven remarkable fouling protection even in the most demanding situations and in very low concentrations in marine paints. Our vision is to be a global developer and supplier of marine biocides with an extended market share."
@@ -562,7 +562,7 @@
       "company_website": "https://kromnigon.com//",
       "company_linkedin": "https://www.linkedin.com//company//kromnigon-ab//",
       "size_in_visualization": "medium",
-      "image_path": "images_text/kromnigon.png",
+      "image_path": "images/kromnigon.png",
       "mission_statement": "Kromnigon AB develops a new generation of reagents for multicolor microscopy based on its patented technology StreptaClick. The field of multicolor microscopy has skyrocketed due to personalized medicine and its need for understanding cell interactions in tissues. Kromnigon was founded in 2015 and has since been supported by for example GU Ventures, Vinnova, and Almi. We have several new products on the way and will during 2022 raise new capital to expand marketing."
     },
     {
@@ -601,7 +601,7 @@
       "financing": "Private",
       "ceo": "Jacklin, Christopher",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Lucero%20ny.png/jcr:content/renditions/cq5dam.web.480.Lucero%20ny.png",
-      "image_path": "images_text/lucero.png",
+      "image_path": "images/lucero.png",
       "company_website": "https://www.lucerobio.com/",
       "company_linkedin": "https://www.linkedin.com/company/lucero/",
       "size_in_visualization": "medium",
@@ -625,7 +625,7 @@
       "company_website": "https://www.metabogen.se/",
       "company_linkedin": "https://www.linkedin.com/company/metabogen-ab/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/metabogen.png",
+      "image_path": "images/metabogen.png",
       "mission_statement": "Addressing the microbiome, MetaboGen is creating breakthrough opportunities to develop next generation probiotics. The company was founded based on world leading science from the labs of Professor Fredrik Bäckhed (University of Gothenburg) and Professor Jens B Nielsen (Chalmers University of Technology), to provide commercial access to metagenome research and development. Today, MetaboGen is a wholly owned subsidiary of the Swedish probiotic company BioGaia AB."
     },
     {
@@ -643,7 +643,7 @@
       "financing": "Private",
       "ceo": "Löfgren, Nils",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Nanolyze_logo-900x400.png/jcr:content/renditions/cq5dam.web.320.Nanolyze_logo-900x400.png",
-      "image_path": "images_text/nanolyze.png",
+      "image_path": "images/nanolyze.png",
       "company_website": "https://www.nanolyze.se/",
       "company_linkedin": "https://www.linkedin.com//company/nanolyze/",
       "size_in_visualization": "medium",
@@ -667,7 +667,7 @@
       "company_website": "https://www.chalmers.se/en/infrastructure/cii/about-us/",
       "company_linkedin": "https://www.linkedin.com/company/chemical-imaging-infrastructure/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/cii.png",
+      "image_path": "images/cii.png",
       "mission_statement": "Chalmers University of Technology/Gothenburg University have located their NanoSIMS laboratory in the BioVentureHub. The lab offers unique, ultra-high spatial chemical imaging giving true sub-cellular localisation of molecules in cells and tissue, as well as quantitative isotopic imaging for many other applications ranging from geology to materials science."
     },
     {
@@ -688,7 +688,7 @@
       "company_website": "https://oligonova.org/",
       "company_linkedin": "https://www.linkedin.com/company/oligonova-hub/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/oligonova.png",
+      "image_path": "images/oligonova.png",
       "mission_statement": "OligoNova is a Swedish initiative addressing challenges in Research & Development of therapeutic oligonucleotides and supporting the development of novel therapies. OligoNova has the vision to deliver R&D innovations that will result in new patents, start-up companies and innovate treatments to patients."
     },
     {
@@ -706,7 +706,7 @@
       "financing": "Private",
       "ceo": "Olovsson, Martin",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Ondosis_new_logo_horiz.jpg/jcr:content/renditions/cq5dam.web.320.Ondosis_new_logo_horiz.jpg",
-      "image_path": "images_text/ondosis.png",
+      "image_path": "images/ondosis.png",
       "company_website": "https://www.ondosis.com/",
       "company_linkedin": "https://www.linkedin.com/company/ondosis/",
       "size_in_visualization": "medium",
@@ -730,7 +730,7 @@
       "company_website": "https://www.profundusimaging.com/",
       "company_linkedin": "https://www.linkedin.com/company/profundus-ab-sweden/",
       "size_in_visualization": "medium",
-      "image_path": "images_text/profundus.png",
+      "image_path": "images/profundus.png",
       "mission_statement": "Profundus was founded by academics combining eye research and technology in the area of astronomy to address the development of high resolution, adaptive optics for retinal imaging. The company is developing an innovative system to image single cells and the smallest capillaries in the retina. The objective is to provide clinical and academic researchers with a clearer view of diseases that can cause vision impairment and/or blindness"
     },
     {
@@ -748,7 +748,7 @@
       "financing": "Listed",
       "ceo": "Larsson, Magnus",
       "company_logo": "https://media.licdn.com/dms/image/C4D0BAQGNeMDAsSOduw/company-logo_200_200/0/1519917156696?e=2147483647&v=beta&t=-0qaVjnyjDc41bIDrnjUuxdSff7-MfhUYzQKTvESlj4",
-      "image_path": "images_text/promimic.png",
+      "image_path": "images/promimic.png",
       "company_website": "https://promimic.com/",
       "company_linkedin": "https://www.linkedin.com/company/promimic/",
       "size_in_visualization": "medium",
@@ -769,7 +769,7 @@
       "financing": "Private",
       "ceo": "Faijerson Säljö, Jonas",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Synegon_logo.png/jcr:content/renditions/cq5dam.web.320.Synegon_logo.png",
-      "image_path": "images_text/synergon.png",
+      "image_path": "images/synergon.png",
       "company_website": "https://www.synergon.se/se",
       "company_linkedin": "https://www.linkedin.com/company/synergon_2/",
       "size_in_visualization": "medium",
