@@ -640,11 +640,16 @@ fetch("../datasets/co_data_test.json")
 
       .attr("id", "rightPanel") // give the div an id for easy selection
 
+      .attr("class", "rightPanelClass")
+
       .style("height", "100%")
 
       .style("width", "100%")
 
-      .style("background", "white")
+      .style("background", "white").html(`
+  <h2>Discover Our Ecosystem</h2>
+  <p>BioVentureHub is at the heart of Life Science in Gothenburg & Mölndal. Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
+`)
 
     // Create the nodes
 
