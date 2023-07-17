@@ -75,28 +75,28 @@ body {
 
 #publicCheckbox {
   position: absolute;
-  left: 300px;
+  left: 340px;
   top: 56px;
   cursor: pointer;
 }
 
 #publicLabel {
   position: absolute;
-  left: 325px;
+  left: 364px;
   top: 57px;
   cursor: pointer;
 }
 
 #privateCheckbox {
   position: absolute;
-  left: 380px;
+  left: 420px;
   top: 56px;
   cursor: pointer;
 }
 
 #privateLabel {
   position: absolute;
-  left: 405px;
+  left: 444px;
   top: 57px;
   cursor: pointer;
 }
@@ -222,8 +222,12 @@ body {
 
 #rightPanel p {
   font-family: Arial, Helvetica, sans-serif;
-  text-align: justify;
   width: 19rem;
+}
+
+.rightPanelEcosystemText {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: justify;
 }
 
 .company_logo_panel {

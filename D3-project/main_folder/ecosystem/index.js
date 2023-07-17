@@ -359,8 +359,6 @@ fetch("../datasets/co_data_test.json")
 
     // Create a function that links two nodes
 
-    const DEFAULT_DISTANCE = 100
-
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
@@ -390,9 +388,8 @@ fetch("../datasets/co_data_test.json")
 
       if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
         // Connect BVH_Alumni and BVH_Usp to BioVentureHub
-        
-        connectNodes(data.nodes[i].id, bioVentureHubNode.id, BIG_NODE_DISTANCE)
 
+        connectNodes(data.nodes[i].id, bioVentureHubNode.id, BIG_NODE_DISTANCE)
       } else if (
         data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem &&
         data.nodes[i].id !== "BioVentureHub"
@@ -454,10 +451,6 @@ fetch("../datasets/co_data_test.json")
     })
 
     svg.call(zoom)
-
-    const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the right
-
-    const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub to the right
 
     const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX // X coordinate for BVH_Companies
 
@@ -655,9 +648,11 @@ fetch("../datasets/co_data_test.json")
       .style("width", "100%")
 
       .style("background", "white").html(`
-  <h2>Discover Our Ecosystem</h2>
-  <p>BioVentureHub is at the heart of Life Science in Gothenburg & Mölndal. Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
-`)
+      <h2>Discover Our Ecosystem</h2>
+      <p class="rightPanelEcosystemText">BioVentureHub is at the heart of Life Science in Gothenburg & Mölndal.</p>
+      <p class="rightPanelEcosystemText">Daring to share, we're fostering a dynamic life science environment where scientific curiosity and collaborative efforts prevail over rigid business models, inspiring innovation and growth.</p>
+      <p class="rightPanelEcosystemText">Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
+    `)
 
     // Create the nodes
 
