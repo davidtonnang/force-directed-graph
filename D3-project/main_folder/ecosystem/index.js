@@ -625,11 +625,11 @@ fetch("../datasets/co_data_test.json")
 
       .append("foreignObject")
 
-      .attr("x", "80%") // Position from the left
+      .attr("x", "69.5%") // Position from the left
 
       .attr("y", "0") // Position from the top
 
-      .attr("width", "20%") // Width of the rectangle
+      .attr("width", "30%") // Width of the rectangle
 
       .attr("height", "100%") // Full height of the rectangle
 
@@ -645,9 +645,7 @@ fetch("../datasets/co_data_test.json")
 
       .style("height", "100%")
 
-      .style("width", "100%")
-
-      .style("background", "white").html(`
+      .style("width", "100%").html(`
       <h2>Discover Our Ecosystem</h2>
       <p class="rightPanelEcosystemText">BioVentureHub is at the heart of Life Science in Gothenburg & Mölndal.</p>
       <p class="rightPanelEcosystemText">Daring to share, we're fostering a dynamic life science environment where scientific curiosity and collaborative efforts prevail over rigid business models, inspiring innovation and growth.</p>
@@ -1055,7 +1053,7 @@ fetch("../datasets/co_data_test.json")
 
           .attr("class", "mission_statement_text")
 
-          .text(`${d.mission_statement}`)
+          .html(d.mission_statement.replace(/\./g, ".<br><br>"))
 
         if (d.company_website) {
           d3.select("#rightPanel")

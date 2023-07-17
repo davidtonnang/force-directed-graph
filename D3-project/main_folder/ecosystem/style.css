@@ -7,13 +7,16 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #101020;
+  background-color: rgb(33, 33, 66); /* Navy blue */
+  /* background-color: rgb(16, 16, 32); */
+  /* background-color: rgb(250, 250, 250); Yorick example */
 }
 
 .node {
   fill: #66b3ff;
   stroke: #333;
   stroke-width: 1.5px;
+  /* stroke: #999; Yorick example */
 }
 
 .link {
@@ -198,13 +201,18 @@ body {
 }
 
 .websiteButton:hover {
-  opacity: 0.6;
+  transition: 0.8s;
+  opacity: 0.8;
+  color: white;
+  border-color: #830051;
+  text-decoration: underline;
+  background-color: #830051;
 }
 
 #rightPanel {
   display: block;
   position: relative;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border: solid 1px black;
   padding: 5px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -222,12 +230,13 @@ body {
 
 #rightPanel p {
   font-family: Arial, Helvetica, sans-serif;
-  width: 19rem;
 }
 
 .rightPanelEcosystemText {
   font-family: Arial, Helvetica, sans-serif;
-  text-align: justify;
+  text-align: left;
+  padding-right: 15px;
+  padding-left: 10px;
 }
 
 .company_logo_panel {
@@ -241,6 +250,7 @@ body {
   font-family: Arial, Helvetica, sans-serif; /* Use your preferred font here */
   font-size: 16px;
   width: 18.5rem;
+  font-weight: bold;
 }
 
 .type_of_company_panel_text {
@@ -251,6 +261,7 @@ body {
   font-size: 16x;
   text-align: justify;
   width: 18.5rem;
+  font-weight: bold;
 }
 
 .type_of_company_panel_text::after {
@@ -271,19 +282,23 @@ body {
 
 .therapy_area_panel {
   font-size: 16px;
+  font-weight: bold;
 }
 
 .ceo_panel {
   font-size: 16px;
+  font-weight: bold;
 }
 
 .mission_statement_header {
   font-size: 16px;
+  font-weight: bold;
 }
 
 .mission_statement_text {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
-  text-align: justify;
-  width: 20em;
+  text-align: left;
+  padding-right: 15px;
+  padding-left: 10px;
 }
