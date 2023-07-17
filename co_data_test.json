@@ -79,7 +79,7 @@
       "company_website": "https://www.alzinova.com/",
       "company_linkedIn": "https://www.linkedin.com/company/alzinova-ab/",
       "size_in_visualisation": "medium",
-      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/alzinova.png"
+      "image_path": "images/cropped/alzinova_cropped.png"
     },
     {
       "group": "Diagnostics",
@@ -97,7 +97,7 @@
       "financing": "Private",
       "ceo": "Hulthe, Johannes",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Antaros-Medical.jpg/jcr:content/renditions/cq5dam.web.320.Antaros-Medical.jpg",
-      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/antaros_medical.png",
+      "image_path": "images/cropped/antarosmedical_cropped.png",
       "company_website": "https://antarosmedical.com/",
       "company_linkedin": "https://www.linkedin.com/company/antaros-medical/",
       "size_in_visualisation": "medium"
