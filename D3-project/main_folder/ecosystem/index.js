@@ -10,6 +10,15 @@ fetch("../datasets/co_data_test.json")
       ...new Set(data.nodes.map((node) => node.type_of_company)),
     ]
 
+    // Here we keep all constant values
+    const DEFAULT_DISTANCE = 120 // Gammalt värde = 100
+    const BIG_NODE_DISTANCE = 200
+    const SIZE_BIGGEST_NODES = 50
+    const SIZE_BVH_NODES = 35
+    const SIZE_COMPANY_NODES = 15 // Gammalt värde = 12
+    const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the
+    const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub
+
     const first_view = new Set([
       "BioVentureHub",
       "Astra",
@@ -246,7 +255,6 @@ fetch("../datasets/co_data_test.json")
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
     // Create a function that links two nodes
-    const DEFAULT_DISTANCE = 100
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
         source,
@@ -269,7 +277,7 @@ fetch("../datasets/co_data_test.json")
 
       if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
         // Connect BVH_Alumni and BVH_Usp to BioVentureHub
-        connectNodes(data.nodes[i].id, bioVentureHubNode.id, 200)
+        connectNodes(data.nodes[i].id, bioVentureHubNode.id, BIG_NODE_DISTANCE)
       } else if (
         data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem &&
         data.nodes[i].id !== "BioVentureHub"
@@ -293,18 +301,18 @@ fetch("../datasets/co_data_test.json")
     // Set size depending on type of node
     for (let i = 0; i < data.nodes.length; i++) {
       if (data.nodes[i].size_in_visualization == "big") {
-        data.nodes[i].size = 50
+        data.nodes[i].size = SIZE_BIGGEST_NODES
       } else if (data.nodes[i].size_in_visualization == "BVH") {
-        data.nodes[i].size = 35
+        data.nodes[i].size = SIZE_BVH_NODES
       } else {
-        data.nodes[i].size = 12
+        data.nodes[i].size = SIZE_COMPANY_NODES // var 12 innan, funkar ej att använda konstanten här, väldigt konstigt
       }
     }
 
     // Manually connect the big nodes
-    connectNodes("GoCo", "BioVentureHub", 200)
-    connectNodes("Astra", "BioVentureHub", 200)
-    connectNodes("GoCo", "Astra", 200)
+    connectNodes("GoCo", "BioVentureHub", BIG_NODE_DISTANCE)
+    connectNodes("Astra", "BioVentureHub", BIG_NODE_DISTANCE)
+    connectNodes("GoCo", "Astra", BIG_NODE_DISTANCE)
     connectNodes("BioVentureHub", "BVH_Companies", 1000)
     // Create the SVG container
     const svg = d3.select("#graph")
@@ -318,9 +326,6 @@ fetch("../datasets/co_data_test.json")
       container.attr("transform", event.transform)
     })
     svg.call(zoom)
-
-    const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the right
-    const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub to the right
 
     const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX // X coordinate for BVH_Companies
     const bvhY = svg.node().height.baseVal.value / 2 // Y coordinate for BVH_Companies
@@ -590,14 +595,6 @@ fetch("../datasets/co_data_test.json")
 
         label_adjustment_y = adjustments[0]
         label_adjustment_x = adjustments[1]
-        // Console logs the node's Y value
-        //for (let i = 0; i < data.nodes.length; i++) {
-        //  console.log(data.nodes[i])
-        //  console.log(data.nodes[i].y)
-        //}
-        console.log(d)
-        console.log(d.x)
-        console.log(scaledX)
 
         svg.selectAll(".clickedLabelGroup").remove()
 
@@ -613,8 +610,8 @@ fetch("../datasets/co_data_test.json")
           .append("foreignObject")
           .attr("x", scaledX + label_adjustment_x) // adjust position  här
           .attr("y", scaledY + label_adjustment_y) // adjust position
-          .attr("width", 300) // set width
-          .attr("height", 400) // set height
+          .attr("width", 250) // set width   FIXA HÄR
+          .attr("height", 310) // set height
           .html(
             `<div class="info-box info-box-hidden">
         ${d.company_logo ? `<img src="${d.company_logo}" />` : ""}
