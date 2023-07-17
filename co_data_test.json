@@ -79,7 +79,7 @@
       "company_website": "https://www.alzinova.com/",
       "company_linkedIn": "https://www.linkedin.com/company/alzinova-ab/",
       "size_in_visualisation": "medium",
-      "image_path": "images/cropped/alzinova_cropped.png"
+      "image_path": "images/alzinova_cropped.png"
     },
     {
       "group": "Diagnostics",
@@ -97,7 +97,7 @@
       "financing": "Private",
       "ceo": "Hulthe, Johannes",
       "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Antaros-Medical.jpg/jcr:content/renditions/cq5dam.web.320.Antaros-Medical.jpg",
-      "image_path": "images/cropped/antarosmedical_cropped.png",
+      "image_path": "images_cropped/antarosmedical_cropped.png",
       "company_website": "https://antarosmedical.com/",
       "company_linkedin": "https://www.linkedin.com/company/antaros-medical/",
       "size_in_visualisation": "medium"
@@ -558,8 +558,8 @@
       "area": "Analytics",
       "financing": "Private",
       "ceo": "Löfgren, Nils",
-      "company_logo": "https://www.azbioventurehub.com/content/dam/bioventurehub/images/logo/Nanolyze_logo-900x400.png/jcr:content/renditions/cq5dam.web.320.Nanolyze_logo-900x400.png",
-      "image_path": "https://raw.githubusercontent.com/davidtonnang/force-directed-graph/main/D3-project/main_folder/ecosystem/images/nanolyze.png",
+      "company_logo": "",
+      "image_path": "",
       "company_website": "https://www.nanolyze.se/",
       "company_linkedin": "https://www.linkedin.com//company/nanolyze/",
       "size_in_visualisation": "medium"
