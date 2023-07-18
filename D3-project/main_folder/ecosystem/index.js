@@ -617,6 +617,8 @@ fetch("../datasets/co_data_test.json")
 
     var defs = svg.append("defs")
 
+    // const panelImages = ["images_cropped/amferia_cropped.png"]
+
     // Adjust x value accordingly to place it to the right
 
     const rightPanelContainer = d3
@@ -651,6 +653,15 @@ fetch("../datasets/co_data_test.json")
       <p class="rightPanelEcosystemText">Daring to share, we're fostering a dynamic life science environment where scientific curiosity and collaborative efforts prevail over rigid business models, inspiring innovation and growth.</p>
       <p class="rightPanelEcosystemText">Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
     `)
+
+    // panelImages.forEach((url) => {
+    //   d3.select("#rightPanel")
+    //     .append("xhtml:img") // add an img element for each URL
+    //     .attr("src", url) // set the src attribute to the URL
+    //     .attr("class", "rightPanelAmferia")
+    //     .attr("width", "20%") // you can adjust the size as you want
+    //     .attr("height", "auto")
+    // })
 
     // Create the nodes
 

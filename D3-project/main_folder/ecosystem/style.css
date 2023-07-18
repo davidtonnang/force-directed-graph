@@ -232,6 +232,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.rightPanelAmferia {
+  float: left;
+}
+
 .rightPanelEcosystemText {
   font-family: Arial, Helvetica, sans-serif;
   text-align: left;
