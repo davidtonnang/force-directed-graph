@@ -111,8 +111,8 @@ fetch("../datasets/co_data_test.json")
       .append("xhtml:div")
 
       .attr("class", "filter-container").html(`
-
   <div>
+  
 
   <select id="filterDropdownCompanyType">
 
