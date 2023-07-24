@@ -711,10 +711,7 @@ fetch("../datasets/co_data_test.json")
       })
 
       .attr("class", function (d) {
-        if (
-          d.source.size_in_visualization == "big" &&
-          d.target.size_in_visualization == "BVH"
-        ) {
+        if (d.source.size_in_visualization == "big") {
           return "dashed"
         } else {
           return "solid"
