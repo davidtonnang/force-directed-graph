@@ -13,11 +13,11 @@ fetch("../datasets/co_data_test.json")
     ]
 
     // Here we keep all constant values
-    const DEFAULT_DISTANCE = 120 // Gammalt värde = 100
+    const DEFAULT_DISTANCE = 120 // Old value was = 100
     const BIG_NODE_DISTANCE = 200
     const SIZE_BIGGEST_NODES = 50
     const SIZE_BVH_NODES = 35
-    const SIZE_COMPANY_NODES = 15 // Gammalt värde = 12
+    const SIZE_COMPANY_NODES = 15 // Old value was = 12
     const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the
     const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub
 
@@ -35,9 +35,11 @@ fetch("../datasets/co_data_test.json")
       "BVH_Alumni",
     ])
 
+    // Makes all the nodes connected to BioVentureHub ecosystem visible at start
     for (let node of data.nodes) {
       node.isVisible =
-        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
+        first_view.has(node.id) || node.ecosystem === "BioVentureHub" // Includes companies connected to GoCo visible at start to show how easy it is to add a new node in the JSON  ||
+      // node.ecosystem === "GoCo"
     }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it
@@ -386,6 +388,8 @@ fetch("../datasets/co_data_test.json")
 
       let bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
 
+      let gocoNode = data.nodes.find((node) => node.id === "GoCo") // Add this line
+
       if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
         // Connect BVH_Alumni and BVH_Usp to BioVentureHub
 
@@ -398,9 +402,7 @@ fetch("../datasets/co_data_test.json")
 
         connectNodes(
           data.nodes[i].id,
-
           "BVH_Companies",
-
           i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
         )
       } else if (data.nodes[i].ecosystem.includes("Alumni")) {
@@ -408,9 +410,15 @@ fetch("../datasets/co_data_test.json")
 
         connectNodes(
           data.nodes[i].id,
-
           bvhAlumniNode.id, // Connect to BVH_Alumni
+          i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
+        )
+      } else if (data.nodes[i].ecosystem.includes("GoCo")) {
+        // For nodes with "GoCo" in their ecosystem, connect them to GoCo
 
+        connectNodes(
+          data.nodes[i].id,
+          gocoNode.id, // Connect to GoCo
           i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
         )
       }
@@ -694,22 +702,15 @@ fetch("../datasets/co_data_test.json")
       }) // Sets opacity lower for astra and goco from start
 
     const links = container
-
       .selectAll(".link")
-
       .data(data.links)
-
       .enter()
-
       .append("line")
-
       .style("display", (d) => {
         updateLinkVisibility_2(d)
-
         if (d.isVisible) return "inline"
         else return "none"
       })
-
       .attr("class", function (d) {
         if (d.source.size_in_visualization == "big") {
           return "dashed"
@@ -717,7 +718,13 @@ fetch("../datasets/co_data_test.json")
           return "solid"
         }
       })
-
+      .style("opacity", function (d) {
+        if (d.source.size_in_visualization == "big") {
+          return 1
+        } else {
+          return 1 // or whatever your default opacity is
+        }
+      })
       .lower()
 
     //      .style("opacity", 1)
@@ -912,7 +919,7 @@ fetch("../datasets/co_data_test.json")
           .attr("y", scaledY + label_adjustment_y) // adjust position
 
           .attr("width", 250) // set width   FIXA HÄR
-          .attr("height", 310) // set height
+          .attr("height", 600) // set height
 
           .html(
             `<div class="info-box info-box-hidden">
@@ -928,12 +935,6 @@ fetch("../datasets/co_data_test.json")
            <p>${d.therapy_areas ? `Therapy area: ${d.therapy_areas}` : ""}</p>
 
            <p>${d.ceo ? `CEO: ${d.ceo}` : ""}</p>
-
-           ${
-             d.company_website
-               ? `<a href="${d.company_website}" target="_blank" class="websiteButton">Visit Website</a>`
-               : ""
-           }
 
            </div>`
           )
@@ -1101,7 +1102,7 @@ fetch("../datasets/co_data_test.json")
         ) {
           if (d.id === "BioVentureHub") {
             if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
-              toggle_ecosystem("BioVentureHub")
+              // toggle_ecosystem("BioVentureHub") Removed the click function for the main BioVentureHub Node
             }
 
             if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {

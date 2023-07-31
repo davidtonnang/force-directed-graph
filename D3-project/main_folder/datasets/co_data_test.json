@@ -837,6 +837,27 @@
       "company_linkedIn": "",
       "size_in_visualization": "medium",
       "image_path": "images/neurametrix.jpg"
+    },
+    {
+      "group": "Drugs",
+      "ecosystem": "GoCo",
+      "company_name": "GoCo Company",
+      "id": "goco_company_one",
+      "turnover_sek": 1730000,
+      "amount_of_employees": 300,
+      "keywords": "",
+      "type_of_company": "Med Tech",
+      "operational_focus": "",
+      "value_chain": "",
+      "therapy_areas": "Neurology",
+      "area": "",
+      "financing": "Listed",
+      "ceo": "",
+      "company_logo": "images/goco.png",
+      "company_website": "",
+      "company_linkedIn": "",
+      "size_in_visualization": "medium",
+      "image_path": "images/goco.png"
     }
   ],
   "links": []
