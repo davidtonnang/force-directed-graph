@@ -785,72 +785,25 @@ fetch("../datasets/co_data_test.json")
 
       .style("visibility", "hidden")
 
-    // Shows labels on mouseover
-
-    nodes.on("mouseover", function (event, d) {
-      // Calculate the scaled coordinates relative to the current zoom level and the node's position
-
-      const transform = d3.zoomTransform(svg.node())
-
-      const scaledX = d.x * transform.k + transform.x
-
-      const scaledY = d.y * transform.k + transform.y
-
-      // Creates a new label
-
-      const label = svg
-
-        .append("text")
-
-        .data([d])
-
-        .attr("class", "label")
-
-        .html(
-          (labelData) =>
-            `<tspan>${labelData.id}</tspan>` +
-            (labelData.amount_of_employees
-              ? `<tspan x="0" dy="1.2em">Employees: ${labelData.amount_of_employees}</tspan>`
-              : "") +
-            `<tspan x="0" dy="1.2em">Therapy Area: ${labelData.therapy_areas}</tspan>` +
-            (labelData.financing
-              ? `<tspan x="0" dy="1.2em">Financing: ${labelData.financing}</tspan>`
-              : "")
-        )
-
-        .style("visibility", "visible")
-
-        .style("fill", "white")
-
-        .attr("x", scaledX)
-
-        .attr("y", scaledY - 10) // Adjust the y position to position the label above the node
-
-      label
-
-        .selectAll("tspan")
-
-        .attr("x", scaledX + 15)
-
-        .attr("dy", "1.2em")
-    })
-
     data.nodes[0].y = svg.node().height.baseVal.value / 2
 
     data.nodes[0].x = svg.node().width.baseVal.value / 2
+
+    // Sets the positioning of the info-box depending on positioning of the nodes
+    // bvh_y and svg.node are used as values to compare the relative position of the node the user is currently hovering over
 
     function setLabelAdjustment(bvh_y, node_y, node_x, size) {
       var label_adjustment_y = 0 // Top nodes (node_y + 80) < bvh_y
 
       var label_adjustment_x = 15
 
-      if (node_y > bvh_y + 80) {
-        label_adjustment_y = -300
+      if (node_y > bvh_y + 150) {
+        label_adjustment_y = -230
       } else if (node_y > bvh_y + 15) {
-        label_adjustment_y = -200
+        label_adjustment_y = -150
       } else if (Math.abs(node_y - bvh_y) < 15) {
         label_adjustment_y = -150
-      } else if (node_y > bvh_y - 80) {
+      } else if (node_y > bvh_y - 150) {
         label_adjustment_y = -100
       }
 
@@ -858,8 +811,11 @@ fetch("../datasets/co_data_test.json")
         label_adjustment_y = 0
       }
 
-      if (node_x > svg.node().width.baseVal.value * 0.55) {
-        label_adjustment_x = -310
+      // svg.node is the entire width of the svg. 0.49 is 49% of the view
+
+      // if the node is more than 49% of the screen to the right, meaning at the right side of the screen, the x value is pushed to the left. To ensure the label does not interfere with the right panel
+      if (node_x > svg.node().width.baseVal.value * 0.49) {
+        label_adjustment_x = -270
       }
 
       //      else if (node_x > svg.node().width.baseVal.value * 0.65) {
@@ -919,7 +875,7 @@ fetch("../datasets/co_data_test.json")
           .attr("y", scaledY + label_adjustment_y) // adjust position
 
           .attr("width", 250) // set width   FIXA HÄR
-          .attr("height", 600) // set height
+          .attr("height", 400) // set height
 
           .html(
             `<div class="info-box info-box-hidden">
