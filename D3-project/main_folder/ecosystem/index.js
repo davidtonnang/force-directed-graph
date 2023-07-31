@@ -3,6 +3,7 @@
 fetch("../datasets/co_data_test.json")
   .then((res) => res.json())
 
+  // Creates unique values into a different Set array from our data.nodes to elimante duplicates for our filters
   .then((data) => {
     const therapyAreas = [
       ...new Set(data.nodes.map((node) => node.therapy_areas)),
@@ -18,7 +19,7 @@ fetch("../datasets/co_data_test.json")
     const SIZE_BIGGEST_NODES = 50
     const SIZE_BVH_NODES = 35
     const SIZE_COMPANY_NODES = 15 // Old value was = 12
-    const bvhOffsetX = 100 // adjust this value to move BVH_Companies to the
+    const bvhOffsetX = 100 // adjust this value to move BVH_Companies
     const bioVentureHubOffsetX = 200 // adjust this value to move BioVentureHub
 
     const first_view = new Set([
@@ -42,7 +43,7 @@ fetch("../datasets/co_data_test.json")
       // node.ecosystem === "GoCo"
     }
 
-    // Function that looks for string in a word, and removes it and everything after if it finds it
+    // Function that looks for string in a word, and removes it and everything after if it finds it. Is used in the filter dropdown to shorten some of the unnecessary long names for therapy areas
 
     function remove_all_after(word, char) {
       if (word.includes(char)) {
@@ -56,7 +57,7 @@ fetch("../datasets/co_data_test.json")
       return filtered_string
     }
 
-    // Create a list with all unique therapy areas
+    // Create a list with all unique therapy areas, removes the part of the strings for therapy areas that have "with" and "(" together with everything after. Example: CVRM with focus on NASH -> CVRM.
 
     function createList(input, separator) {
       let list = ["Title"]
@@ -80,22 +81,19 @@ fetch("../datasets/co_data_test.json")
       return list
     }
 
+    // Use the createList function to make the list of therapy areas and company types and makes it prettier. These will be used in the filter dropdown
     let therapy_list = createList(therapyAreas, ",")
 
     let type_list = createList(type_of_company, ",")
 
-    // Defines a function that is globally accessible for the label buttons
-
-    window.handleButtonClick = function () {
-      d3.select("svg").selectAll(".clickedLabelGroup").remove()
-    }
-
+    // Values for use in functions that select said elements from the index.html which are used in the handleFilterSelection as to know what to target.
     const privateCheckbox = d3.select("#privateCheckbox")
 
     const publicCheckbox = d3.select("#publicCheckbox")
 
     const employeeRange = document.getElementById("employeeRange")
 
+    // Creates the filterContainer element that contain the dropdown menu for type of company and therapy area filters.
     const filterContainer = d3
 
       .select("#graph")
@@ -124,9 +122,6 @@ fetch("../datasets/co_data_test.json")
 
 </div>
 
-
-
-
 <div>
 
   <select id="filterDropdown">
@@ -139,7 +134,7 @@ fetch("../datasets/co_data_test.json")
 
   `)
 
-    // Adds Therapy area to the filtering
+    // Adds the Therapy area list to the filtering options in the dropdown menu
 
     const therapyAreaSelect = d3.select("#filterDropdown")
 
@@ -157,7 +152,7 @@ fetch("../datasets/co_data_test.json")
 
       .attr("value", (d) => d)
 
-    // Adds the Company Type to the filtering
+    // Adds the company type list to the filtering options in the second dropdown menu
 
     const companyTypeSelect = d3.select("#filterDropdownCompanyType")
 
@@ -175,7 +170,7 @@ fetch("../datasets/co_data_test.json")
 
       .attr("value", (d) => d)
 
-    // Initialize filterState
+    // Initialize filterState and state the data types. String for therapy area and company type. Boolean for financing and integer for employees. All of the filtering that is being done, gets stored into filterState and is used in applyFilters.
 
     let filterState = {
       therapyArea: "",
@@ -194,104 +189,57 @@ fetch("../datasets/co_data_test.json")
     // Function to apply filters
 
     function applyFilters() {
-      // Use the filterState to filter nodes
+      //
+      // Use the filterState to filter nodes by lowering the opacity for the nodes that don't match the users filter options
 
-      nodes
+      nodes.style("opacity", (d) => {
+        // If the node is one of the special nodes, they do not get their opacity affected no matter what filter options the user chooses
 
-        .attr("r", (d) => {
-          // If the node is one of the special nodes, we do not filter
+        if (
+          ["BioVentureHub", "BVH_Companies", "BVH_Alumni", "BVH_USP"].includes(
+            d.id
+          )
+        ) {
+          return 1
+        }
 
-          if (["BioVentureHub"].includes(d.id)) {
-            return d.size
-          }
+        if (["Astra", "GoCo"].includes(d.id)) {
+          return 0.2 // Keeps opacity lower for Astra and GoCo as they are meant to be in background
+        }
 
-          // Adjust radius based on filters
+        // Adjust the node style opacity value into the filterState based on filters
 
-          let radius = d.size
+        let opacity = 1
 
-          if (
-            filterState.therapyArea !== "" &&
-            d.therapy_areas.includes(filterState.therapyArea)
-          ) {
-            radius *= 1.0
-          }
+        // If the chosen therapy area from the dropdown does not match, get 0.2 opacity. The nodes that do match, keep their 1 opacity.
+        if (!d.therapy_areas.includes(filterState.therapyArea)) {
+          opacity = 0.2
+        }
 
-          if (
-            filterState.type_of_company !== "" &&
-            d.type_of_company.includes(filterState.type_of_company)
-          ) {
-            radius *= 1.0
-          }
+        // If the chosen company type from the dropdown does not match, get 0.2 opacity. The nodes that do match, keep their 1 opacity.
+        if (!d.type_of_company.includes(filterState.type_of_company)) {
+          opacity = 0.2
+        }
 
-          if (
-            (!filterState.financing.private && !filterState.financing.public) ||
-            (filterState.financing.private && d.financing === "Private") ||
-            (filterState.financing.public && d.financing === "Listed")
-          ) {
-            radius *= 1.0
-          }
+        // Changes opacity of the nodes that does not match the box you clicked. If the user clicks on Private, every node that is not private will have lower opacity and vice versa.
+        if (
+          (filterState.financing.private || filterState.financing.public) &&
+          !(filterState.financing.private && d.financing === "Private") &&
+          !(filterState.financing.public && d.financing === "Listed")
+        ) {
+          opacity = 0.2
+        }
 
-          if (d.amount_of_employees >= filterState.minEmployees) {
-            radius *= 1.0
-          }
+        // If the node has less than the user's choosen employee value from the slider, they get lowered opacity. A value of 256 will affect the nodes with less than 256 employees to have 0.2 opacity.
+        if (!(d.amount_of_employees >= filterState.minEmployees)) {
+          opacity = 0.2
+        }
 
-          return radius
-        })
-
-        .style("opacity", (d) => {
-          // If the node is one of the special nodes, do not filter
-
-          if (
-            [
-              "BioVentureHub",
-
-              "BVH_Companies",
-
-              "BVH_Alumni",
-
-              "BVH_USP",
-            ].includes(d.id)
-          ) {
-            return 1
-          }
-
-          if (["Astra", "GoCo"].includes(d.id)) {
-            return 0.2 // Keeps opacity lower for astra and goco
-          }
-
-          // Adjust opacity based on filters
-
-          let opacity = 1
-
-          if (
-            filterState.therapyArea !== "" &&
-            !d.therapy_areas.includes(filterState.therapyArea)
-          ) {
-            opacity = 0.2
-          }
-
-          if (
-            filterState.type_of_company !== "" &&
-            !d.type_of_company.includes(filterState.type_of_company)
-          ) {
-            opacity = 0.2
-          }
-
-          if (
-            (filterState.financing.private || filterState.financing.public) &&
-            !(filterState.financing.private && d.financing === "Private") &&
-            !(filterState.financing.public && d.financing === "Listed")
-          ) {
-            opacity = 0.2
-          }
-
-          if (!(d.amount_of_employees >= filterState.minEmployees)) {
-            opacity = 0.2
-          }
-
-          return opacity
-        })
+        return opacity
+      })
     }
+
+    // The following functions updates the filterState based on the users input. They also run the applyFilters function to make the changes occur
 
     // Handle therapy area filter
 
@@ -335,7 +283,7 @@ fetch("../datasets/co_data_test.json")
       })
     }
 
-    // Handle employee range filter
+    // Handle employee range filter. Note: Math.pow 2 makes the slidebar increase exponentially. This gives the slider a smoother feeling to it.
 
     function handleEmployeeRangeSelection() {
       filterState.minEmployees = Math.pow(2, employeeRange.value)
@@ -359,7 +307,7 @@ fetch("../datasets/co_data_test.json")
 
     employeeRange.addEventListener("input", handleEmployeeRangeSelection)
 
-    // Create a function that links two nodes
+    // Create a function that links two nodes together. This is used to create all of the links.
 
     const connectNodes = (source, target, distance = DEFAULT_DISTANCE) => {
       data.links.push({
@@ -375,47 +323,42 @@ fetch("../datasets/co_data_test.json")
 
     // Connect all the nodes to their Ecosystem node
 
+    let bvhCompaniesNode = data.nodes.find(
+      (node) => node.id === "BVH_Companies"
+    )
+
+    let bioVentureHubNode = data.nodes.find(
+      (node) => node.id === "BioVentureHub"
+    )
+
+    let bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
+
+    let gocoNode = data.nodes.find((node) => node.id === "GoCo")
+
     for (let i = 0; i < data.nodes.length; i++) {
-      // Check if the ecosystem of the current node matches that of 'BVH_Companies'
-
-      let bvhCompaniesNode = data.nodes.find(
-        (node) => node.id === "BVH_Companies"
-      )
-
-      let bioVentureHubNode = data.nodes.find(
-        (node) => node.id === "BioVentureHub"
-      )
-
-      let bvhAlumniNode = data.nodes.find((node) => node.id === "BVH_Alumni")
-
-      let gocoNode = data.nodes.find((node) => node.id === "GoCo") // Add this line
-
-      if (["BVH_Alumni", "BVH_USP"].includes(data.nodes[i].id)) {
-        // Connect BVH_Alumni and BVH_Usp to BioVentureHub
-
-        connectNodes(data.nodes[i].id, bioVentureHubNode.id, BIG_NODE_DISTANCE)
-      } else if (
+      // If a node has the same ecosystem as "BVH_Companies", connect it to "BVH_Companies"
+      if (
         data.nodes[i].ecosystem === bvhCompaniesNode.ecosystem &&
         data.nodes[i].id !== "BioVentureHub"
       ) {
-        // For other nodes, connect them to BVH_Companies if they belong to the same ecosystem
+        // Every other node gets a shorter distance as to create two different circles around the source node. (BVH_Companies)
 
         connectNodes(
           data.nodes[i].id,
           "BVH_Companies",
           i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
         )
-      } else if (data.nodes[i].ecosystem.includes("Alumni")) {
-        // For nodes with "Alumni" in their ecosystem, connect them to BVH_Alumni
-
+      }
+      // For nodes with "Alumni" in their ecosystem, connect them to BVH_Alumni
+      else if (data.nodes[i].ecosystem.includes("Alumni")) {
         connectNodes(
           data.nodes[i].id,
-          bvhAlumniNode.id, // Connect to BVH_Alumni
+          bvhAlumniNode.id,
           i % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE
         )
-      } else if (data.nodes[i].ecosystem.includes("GoCo")) {
-        // For nodes with "GoCo" in their ecosystem, connect them to GoCo
-
+      }
+      // For nodes with "GoCo" in their ecosystem, connect them to GoCo
+      else if (data.nodes[i].ecosystem.includes("GoCo")) {
         connectNodes(
           data.nodes[i].id,
           gocoNode.id, // Connect to GoCo
@@ -424,7 +367,7 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
-    // Set size depending on type of node
+    // Set size depending on type of node.
 
     for (let i = 0; i < data.nodes.length; i++) {
       if (data.nodes[i].size_in_visualization == "big") {
@@ -432,7 +375,7 @@ fetch("../datasets/co_data_test.json")
       } else if (data.nodes[i].size_in_visualization == "BVH") {
         data.nodes[i].size = SIZE_BVH_NODES
       } else {
-        data.nodes[i].size = SIZE_COMPANY_NODES // var 12 innan, funkar ej att använda konstanten här, väldigt konstigt
+        data.nodes[i].size = SIZE_COMPANY_NODES
       }
     }
 
@@ -441,10 +384,13 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "BioVentureHub", BIG_NODE_DISTANCE)
     connectNodes("Astra", "BioVentureHub", BIG_NODE_DISTANCE)
     connectNodes("GoCo", "Astra", BIG_NODE_DISTANCE)
+    connectNodes("BVH_Alumni", "BioVentureHub", BIG_NODE_DISTANCE)
+    connectNodes("BVH_USP", "BioVentureHub", BIG_NODE_DISTANCE)
 
+    // Note: For this last connection, the distance is set to 1000. This is because other forces in the simulation competes and pushes these two nodes together. Observe that the nodes are still close to each other, even with the 1000 distance.
     connectNodes("BioVentureHub", "BVH_Companies", 1000)
 
-    // Create the SVG container
+    // Creates the SVG container
 
     const svg = d3.select("#graph")
 
@@ -460,14 +406,11 @@ fetch("../datasets/co_data_test.json")
 
     svg.call(zoom)
 
-    const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX // X coordinate for BVH_Companies
+    // X coordinate for BVH_Companies
+    const bvhX = svg.node().width.baseVal.value / 2 + bvhOffsetX
 
-    const bvhY = svg.node().height.baseVal.value / 2 // Y coordinate for BVH_Companies
-
-    const bioVentureHubX =
-      svg.node().width.baseVal.value / 2 + bioVentureHubOffsetX
-
-    const bioVentureHubY = svg.node().height.baseVal.value / 2
+    // Y coordinate for BVH_Companies
+    const bvhY = svg.node().height.baseVal.value / 2
 
     // Create the force simulation
 
@@ -621,12 +564,6 @@ fetch("../datasets/co_data_test.json")
           .x((1 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
       )
 
-    // In defs we're going to add the images in the nodes
-
-    var defs = svg.append("defs")
-
-    // const panelImages = ["images_cropped/amferia_cropped.png"]
-
     // Adjust x value accordingly to place it to the right
 
     const rightPanelContainer = d3
@@ -649,7 +586,7 @@ fetch("../datasets/co_data_test.json")
 
       .append("xhtml:div")
 
-      .attr("id", "rightPanel") // give the div an id for easy selection
+      .attr("id", "rightPanel")
 
       .attr("class", "rightPanelClass")
 
@@ -661,15 +598,6 @@ fetch("../datasets/co_data_test.json")
       <p class="rightPanelEcosystemText">Daring to share, we're fostering a dynamic life science environment where scientific curiosity and collaborative efforts prevail over rigid business models, inspiring innovation and growth.</p>
       <p class="rightPanelEcosystemText">Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
     `)
-
-    // panelImages.forEach((url) => {
-    //   d3.select("#rightPanel")
-    //     .append("xhtml:img") // add an img element for each URL
-    //     .attr("src", url) // set the src attribute to the URL
-    //     .attr("class", "rightPanelAmferia")
-    //     .attr("width", "20%") // you can adjust the size as you want
-    //     .attr("height", "auto")
-    // })
 
     // Create the nodes
 
@@ -722,14 +650,14 @@ fetch("../datasets/co_data_test.json")
         if (d.source.size_in_visualization == "big") {
           return 1
         } else {
-          return 1 // or whatever your default opacity is
+          return 1
         }
       })
       .lower()
 
-    //      .style("opacity", 1)
+    // Adds the images into the nodes
 
-    // Adding the images in the nodes
+    var defs = svg.append("defs")
 
     defs
 
@@ -905,11 +833,11 @@ fetch("../datasets/co_data_test.json")
             .classList.remove("info-box-hidden")
         }, 10)
 
-        labelGroup.style("visibility", "visible") // make the labelGroup visible
+        labelGroup.style("visibility", "visible") // make the info-box visible
       })
 
       .on("mouseout", function (event, d) {
-        svg.selectAll(".labelGroup").remove() // remove group on mouseout
+        svg.selectAll(".labelGroup").remove() // remove the info-box on mouseout
       })
 
     // Shows labels inside panel on click
@@ -956,7 +884,7 @@ fetch("../datasets/co_data_test.json")
 
         typesOfCompany.forEach((type, index) => {
           if (index !== 0) {
-            // If it's not the first type, prepend a comma and a space
+            // If it's not the first company type, prepend a comma and a space as to not line the company types right after each other and as to not create a comma and space in front of the first company type
 
             p.append("span").text(", ")
           }
@@ -1050,6 +978,7 @@ fetch("../datasets/co_data_test.json")
           (node) => node.id === "alumni_company_one"
         )
 
+        // Toggles the ecosystems on click as to show or not show the connected nodes. Only for BVH_Companies and BVH_Alumni so far.
         if (
           d.id === "BioVentureHub" ||
           d.id === "BVH_Companies" ||
@@ -1071,6 +1000,7 @@ fetch("../datasets/co_data_test.json")
 
             bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
 
+            // Creates the same toggle animation for the nodes to the links
             data.links.forEach((link) => {
               updateLinkVisibility_2(link)
             })
@@ -1160,10 +1090,6 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
-    const bvhCompaniesNode = data.nodes.find(
-      (node) => node.id === "BVH_Companies"
-    )
-
     // Updates the node and link positions on each tick of the simulation
 
     simulation.on("tick", () => {
@@ -1205,6 +1131,4 @@ fetch("../datasets/co_data_test.json")
 
       this.force("charge", d3.forceManyBody().strength(-30 * chargeStrength))
     }
-
-    // simulation.on("tick", ticked)
   })
