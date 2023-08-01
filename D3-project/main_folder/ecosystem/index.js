@@ -386,9 +386,7 @@ fetch("../datasets/co_data_test.json")
     connectNodes("GoCo", "Astra", BIG_NODE_DISTANCE)
     connectNodes("BVH_Alumni", "BioVentureHub", BIG_NODE_DISTANCE)
     connectNodes("BVH_USP", "BioVentureHub", BIG_NODE_DISTANCE)
-
-    // Note: For this last connection, the distance is set to 1000. This is because other forces in the simulation competes and pushes these two nodes together. Observe that the nodes are still close to each other, even with the 1000 distance.
-    connectNodes("BioVentureHub", "BVH_Companies", 1000)
+    connectNodes("BioVentureHub", "BVH_Companies", BIG_NODE_DISTANCE)
 
     // Creates the SVG container
 
@@ -412,12 +410,13 @@ fetch("../datasets/co_data_test.json")
     // Y coordinate for BVH_Companies
     const bvhY = svg.node().height.baseVal.value / 2
 
-    // Create the force simulation
+    // Create the force simulation. Within the simulation, several forces are being applied.
 
     const simulation = d3
 
       .forceSimulation(data.nodes)
 
+      // All the forces that are connected to the links are applied here.
       .force(
         "link",
 
@@ -430,8 +429,10 @@ fetch("../datasets/co_data_test.json")
           .distance((link) => link.distance)
       )
 
+      // This force works as gravitation -200 means a repelling force, creating the spread and distance for the BVH_Company nodes. The gravitational force affects mostly the Company nodes as the other nodes have fixed positions.
       .force("charge", d3.forceManyBody().strength(-200))
 
+      // Force that pulls the nodes to the center of the svg
       .force(
         "center",
 
@@ -446,28 +447,7 @@ fetch("../datasets/co_data_test.json")
           .strength(0.0001)
       )
 
-      .force(
-        "circular",
-
-        d3
-
-          .forceRadial(
-            (d) =>
-              d.index % 2 == 0 ? DEFAULT_DISTANCE / 1.5 : DEFAULT_DISTANCE,
-
-            bvhX,
-
-            bvhY
-          )
-
-          .strength(function (d) {
-            // gör varannan
-
-            if (d.ecosystem == "BioVentureHub") return 1.5
-            else return 0
-          })
-      )
-
+      // All the following forces affects individual nodes as to push them into their desired position
       .force(
         "BVH_USP_forceY",
 
@@ -477,7 +457,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "BVH_USP" ? 0.5 : 0))
 
-          .y(svg.node().height.baseVal.value / 4) // affects the y-position for the BVH_USP node
+          .y(svg.node().height.baseVal.value / 4)
       )
 
       .force(
@@ -489,7 +469,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
 
-          .y((3 * svg.node().height.baseVal.value) / 4) // affects the y-position for the BVH_Alumni node
+          .y((3 * svg.node().height.baseVal.value) / 4)
       )
 
       .force(
@@ -501,7 +481,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "BVH_USP" ? 0.5 : 0))
 
-          .x((3.5 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
+          .x((3.5 * svg.node().width.baseVal.value) / 7)
       )
 
       .force(
@@ -513,7 +493,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "BVH_Alumni" ? 0.5 : 0))
 
-          .x((3.5 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
+          .x((3.5 * svg.node().width.baseVal.value) / 7)
       )
 
       .force(
@@ -525,7 +505,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "Astra" ? 0.5 : 0))
 
-          .y(svg.node().height.baseVal.value / 4) // affects the y-position for the BVH_USP node
+          .y(svg.node().height.baseVal.value / 4)
       )
 
       .force(
@@ -537,7 +517,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "GoCo" ? 0.5 : 0))
 
-          .y((3 * svg.node().height.baseVal.value) / 4) // affects the y-position for the BVH_Alumni node
+          .y((3 * svg.node().height.baseVal.value) / 4)
       )
 
       .force(
@@ -549,7 +529,7 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "Astra" ? 0.5 : 0))
 
-          .x((1 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_USP node
+          .x((1 * svg.node().width.baseVal.value) / 7)
       )
 
       .force(
@@ -561,11 +541,10 @@ fetch("../datasets/co_data_test.json")
 
           .strength((node) => (node.id === "GoCo" ? 0.5 : 0))
 
-          .x((1 * svg.node().width.baseVal.value) / 7) // affects the x-position for the BVH_Alumni node
+          .x((1 * svg.node().width.baseVal.value) / 7)
       )
 
-    // Adjust x value accordingly to place it to the right
-
+    // Creates the right panel to the side that greets the viewer
     const rightPanelContainer = d3
 
       .select("#graph")
@@ -580,15 +559,13 @@ fetch("../datasets/co_data_test.json")
 
       .attr("height", "100%") // Full height of the rectangle
 
-    // Append a div to the foreignObject
+    // Append a div to the right panel and inserts a h2 and p tag that includes general start information regarding the visualiation and BioVentureHub as a company. Makes use of the rightPanel id in our CSS for styling the content
 
     const rightPanelDiv = rightPanelContainer
 
       .append("xhtml:div")
 
       .attr("id", "rightPanel")
-
-      .attr("class", "rightPanelClass")
 
       .style("height", "100%")
 
@@ -599,7 +576,7 @@ fetch("../datasets/co_data_test.json")
       <p class="rightPanelEcosystemText">Dive into our ecosystem and see how we are shaping the future. Each of our company tells a unique story of innovation and growth. Start exploring freely or use the filter to find precisely what you wish to find.</p>
     `)
 
-    // Create the nodes
+    // Creates the nodes
 
     const nodes = container
 
@@ -619,26 +596,31 @@ fetch("../datasets/co_data_test.json")
 
       .attr("r", (node) => node.size)
 
+      // This method hides nodes based upon if the isVisible attribute is true or false. This is to not display all nodes from start and decide what start view we want to have
       .style("display", (d) => (d.isVisible ? "inline" : "none"))
 
+      // Sets the opacity lower for Astra and GoCo from start as to make them appear in the background
       .style("opacity", function (node) {
         if (["Astra", "GoCo"].includes(node.id)) {
           return 0.2
         } else {
           return 1
         }
-      }) // Sets opacity lower for astra and goco from start
+      })
 
+    // Creates the links
     const links = container
       .selectAll(".link")
       .data(data.links)
       .enter()
       .append("line")
+      // Runs updateLinkVisibility function once to make sure the links have correct isVisible value and then shows the links we want to show in the start view
       .style("display", (d) => {
-        updateLinkVisibility_2(d)
+        updateLinkVisibility(d)
         if (d.isVisible) return "inline"
         else return "none"
       })
+      // Gives a dotted line to the Astra and GoCo nodes
       .attr("class", function (d) {
         if (d.source.size_in_visualization == "big") {
           return "dashed"
@@ -646,16 +628,9 @@ fetch("../datasets/co_data_test.json")
           return "solid"
         }
       })
-      .style("opacity", function (d) {
-        if (d.source.size_in_visualization == "big") {
-          return 1
-        } else {
-          return 1
-        }
-      })
       .lower()
 
-    // Adds the images into the nodes
+    // Adds the images into the nodes and styles them to fit
 
     var defs = svg.append("defs")
 
@@ -689,37 +664,13 @@ fetch("../datasets/co_data_test.json")
 
       .attr("preserveAspectRatio", "none")
 
-      .attr("xmlns:xlink", "https://www.w3.org/1999/xlink")
-
       .attr("xlink:href", (d) => d.image_path)
 
     // Create the labels for all nodes
 
-    const labels = svg
+    const labels = svg.enter()
 
-      .selectAll(".label")
-
-      .data(data.nodes)
-
-      .enter()
-
-      .append("text")
-
-      .attr("class", "label")
-
-      .text((d) => d.company_name)
-
-      .style("fill", "white")
-
-      .style("visibility", "hidden")
-
-    data.nodes[0].y = svg.node().height.baseVal.value / 2
-
-    data.nodes[0].x = svg.node().width.baseVal.value / 2
-
-    // Sets the positioning of the info-box depending on positioning of the nodes
-    // bvh_y and svg.node are used as values to compare the relative position of the node the user is currently hovering over
-
+    // Adjust position of info-box that displays on mouse over nodes.
     function setLabelAdjustment(bvh_y, node_y, node_x, size) {
       var label_adjustment_y = 0 // Top nodes (node_y + 80) < bvh_y
 
@@ -746,26 +697,21 @@ fetch("../datasets/co_data_test.json")
         label_adjustment_x = -270
       }
 
-      //      else if (node_x > svg.node().width.baseVal.value * 0.65) {
-
-      //        label_adjustment_x = -150
-
-      //      }
-
       return [label_adjustment_y, label_adjustment_x]
     }
 
+    // Mouse over function that creates the info-box when the user hovers their mouse over a node
     nodes
 
       .on("mouseover", function (event, d) {
         const transform = d3.zoomTransform(svg.node())
-
+        // scaledX and scaledY are the X and Y positions considering the current zoom of the svg
         const scaledX = d.x * transform.k + transform.x
 
         const scaledY = d.y * transform.k + transform.y
 
         var bvh_y = data.nodes[1].y
-
+        // Here we used the setLabelAdjustment function to get adjustments of the position of the info-box
         var adjustments = setLabelAdjustment(
           bvh_y,
 
@@ -780,9 +726,7 @@ fetch("../datasets/co_data_test.json")
 
         label_adjustment_x = adjustments[1]
 
-        svg.selectAll(".clickedLabelGroup").remove()
-
-        // Create a group to hold the foreignObject and label
+        // Creates labelGroup
 
         const labelGroup = svg
 
@@ -792,18 +736,18 @@ fetch("../datasets/co_data_test.json")
 
           .style("visibility", "hidden")
 
-        // Append a foreignObject to the group
+        // Append a foreignObject to the labelGroup to create an info-box div on mouse over
 
         const foreignObject = labelGroup
 
           .append("foreignObject")
 
-          .attr("x", scaledX + label_adjustment_x) // adjust position  här
+          .attr("x", scaledX + label_adjustment_x)
 
-          .attr("y", scaledY + label_adjustment_y) // adjust position
+          .attr("y", scaledY + label_adjustment_y)
 
-          .attr("width", 250) // set width   FIXA HÄR
-          .attr("height", 400) // set height
+          .attr("width", 250)
+          .attr("height", 400)
 
           .html(
             `<div class="info-box info-box-hidden">
@@ -823,28 +767,28 @@ fetch("../datasets/co_data_test.json")
            </div>`
           )
 
-        // Creates an animation that loads in the info-box
+        // Creates an animation for the info-box on mouse over.
 
         setTimeout(() => {
           document
 
             .querySelector(".info-box")
-
             .classList.remove("info-box-hidden")
         }, 10)
 
-        labelGroup.style("visibility", "visible") // make the info-box visible
+        labelGroup.style("visibility", "visible")
       })
 
+      // Removes the info-box on mouseout
       .on("mouseout", function (event, d) {
-        svg.selectAll(".labelGroup").remove() // remove the info-box on mouseout
+        svg.selectAll(".labelGroup").remove()
       })
 
-    // Shows labels inside panel on click
+    // Shows labels inside Rightpanel on node click
 
     nodes.on("click", function (event, d) {
       if (d.size_in_visualization === "medium") {
-        // Clear the existing content of rightPanelDiv
+        // Clears the existing content of rightPanelDiv
 
         d3.select("#rightPanel").html("")
 
@@ -852,23 +796,21 @@ fetch("../datasets/co_data_test.json")
 
         d3.select("#rightPanel")
 
-          .append("img") // Add this line
+          .append("img")
 
-          .attr("src", d.company_logo) // And this line
+          .attr("src", d.company_logo)
 
-          .attr("alt", `${d.company_name} logo`) // And this line
+          .attr("alt", `${d.company_name} logo`)
 
-          .attr("width", "200") // And this line, adjust the width as necessary
-
+          .attr("width", "200")
+          // This class is used in the CSS to style the company logo inside the panel
           .attr("class", "company_logo_panel")
 
         d3.select("#rightPanel").append("h4").text(`Company: ${d.company_name}`)
 
-        // Create the paragraph
+        // Creates the paragraph
 
         const p = d3.select("#rightPanel").append("p")
-
-        // Append the non-clickable part of the text
 
         p.append("span")
 
@@ -889,19 +831,19 @@ fetch("../datasets/co_data_test.json")
             p.append("span").text(", ")
           }
 
+          // Makes the company types clickable in order to filter on click
           p.append("span")
 
             .attr("class", "type_of_company_panel_text")
 
-            .style("cursor", "pointer") // Make the text look clickable
+            .style("cursor", "pointer")
 
-            .style("text-decoration", "none") // Remove the underline
+            .style("text-decoration", "none")
 
             .text(type)
 
+            // Adds the filter click event
             .on("click", function () {
-              // Add the click event
-
               // Set the filterState to the clicked type_of_company
 
               filterState.type_of_company = type
@@ -916,6 +858,7 @@ fetch("../datasets/co_data_test.json")
             })
         })
 
+        // Adds all the company data into the rightPanel on click. All following classes are being used in the CSS in order to style the content
         d3.select("#rightPanel")
 
           .append("p")
@@ -946,8 +889,10 @@ fetch("../datasets/co_data_test.json")
 
           .attr("class", "mission_statement_text")
 
+          // Adds two line breaks after every full stop in the mission statement JSON
           .html(d.mission_statement.replace(/\./g, ".<br><br>"))
 
+        // All companies do not have websites, this makes sure that those who have get their website link connected. This also uses a class for styling in the CSS
         if (d.company_website) {
           d3.select("#rightPanel")
 
@@ -961,6 +906,7 @@ fetch("../datasets/co_data_test.json")
 
             .text("Visit Website")
         }
+        // If nodes do not have size_in_visualization = medium, visibility of nodes can change on click to create an animation
       } else {
         // Fetch BVH_USP and BVH_Alumni nodes
 
@@ -987,7 +933,6 @@ fetch("../datasets/co_data_test.json")
         ) {
           if (d.id === "BioVentureHub") {
             if (bvhCompaniesNode.isVisible && companiesNode.isVisible) {
-              // toggle_ecosystem("BioVentureHub") Removed the click function for the main BioVentureHub Node
             }
 
             if (bvhAlumniNode.isVisible && alumniCompNode.isVisible) {
@@ -1000,9 +945,9 @@ fetch("../datasets/co_data_test.json")
 
             bvhAlumniNode.isVisible = !bvhAlumniNode.isVisible
 
-            // Creates the same toggle animation for the nodes to the links
+            // Creates the same animation for the links
             data.links.forEach((link) => {
-              updateLinkVisibility_2(link)
+              updateLinkVisibility(link)
             })
           }
 
@@ -1014,24 +959,19 @@ fetch("../datasets/co_data_test.json")
             toggle_ecosystem("Alumni")
           }
 
-          // update node display
+          // update node display for the toggle
 
-          nodes.style("display", (d) =>
-            SPECIAL_IDS.includes(d.id) || d.isVisible ? "inline" : "none"
-          )
+          nodes.style("display", (d) => (d.isVisible ? "inline" : "none"))
 
-          // update link display
-
-          //links.style("display", (d) => if (d.isVisible) )
+          // update link display for the toggle
 
           links.style("display", (d) => (d.isVisible ? "inline" : "none"))
         }
       }
     })
 
-    const SPECIAL_IDS = ["BioVentureHub", "GoCo", "Astra"]
-
-    function updateLinkVisibility_2(d) {
+    // If links both source and target node are visible, the link is visible too.
+    function updateLinkVisibility(d) {
       if (d.source.isVisible && d.target.isVisible) {
         d.isVisible = true
       } else {
@@ -1039,7 +979,8 @@ fetch("../datasets/co_data_test.json")
       }
     }
 
-    function toggle_ecosystem(ecoSys, bvh = false) {
+    // Creates the animation that makes nodes visible or not visible when their ecosystem nodes are clicked. The main nodes
+    function toggle_ecosystem(ecoSys) {
       for (let i = 0; i < data.nodes.length; i++) {
         if (
           data.nodes[i].ecosystem == ecoSys &&
@@ -1049,7 +990,7 @@ fetch("../datasets/co_data_test.json")
 
           data.nodes[i].isVisible = !data.nodes[i].isVisible
 
-          // Select the node that is being toggled and apply the transition
+          // Select the node that is being toggled and apply the animation
 
           d3.select("#graph")
 
@@ -1066,10 +1007,11 @@ fetch("../datasets/co_data_test.json")
             .style("opacity", data.nodes[i].isVisible ? 1 : 0)
         }
 
+        // Same for the links
         for (let i = 0; i < data.links.length; i++) {
           link_state = data.links[i].isVisible
 
-          updateLinkVisibility_2(data.links[i])
+          updateLinkVisibility(data.links[i])
 
           if (data.links[i].isVisible !== link_state) {
             d3.select("#graph")
@@ -1103,32 +1045,12 @@ fetch("../datasets/co_data_test.json")
 
         .attr("y2", (d) => d.target.y)
 
-      //links.style("display", (d) => updateLinkVisibility_2(d))
-
       nodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y)
 
       labels.attr("x", (d) => d.x + 10).attr("y", (d) => d.y - 10)
-
-      //data.nodes[0].y = svg.node().height.baseVal.value / 2
-
-      //data.nodes[0].x = svg.node().width.baseVal.value / 2
 
       data.nodes[1].y = bvhY
 
       data.nodes[1].x = bvhX
     })
-
-    function ticked() {
-      var alpha = this.alpha()
-
-      var chargeStrength
-
-      if (alpha > 0.2) {
-        chargeStrength = alpha - 0.2 / 0.8
-      } else {
-        chargeStrength = 0
-      }
-
-      this.force("charge", d3.forceManyBody().strength(-30 * chargeStrength))
-    }
   })
