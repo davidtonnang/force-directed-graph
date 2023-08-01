@@ -39,8 +39,7 @@ fetch("../datasets/co_data_test.json")
     // Makes all the nodes connected to BioVentureHub ecosystem visible at start
     for (let node of data.nodes) {
       node.isVisible =
-        first_view.has(node.id) || node.ecosystem === "BioVentureHub" // Includes companies connected to GoCo visible at start to show how easy it is to add a new node in the JSON  ||
-      // node.ecosystem === "GoCo"
+        first_view.has(node.id) || node.ecosystem === "BioVentureHub"
     }
 
     // Function that looks for string in a word, and removes it and everything after if it finds it. Is used in the filter dropdown to shorten some of the unnecessary long names for therapy areas
