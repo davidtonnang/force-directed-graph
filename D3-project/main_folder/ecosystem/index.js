@@ -1,6 +1,6 @@
 // Fetch the JSON data
 
-fetch("../datasets/co_data_test.json")
+fetch("../datasets/co_data.json")
   .then((res) => res.json())
 
   // Creates unique values into a different Set array from our data.nodes to elimante duplicates for our filters
